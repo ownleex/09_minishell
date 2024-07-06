@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/06 00:17:15 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/06 13:35:24 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,6 @@
 # include "../libft/include/get_next_line.h"
 # include "../libft/include/libft.h"
 # include <stdio.h>
+# include <sys/time.h>
 
 #endif
