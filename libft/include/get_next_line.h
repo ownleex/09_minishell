@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 16:48:54 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/02/21 02:16:51 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/23 05:34:41 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <fcntl.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 1042
 # endif
 
 size_t	gnl_strlen(char *str);
