@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/28 23:27:33 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/29 01:45:19 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	shell.envp = envp;
+	signal(SIGINT, handle_sigint);
 	while (1)
 	{
 		shell.current_line = readline("minishell$> ");
@@ -30,6 +31,7 @@ int	main(int argc, char **argv, char **envp)
 		if (strlen(shell.current_line) > 0)
 		{
 			add_history(shell.current_line);
+			parse_command(&shell);
 			execute_command(&shell);
 		}
 		free(shell.current_line);

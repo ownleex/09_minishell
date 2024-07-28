@@ -6,7 +6,7 @@
 #    By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/02 21:28:06 by ayarmaya          #+#    #+#              #
-#    Updated: 2024/07/28 23:04:56 by ayarmaya         ###   ########.fr        #
+#    Updated: 2024/07/29 01:47:13 by ayarmaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,10 @@ RMDIR := rm -rf
 
 LIBFT := libft/libft.a
 
-HEADERS := -I./include -Ilibft/include
-LIBS := $(LIBFT) -lreadline
+READLINE_PATH := $(shell brew --prefix readline)
+
+HEADERS := -I./include -Ilibft/include -I$(READLINE_PATH)/include
+LIBS := $(LIBFT) -L$(READLINE_PATH)/lib -lreadline -ltermcap
 
 SRCS := src/main.c \
 		src/exec/exec.c \
@@ -28,6 +30,7 @@ SRCS := src/main.c \
 		src/builtin/builtin.c \
 		src/builtin/echo.c \
 		src/utils/utils.c \
+		src/signal/signal.c \
 
 OBJDIR := obj
 OBJS := $(SRCS:src/%.c=$(OBJDIR)/%.o)

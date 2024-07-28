@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/28 23:21:25 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/29 01:45:01 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/time.h>
 # include <sys/wait.h>
 # include <errno.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -47,6 +48,9 @@ void	ft_echo(t_minishell *shell);
 //Exec
 char	*find_command_path(t_minishell *shell);
 void	execute_command(t_minishell *shell);
+
+//Signal
+void	handle_sigint(int sig);
 
 //Utils
 void	free_args(t_minishell *shell);

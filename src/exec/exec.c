@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/28 23:37:18 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/29 00:43:09 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	execute_command(t_minishell *shell)
 {
 	pid_t	pid;
 
-	parse_command(shell);
 	if (is_builtin(shell))
 	{
 		handle_builtin(shell);
