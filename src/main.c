@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/28 21:44:59 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/28 22:13:57 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@ void	free_array(char **array)
 	free(array);
 }
 
-char	*find_command_path(char *cmd, char **envp)
+char	*find_command_path(t_minishell *shell)
 {
 	char	**path_split;
 	char	*path = NULL;
 	char	*full_path;
-	int	i;
+	int	i = 0;
 
-	while (*envp)
+	while (shell->envp[i])
 	{
-		path_split = ft_split(*envp, '=');
+		path_split = ft_split(shell->envp[i], '=');
 		if (strcmp(path_split[0], "PATH") == 0)
 		{
 			path = strdup(path_split[1]);
@@ -41,7 +41,7 @@ char	*find_command_path(char *cmd, char **envp)
 			break;
 		}
 		free_array(path_split);
-		envp++;
+		i++;
 	}
 	if (!path)
 		return (NULL);
@@ -51,7 +51,7 @@ char	*find_command_path(char *cmd, char **envp)
 	while (path_split[i])
 	{
 		full_path = ft_strjoin(path_split[i], "/");
-		full_path = ft_strjoin(full_path, cmd);
+		full_path = ft_strjoin(full_path, shell->current_cmd);
 		if (access(full_path, X_OK) == 0)
 		{
 			free_array(path_split);
@@ -64,76 +64,70 @@ char	*find_command_path(char *cmd, char **envp)
 	return (NULL);
 }
 
-char	**parse_command(char *line)
+void	parse_command(t_minishell *shell)
 {
-	char	**args;
-
-	args = ft_split(line, ' ');
-	return (args);
+	shell->current_args = ft_split(shell->current_line, ' ');
+	shell->current_cmd = shell->current_args[0];
 }
 
-void	free_args(char **args)
+void	free_args(t_minishell *shell)
 {
-	int	i;
+	int	i = 0;
 
-	i = 0;
-	while (args[i])
+	while (shell->current_args[i])
 	{
-		free(args[i]);
+		free(shell->current_args[i]);
 		i++;
 	}
-	free(args);
+	free(shell->current_args);
 }
 
-int	is_builtin(char *command)
+int	is_builtin(t_minishell *shell)
 {
-	if (strcmp(command, "echo") == 0)
+	if (strcmp(shell->current_cmd, "echo") == 0)
 		return (1);
 	return (0);
 }
 
-void	handle_builtin(char **args)
+void	handle_builtin(t_minishell *shell)
 {
-	int	i;
+	int	i = 1;
 
-	if (strcmp(args[0], "echo") == 0)
+	if (strcmp(shell->current_cmd, "echo") == 0)
 	{
-		i = 1;
-		while (args[i])
+		while (shell->current_args[i])
 		{
 			if (i > 1)
 				printf(" ");
-			printf("%s", args[i]);
+			printf("%s", shell->current_args[i]);
 			i++;
 		}
 		printf("\n");
 	}
 }
 
-void	execute_command(char *line, char **envp)
+void	execute_command(t_minishell *shell)
 {
 	pid_t	pid;
-	char	**args;
-	char	*cmd_path;
 
-	args = parse_command(line);
-	if (is_builtin(args[0]))
+	parse_command(shell);
+	if (is_builtin(shell))
 	{
-		handle_builtin(args);
-		free_args(args);
-		return ;
+		handle_builtin(shell);
+		free_args(shell);
+		return;
 	}
-	cmd_path = find_command_path(args[0], envp);
-	if (cmd_path == NULL)
+	shell->command_path = find_command_path(shell);
+	if (shell->command_path == NULL)
 	{
-		fprintf(stderr, "Command not found: %s\n", args[0]);
-		free_args(args);
+		fprintf(stderr, "Command not found: %s\n", shell->current_cmd);
+		free_args(shell);
 		return;
 	}
 	pid = fork();
 	if (pid == 0)
 	{
-		if (execve(cmd_path, args, envp) == -1)
+		if (execve(shell->command_path, shell->current_args, shell->envp) == -1)
 		{
 			perror("minishell");
 			exit(EXIT_FAILURE);
@@ -143,31 +137,31 @@ void	execute_command(char *line, char **envp)
 		perror("minishell");
 	else
 		waitpid(pid, NULL, 0);
-	free(cmd_path);
-	free_args(args);
+	free(shell->command_path);
+	free_args(shell);
 }
-
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*line;
+	t_minishell	shell;
 
 	(void)argc;
 	(void)argv;
+	shell.envp = envp;
 	while (1)
 	{
-		line = readline("minishell$> ");
-		if (line == NULL)
+		shell.current_line = readline("minishell$> ");
+		if (shell.current_line == NULL)
 		{
 			printf("\n");
 			break;
 		}
-		if (strlen(line) > 0)
+		if (strlen(shell.current_line) > 0)
 		{
-			add_history(line);
-			execute_command(line, envp);
+			add_history(shell.current_line);
+			execute_command(&shell);
 		}
-		free(line);
+		free(shell.current_line);
 	}
 	return (0);
 }

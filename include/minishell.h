@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/28 20:43:03 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/28 22:12:44 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,14 @@
 # include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
+typedef struct s_minishell
+{
+	char	**envp;
+	char	*current_line;
+	char	**current_args;
+	char	*command_path;
+	char	*current_cmd;
+}	t_minishell;
 
 #endif
