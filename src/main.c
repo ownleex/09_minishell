@@ -6,18 +6,23 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/29 01:45:19 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/29 01:55:34 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	void_argc_argv(int argc, char **argv)
+{
+	(void)argc;
+	(void)argv;
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_minishell	shell;
 
-	(void)argc;
-	(void)argv;
+	void_argc_argv(argc, argv);
 	shell.envp = envp;
 	signal(SIGINT, handle_sigint);
 	while (1)
