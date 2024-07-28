@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/28 23:15:29 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/28 23:27:33 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int argc, char **argv, char **envp)
 		if (shell.current_line == NULL)
 		{
 			printf("\n");
-			break;
+			break ;
 		}
 		if (strlen(shell.current_line) > 0)
 		{
