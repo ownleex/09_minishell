@@ -6,7 +6,7 @@
 #    By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/02 21:28:06 by ayarmaya          #+#    #+#              #
-#    Updated: 2024/07/28 21:30:21 by ayarmaya         ###   ########.fr        #
+#    Updated: 2024/07/28 22:22:02 by ayarmaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ LIBFT := libft/libft.a
 HEADERS := -I./include -Ilibft/include
 LIBS := $(LIBFT) -lreadline
 
-SRCS := src/main.c
+SRCS := src/main.c \
 
 OBJDIR := obj
 OBJS := $(SRCS:src/%.c=$(OBJDIR)/%.o)
