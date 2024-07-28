@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/24 03:04:32 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/28 18:02:52 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,28 @@ int	is_builtin(char *command)
 {
 	if (strcmp(command, "echo") == 0)
 		return (1);
-	// Ajoutez d'autres commandes intégrées ici
 	return (0);
 }
 
 void	handle_builtin(char **args)
 {
+	int	i;
+
 	if (strcmp(args[0], "echo") == 0)
 	{
-		for (int i = 1; args[i]; i++)
+		i = 1;
+		while (args[i])
 		{
 			if (i > 1)
 				printf(" ");
 			printf("%s", args[i]);
+			i++;
 		}
-		//printf("\n");
+		printf("\n");
 	}
-	// Ajoutez d'autres commandes intégrées ici
 }
 
-void	execute_command(char *line)
+void	execute_command(char *line, char **envp)
 {
 	pid_t	pid;
 	char	**args;
@@ -67,18 +69,16 @@ void	execute_command(char *line)
 		free_args(args);
 		return ;
 	}
-
 	if (is_builtin(args[0]))
 	{
 		handle_builtin(args);
 		free_args(args);
 		return ;
 	}
-
 	pid = fork();
 	if (pid == 0)
 	{
-		if (execvp(args[0], args) == -1)
+		if (execve(args[0], args, envp) == -1)
 		{
 			perror("minishell");
 			exit(EXIT_FAILURE);
@@ -91,10 +91,12 @@ void	execute_command(char *line)
 	free_args(args);
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 
+	(void)argc;
+	(void)argv;
 	while (1)
 	{
 		write(1, "$> ", 3);
@@ -106,7 +108,7 @@ int	main(void)
 		}
 		if (strlen(line) > 0)
 		{
-			execute_command(line);
+			execute_command(line, envp);
 		}
 		free(line);
 	}

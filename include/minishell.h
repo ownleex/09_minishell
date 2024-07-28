@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/24 01:41:51 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/24 03:25:01 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <sys/time.h>
-# include <sys/wait.h> 
+# include <sys/wait.h>
+# include <errno.h>
 
 #endif
