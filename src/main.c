@@ -6,11 +6,63 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/28 18:02:52 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/28 21:44:59 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_array(char **array)
+{
+	int	i = 0;
+
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
+char	*find_command_path(char *cmd, char **envp)
+{
+	char	**path_split;
+	char	*path = NULL;
+	char	*full_path;
+	int	i;
+
+	while (*envp)
+	{
+		path_split = ft_split(*envp, '=');
+		if (strcmp(path_split[0], "PATH") == 0)
+		{
+			path = strdup(path_split[1]);
+			free_array(path_split);
+			break;
+		}
+		free_array(path_split);
+		envp++;
+	}
+	if (!path)
+		return (NULL);
+	path_split = ft_split(path, ':');
+	free(path);
+	i = 0;
+	while (path_split[i])
+	{
+		full_path = ft_strjoin(path_split[i], "/");
+		full_path = ft_strjoin(full_path, cmd);
+		if (access(full_path, X_OK) == 0)
+		{
+			free_array(path_split);
+			return (full_path);
+		}
+		free(full_path);
+		i++;
+	}
+	free_array(path_split);
+	return (NULL);
+}
 
 char	**parse_command(char *line)
 {
@@ -62,23 +114,26 @@ void	execute_command(char *line, char **envp)
 {
 	pid_t	pid;
 	char	**args;
+	char	*cmd_path;
 
 	args = parse_command(line);
-	if (args[0] == NULL)
-	{
-		free_args(args);
-		return ;
-	}
 	if (is_builtin(args[0]))
 	{
 		handle_builtin(args);
 		free_args(args);
 		return ;
 	}
+	cmd_path = find_command_path(args[0], envp);
+	if (cmd_path == NULL)
+	{
+		fprintf(stderr, "Command not found: %s\n", args[0]);
+		free_args(args);
+		return;
+	}
 	pid = fork();
 	if (pid == 0)
 	{
-		if (execve(args[0], args, envp) == -1)
+		if (execve(cmd_path, args, envp) == -1)
 		{
 			perror("minishell");
 			exit(EXIT_FAILURE);
@@ -88,8 +143,10 @@ void	execute_command(char *line, char **envp)
 		perror("minishell");
 	else
 		waitpid(pid, NULL, 0);
+	free(cmd_path);
 	free_args(args);
 }
+
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -99,15 +156,15 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	while (1)
 	{
-		write(1, "$> ", 3);
-		line = get_next_line(STDIN_FILENO);
+		line = readline("minishell$> ");
 		if (line == NULL)
 		{
-			write(1, "\n", 1);
-			break ;
+			printf("\n");
+			break;
 		}
 		if (strlen(line) > 0)
 		{
+			add_history(line);
 			execute_command(line, envp);
 		}
 		free(line);
