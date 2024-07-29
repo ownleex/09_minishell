@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 01:44:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/29 01:45:28 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/29 02:18:59 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,10 @@ void	handle_sigint(int sig)
 	rl_on_new_line();
 	printf("\n");
 	rl_redisplay();
+}
+
+void	setup_signals(void)
+{
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 }

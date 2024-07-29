@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/29 01:55:34 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/29 02:17:36 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ int	main(int argc, char **argv, char **envp)
 
 	void_argc_argv(argc, argv);
 	shell.envp = envp;
-	signal(SIGINT, handle_sigint);
+	setup_signals();
 	while (1)
 	{
 		shell.current_line = readline("minishell$> ");
 		if (shell.current_line == NULL)
 		{
-			printf("\n");
+			printf("exit\n");
 			break ;
 		}
 		if (strlen(shell.current_line) > 0)

@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/29 01:45:01 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/29 02:38:23 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ void	execute_command(t_minishell *shell);
 
 //Signal
 void	handle_sigint(int sig);
+void	setup_signals(void);
 
 //Utils
 void	free_args(t_minishell *shell);
 void	free_array(char **array);
-
 
 #endif
