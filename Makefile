@@ -6,7 +6,7 @@
 #    By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/02 21:28:06 by ayarmaya          #+#    #+#              #
-#    Updated: 2024/07/29 01:47:13 by ayarmaya         ###   ########.fr        #
+#    Updated: 2024/07/29 02:46:36 by ayarmaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,16 +24,11 @@ READLINE_PATH := $(shell brew --prefix readline)
 HEADERS := -I./include -Ilibft/include -I$(READLINE_PATH)/include
 LIBS := $(LIBFT) -L$(READLINE_PATH)/lib -lreadline -ltermcap
 
-SRCS := src/main.c \
-		src/exec/exec.c \
-		src/parsing/parsing.c \
-		src/builtin/builtin.c \
-		src/builtin/echo.c \
-		src/utils/utils.c \
-		src/signal/signal.c \
+SRCDIR := src
+SRCS := $(shell find $(SRCDIR) -name '*.c')
 
 OBJDIR := obj
-OBJS := $(SRCS:src/%.c=$(OBJDIR)/%.o)
+OBJS := $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
 
 all: $(NAME)
 
@@ -41,7 +36,7 @@ $(NAME): $(OBJS)
 		make -C libft
 		$(CC) $(OBJS) $(LIBS) -o $(NAME)
 
-$(OBJDIR)/%.o: src/%.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
 		@mkdir -p $(dir $@)
 		$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
 
@@ -55,4 +50,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all bonus clean fclean re
+.PHONY: all clean fclean re
