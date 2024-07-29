@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/29 02:38:23 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/29 04:14:01 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_minishell
 {
 	char	**envp;
 	char	*current_line;
-	char	**current_args;
+	char	**current_arg;
 	char	*command_path;
 	char	*current_cmd;
 }	t_minishell;

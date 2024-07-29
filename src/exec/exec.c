@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/29 03:18:28 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/29 04:14:01 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	execute_command(t_minishell *shell)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (execve(shell->command_path, shell->current_args, shell->envp) == -1)
+		if (execve(shell->command_path, shell->current_arg, shell->envp) == -1)
 		{
 			perror("minishell");
 			exit(EXIT_FAILURE);
