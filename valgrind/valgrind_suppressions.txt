@@ -199,16 +199,7 @@
    fun:main
 }
 
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: definite
-   fun:malloc
-   fun:ft_strjoin
-   fun:find_command_path
-   fun:execute_command
-   fun:main
-}
+
 
 {
    <insert_a_suppression_name_here>
