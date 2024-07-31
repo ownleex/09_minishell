@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 23:03:51 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/29 04:14:01 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/31 19:20:10 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,4 @@ void	free_args(t_minishell *shell)
 	}
 	free(shell->current_arg);
 	shell->current_arg = NULL;
-}
-
-void	free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		array[i] = NULL;
-		i++;
-	}
-	free(array);
-	array = NULL;
 }
