@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/31 16:54:46 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/07/31 22:49:54 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ char	*find_command_path(t_minishell *shell)
 	char	**path_split;
 	char	*path;
 	char	*full_path;
+	char	*temp;
 	int		i;
 
 	path = NULL;
@@ -41,7 +42,9 @@ char	*find_command_path(t_minishell *shell)
 	while (path_split[i])
 	{
 		full_path = ft_strjoin(path_split[i], "/");
+		temp = full_path;
 		full_path = ft_strjoin(full_path, shell->current_cmd);
+		free(temp);
 		if (access(full_path, X_OK) == 0)
 		{
 			free_array(path_split);
