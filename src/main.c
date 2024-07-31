@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/31 23:11:10 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/01 00:26:54 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	main(int argc, char **argv, char **envp)
 			parse_command(&shell);
 			execute_command(&shell);
 		}
-		free(shell.current_line);
 	}
 	rl_clear_history();
 	return (0);
