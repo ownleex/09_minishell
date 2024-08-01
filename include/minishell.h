@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/07/31 19:19:01 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/01 22:58:28 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,10 @@ void	handle_sigint(int sig);
 void	setup_signals(void);
 
 //Utils main
-void	free_args(t_minishell *shell);
+
 
 //Utils exec
 void	free_array(char **array);
+void	free_args(t_minishell *shell);
 
 #endif
