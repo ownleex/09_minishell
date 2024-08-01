@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/01 22:58:28 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/01 23:19:08 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,21 @@ typedef struct s_minishell
 //Parsing
 void	parse_command(t_minishell *shell);
 
+//Exec
+char	*find_command_path(t_minishell *shell);
+void	execute_command(t_minishell *shell);
+
 //Builtin
 int		is_builtin(t_minishell *shell);
 void	handle_builtin(t_minishell *shell);
 	//Echo
 void	ft_echo(t_minishell *shell);
 
-//Exec
-char	*find_command_path(t_minishell *shell);
-void	execute_command(t_minishell *shell);
-
 //Signal
 void	handle_sigint(int sig);
 void	setup_signals(void);
 
 //Utils main
-
 
 //Utils exec
 void	free_array(char **array);
