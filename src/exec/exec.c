@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/02 00:55:27 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/04 00:53:26 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ void	execute_command(t_minishell *shell)
 	shell->command_path = find_command_path(shell);
 	if (shell->command_path == NULL)
 	{
-		fprintf(stderr, "Command not found: %s\n", shell->current_cmd);
+		write(STDERR_FILENO, "Command not found: ", 19);
+		write(STDERR_FILENO, shell->current_cmd, strlen(shell->current_cmd));
+		write(STDERR_FILENO, "\n", 1);
 		return (free_args(shell));
 	}
 	pid = fork();
