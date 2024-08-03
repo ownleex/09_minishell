@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:59:13 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/03 02:42:43 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/03 03:13:15 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	is_builtin(t_minishell *shell)
 	else if (strcmp(shell->current_cmd, "pwd") == 0)
 		return (1);
 	return (0);
+	//ceci est un test
 }
 
 void	handle_builtin(t_minishell *shell)
