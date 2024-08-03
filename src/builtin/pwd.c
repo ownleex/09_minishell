@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.c                                          :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/28 22:59:13 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/03 02:42:43 by ayarmaya         ###   ########.fr       */
+/*   Created: 2024/08/03 02:41:17 by ayarmaya          #+#    #+#             */
+/*   Updated: 2024/08/03 02:47:57 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_builtin(t_minishell *shell)
+int	ft_pwd(void)
 {
-	if (strcmp(shell->current_cmd, "echo") == 0)
-		return (1);
-	else if (strcmp(shell->current_cmd, "pwd") == 0)
-		return (1);
-	return (0);
-}
+	char	cwd[PATH_MAX];
 
-void	handle_builtin(t_minishell *shell)
-{
-	if (strcmp(shell->current_cmd, "echo") == 0)
-		ft_echo(shell);
-	else if (strcmp(shell->current_cmd, "pwd") == 0)
-		ft_pwd();
+	if (getcwd(cwd, PATH_MAX))
+	{
+		printf("%s\n", cwd);
+		return (0);
+	}
+	else
+	{
+		perror("pwd");
+		return (1);
+	}
 }

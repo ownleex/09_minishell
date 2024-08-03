@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/01 23:19:08 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/03 02:47:52 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <limits.h>
 
 typedef struct s_minishell
 {
@@ -48,6 +49,8 @@ int		is_builtin(t_minishell *shell);
 void	handle_builtin(t_minishell *shell);
 	//Echo
 void	ft_echo(t_minishell *shell);
+	//Pwd
+int		ft_pwd(void);
 
 //Signal
 void	handle_sigint(int sig);
