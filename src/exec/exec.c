@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/05 01:40:11 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/05 01:40:32 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*find_command_path(t_minishell *shell)
 		path_split = ft_split(shell->envp[i], '=');
 		if (strcmp(path_split[0], "PATH") == 0)
 		{
-			path = strdup(path_split[1]);
+			path = ft_strdup(path_split[1]);
 			free_array(path_split);
 			break ;
 		}
