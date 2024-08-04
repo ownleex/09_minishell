@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/04 02:14:52 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/05 01:22:42 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	execute_command(t_minishell *shell)
 	if (shell->command_path == NULL)
 	{
 		write(STDERR_FILENO, "bash: ", 7);
-		write(STDERR_FILENO, shell->current_cmd, strlen(shell->current_cmd));
+		write(STDERR_FILENO, shell->current_cmd, ft_strlen(shell->current_cmd));
 		write(STDERR_FILENO, ": Command not found\n", 21);
 		return (free_args(shell));
 	}
