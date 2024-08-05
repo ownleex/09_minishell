@@ -1,0 +1,19 @@
+creer une branche et travailler dessus
+			git checkout -b nom_de_la_branche
+		- tu bosses dessus
+			git add .
+			git commit -m "texte du commit"
+			git push origin nom_de_la_branche
+		- aller sur github creer un pull request
+
+recuperer les modifications faites dans la branche modifications
+		- push ton ton travail en cours 
+			git commit -m "texte du commit"
+			git push origin nom_de_la_branche
+		- aller sur la branche main
+			git checkout main
+		- la mettre à jour
+			git pull
+		- retourner sur ta branche
+			git checkout nom_de_la_branche
+			git merge main
