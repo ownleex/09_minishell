@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/05 01:56:44 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/05 02:03:29 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_echo(t_minishell *shell)
 	{
 		if (i > 1)
 			printf(" ");
-		printf("%s\n\n", shell->current_arg[i]);
+		printf("%s", shell->current_arg[i]);
 		i++;
 	}
 	printf("\n");
