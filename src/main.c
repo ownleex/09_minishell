@@ -6,11 +6,23 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/05 02:04:59 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/07 00:10:15 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_init(t_minishell *shell, char **envp)
+{
+	shell->envp = envp;
+	shell->current_path = getcwd(NULL, 0);
+	if (!shell->current_path)
+	{
+		perror("getcwd");
+		free(shell);
+		return ;
+	}
+}
 
 void	void_argc_argv(int argc, char **argv)
 {
@@ -23,7 +35,7 @@ int	main(int argc, char **argv, char **envp)
 	t_minishell	shell;
 
 	void_argc_argv(argc, argv);
-	shell.envp = envp;
+	ft_init(&shell, envp);
 	setup_signals();
 	while (1)
 	{
@@ -41,5 +53,6 @@ int	main(int argc, char **argv, char **envp)
 		}
 	}
 	rl_clear_history();
+	free(shell.current_path);
 	return (0);
 }
