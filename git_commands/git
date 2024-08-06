@@ -6,7 +6,7 @@ creer une branche et travailler dessus
 			git push origin nom_de_la_branche
 		- aller sur github creer un pull request
 
-recuperer les modifications faites dans la branche modifications
+recuperer les modifications faites dans la branche main
 		- push ton ton travail en cours 
 			git commit -m "texte du commit"
 			git push origin nom_de_la_branche
