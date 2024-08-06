@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/07 00:10:15 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/07 00:51:01 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	ft_init(t_minishell *shell, char **envp)
 {
 	shell->envp = envp;
+	shell->target_path = NULL;
 	shell->current_path = getcwd(NULL, 0);
 	if (!shell->current_path)
 	{
