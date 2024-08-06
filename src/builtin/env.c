@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/03 02:41:17 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/06 16:14:41 by ayarmaya         ###   ########.fr       */
+/*   Created: 2024/08/06 16:11:10 by ayarmaya          #+#    #+#             */
+/*   Updated: 2024/08/06 16:19:30 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_pwd(void)
+void	ft_env(t_minishell *shell)
 {
-	char	cwd[PATH_MAX];
+	int	i;
 
-	if (getcwd(cwd, PATH_MAX))
-		printf("%s\n", cwd);
-	else
-		perror("pwd");
+	i = 0;
+	while (shell->envp[i])
+	{
+		ft_putendl_fd(shell->envp[i], STDOUT_FILENO);
+		i++;
+	}
 }
