@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:59:13 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/06 16:19:14 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/07 14:31:42 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	is_builtin(t_minishell *shell)
 		return (1);
 	else if (ft_strncmp(shell->current_cmd, "env", 3) == 0)
 		return (1);
+	else if (ft_strncmp(shell->current_cmd, "cd", 2) == 0)
+		return (1);
 	return (0);
 }
 
@@ -31,4 +33,6 @@ void	handle_builtin(t_minishell *shell)
 		ft_pwd();
 	else if (ft_strncmp(shell->current_cmd, "env", 3) == 0)
 		ft_env(shell);
+	else if (ft_strncmp(shell->current_cmd, "cd", 2) == 0)
+		ft_cd(shell);
 }

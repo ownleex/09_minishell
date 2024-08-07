@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/07 00:51:18 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/07 14:30:45 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	ft_echo(t_minishell *shell);
 void	ft_pwd(void);
 	//Env
 void	ft_env(t_minishell *shell);
+	//CD
+void	ft_cd(t_minishell *shell);
 
 //Signal
 void	handle_sigint(int sig);
