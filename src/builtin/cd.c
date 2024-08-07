@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/07 14:30:26 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/07 18:09:24 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_cd(t_minishell *shell)
 	ret = chdir(path);
 	if (ret == -1)
 	{
-		perror("cd");
+		perror("bash: cd");
 	}
 	else
 	{
