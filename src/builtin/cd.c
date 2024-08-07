@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/07 18:09:24 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/07 18:44:19 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,20 @@ void	ft_cd(t_minishell *shell)
 	int		ret;
 	char	*path;
 
-	if (!shell->current_arg[1])
+	if (!shell->current_arg[1] || strcmp(shell->current_arg[1], "~") == 0)
 	{
-		write(STDERR_FILENO, "cd: too few arguments\n", 23);
-		return ;
+		path = getenv("HOME");
+		if (!path)
+		{
+			write(STDERR_FILENO, "cd: HOME not set\n", 17);
+			return ;
+		}
 	}
-	path = shell->current_arg[1];
+	else
+	{
+		path = shell->current_arg[1];
+	}
+
 	ret = chdir(path);
 	if (ret == -1)
 	{
@@ -38,3 +46,5 @@ void	ft_cd(t_minishell *shell)
 		}
 	}
 }
+
+

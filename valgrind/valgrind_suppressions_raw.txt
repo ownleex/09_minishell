@@ -1,27 +1,44 @@
-==590== Memcheck, a memory error detector
-==590== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==590== Using Valgrind-3.21.0 and LibVEX; rerun with -h for copyright info
-==590== Command: ./minishell
-==590== 
-==590== 
-==590== HEAP SUMMARY:
-==590==     in use at exit: 200,475 bytes in 214 blocks
-==590==   total heap usage: 402 allocs, 188 frees, 219,693 bytes allocated
-==590== 
-==590== 6 bytes in 1 blocks are still reachable in loss record 1 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x494B38E: strdup (strdup.c:42)
-==590==    by 0x4AAEB67: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AAF31F: _nc_first_db (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8F8E: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== Memcheck, a memory error detector
+==812== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==812== Using Valgrind-3.21.0 and LibVEX; rerun with -h for copyright info
+==812== Command: ./minishell
+==812== 
+==812== 
+==812== HEAP SUMMARY:
+==812==     in use at exit: 204,559 bytes in 222 blocks
+==812==   total heap usage: 499 allocs, 277 frees, 270,247 bytes allocated
+==812== 
+==812== 5 bytes in 1 blocks are still reachable in loss record 1 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48712AB: readline_internal_teardown (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4872504: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xmalloc
+   fun:readline_internal_teardown
+   fun:readline
+   fun:main
+}
+==812== 6 bytes in 1 blocks are still reachable in loss record 2 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x494B38E: strdup (strdup.c:42)
+==812==    by 0x4AAEB67: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AAF31F: _nc_first_db (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8F8E: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -39,16 +56,16 @@
    fun:readline
    fun:main
 }
-==590== 6 bytes in 1 blocks are still reachable in loss record 2 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x494B38E: strdup (strdup.c:42)
-==590==    by 0x4AB1F4F: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 6 bytes in 1 blocks are still reachable in loss record 3 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x494B38E: strdup (strdup.c:42)
+==812==    by 0x4AB1F4F: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -62,37 +79,16 @@
    fun:readline
    fun:main
 }
-==590== 8 bytes in 1 blocks are still reachable in loss record 3 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x4898057: xrealloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4883234: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48837D5: rl_expand_prompt (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4870FE5: rl_set_prompt (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AA: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   fun:malloc
-   fun:xrealloc
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
-   fun:rl_expand_prompt
-   fun:rl_set_prompt
-   fun:readline
-   fun:main
-}
-==590== 8 bytes in 1 blocks are still reachable in loss record 4 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x494B38E: strdup (strdup.c:42)
-==590==    by 0x4AB9667: _nc_trim_sgr0 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2638: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 8 bytes in 1 blocks are still reachable in loss record 4 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x494B38E: strdup (strdup.c:42)
+==812==    by 0x4AB9667: _nc_trim_sgr0 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2638: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -106,13 +102,34 @@
    fun:readline
    fun:main
 }
-==590== 13 bytes in 1 blocks are still reachable in loss record 5 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4871010: rl_set_prompt (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AA: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 8 bytes in 1 blocks are still reachable in loss record 5 of 60
+==812==    at 0x4841A67: realloc (vg_replace_malloc.c:1649)
+==812==    by 0x4898041: xrealloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4883234: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48837D5: rl_expand_prompt (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4870FE5: rl_set_prompt (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AA: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:realloc
+   fun:xrealloc
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   fun:rl_expand_prompt
+   fun:rl_set_prompt
+   fun:readline
+   fun:main
+}
+==812== 13 bytes in 1 blocks are still reachable in loss record 6 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4871010: rl_set_prompt (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AA: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -123,15 +140,15 @@
    fun:readline
    fun:main
 }
-==590== 13 bytes in 1 blocks are still reachable in loss record 6 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488363E: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48837D5: rl_expand_prompt (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4870FE5: rl_set_prompt (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AA: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 13 bytes in 1 blocks are still reachable in loss record 7 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488363E: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48837D5: rl_expand_prompt (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4870FE5: rl_set_prompt (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AA: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -144,14 +161,14 @@
    fun:readline
    fun:main
 }
-==590== 13 bytes in 1 blocks are still reachable in loss record 7 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487FCF2: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4872228: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 13 bytes in 1 blocks are still reachable in loss record 8 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487FCF2: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4872228: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -163,18 +180,18 @@
    fun:readline
    fun:main
 }
-==590== 14 bytes in 1 blocks are still reachable in loss record 8 of 57
-==590==    at 0x4841A67: realloc (vg_replace_malloc.c:1649)
-==590==    by 0x4AAF3B7: _nc_doalloc (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB3D3E: tparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB93E4: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB9659: _nc_trim_sgr0 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2638: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 14 bytes in 1 blocks are still reachable in loss record 9 of 60
+==812==    at 0x4841A67: realloc (vg_replace_malloc.c:1649)
+==812==    by 0x4AAF3B7: _nc_doalloc (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB3D3E: tparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB93E4: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB9659: _nc_trim_sgr0 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2638: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -190,12 +207,12 @@
    fun:readline
    fun:main
 }
-==590== 16 bytes in 1 blocks are still reachable in loss record 9 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x4872317: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 16 bytes in 1 blocks are still reachable in loss record 10 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x4872317: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -205,19 +222,19 @@
    fun:readline
    fun:main
 }
-==590== 18 bytes in 1 blocks are still reachable in loss record 10 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x4AAF794: _nc_home_terminfo (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AAF309: _nc_first_db (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8F8E: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 18 bytes in 1 blocks are still reachable in loss record 11 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x4AAF794: _nc_home_terminfo (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AAF309: _nc_first_db (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8F8E: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -234,16 +251,16 @@
    fun:readline
    fun:main
 }
-==590== 20 bytes in 1 blocks are still reachable in loss record 11 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48809D3: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487F818: rl_parse_and_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487FC6C: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4872228: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 20 bytes in 1 blocks are still reachable in loss record 12 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48809D3: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487F818: rl_parse_and_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487FC6C: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4872228: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -257,20 +274,20 @@
    fun:readline
    fun:main
 }
-==590== 46 bytes in 1 blocks are still reachable in loss record 12 of 57
-==590==    at 0x4841A67: realloc (vg_replace_malloc.c:1649)
-==590==    by 0x4AAF3B7: _nc_doalloc (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8674: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8A8C: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8E83: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8FB4: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590== 
+==812== 46 bytes in 1 blocks are still reachable in loss record 13 of 60
+==812==    at 0x4841A67: realloc (vg_replace_malloc.c:1649)
+==812==    by 0x4AAF3B7: _nc_doalloc (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8674: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8A8C: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8E83: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8FB4: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -288,16 +305,16 @@
    fun:rl_initialize
    fun:readline
 }
-==590== 46 bytes in 1 blocks are still reachable in loss record 13 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x4AAD24E: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1F1B: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 46 bytes in 1 blocks are still reachable in loss record 14 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x4AAD24E: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1F1B: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -311,18 +328,18 @@
    fun:readline
    fun:main
 }
-==590== 48 bytes in 1 blocks are still reachable in loss record 14 of 57
-==590==    at 0x4841853: calloc (vg_replace_malloc.c:1554)
-==590==    by 0x4AAEF2B: _nc_first_db (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8F8E: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 48 bytes in 1 blocks are still reachable in loss record 15 of 60
+==812==    at 0x4841853: calloc (vg_replace_malloc.c:1554)
+==812==    by 0x4AAEF2B: _nc_first_db (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8F8E: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -338,16 +355,33 @@
    fun:readline
    fun:main
 }
-==590== 78 bytes in 1 blocks are still reachable in loss record 15 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x4AAD2BF: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1F1B: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 63 bytes in 6 blocks are definitely lost in loss record 16 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48712AB: readline_internal_teardown (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4872504: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:xmalloc
+   fun:readline_internal_teardown
+   fun:readline
+   fun:main
+}
+==812== 78 bytes in 1 blocks are still reachable in loss record 17 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x4AAD2BF: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1F1B: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -361,18 +395,18 @@
    fun:readline
    fun:main
 }
-==590== 87 bytes in 1 blocks are still reachable in loss record 16 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x4AAEE94: _nc_first_db (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8F8E: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 87 bytes in 1 blocks are still reachable in loss record 18 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x4AAEE94: _nc_first_db (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8F8E: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -388,18 +422,18 @@
    fun:readline
    fun:main
 }
-==590== 94 bytes in 1 blocks are still reachable in loss record 17 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x4AB3642: _nc_tparm_analyze (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB38CB: tparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB93E4: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB9659: _nc_trim_sgr0 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2638: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 94 bytes in 1 blocks are still reachable in loss record 19 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x4AB3642: _nc_tparm_analyze (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB38CB: tparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB93E4: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB9659: _nc_trim_sgr0 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2638: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -415,20 +449,20 @@
    fun:readline
    fun:main
 }
-==590== 156 bytes in 1 blocks are still reachable in loss record 18 of 57
-==590==    at 0x4841A67: realloc (vg_replace_malloc.c:1649)
-==590==    by 0x4AAF3B7: _nc_doalloc (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8692: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8A8C: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8E83: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8FB4: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590== 
+==812== 156 bytes in 1 blocks are still reachable in loss record 20 of 60
+==812==    at 0x4841A67: realloc (vg_replace_malloc.c:1649)
+==812==    by 0x4AAF3B7: _nc_doalloc (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8692: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8A8C: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8E83: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8FB4: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -446,13 +480,13 @@
    fun:rl_initialize
    fun:readline
 }
-==590== 256 bytes in 1 blocks are still reachable in loss record 19 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4872466: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 256 bytes in 1 blocks are still reachable in loss record 21 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4872466: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -463,15 +497,15 @@
    fun:readline
    fun:main
 }
-==590== 280 bytes in 1 blocks are still reachable in loss record 20 of 57
-==590==    at 0x4841853: calloc (vg_replace_malloc.c:1554)
-==590==    by 0x4AB1EB7: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 280 bytes in 1 blocks are still reachable in loss record 22 of 60
+==812==    at 0x4841853: calloc (vg_replace_malloc.c:1554)
+==812==    by 0x4AB1EB7: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -484,20 +518,20 @@
    fun:readline
    fun:main
 }
-==590== 496 bytes in 1 blocks are still reachable in loss record 21 of 57
-==590==    at 0x4841853: calloc (vg_replace_malloc.c:1554)
-==590==    by 0x4AB88FB: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8A8C: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8E83: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8FB4: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 496 bytes in 1 blocks are still reachable in loss record 23 of 60
+==812==    at 0x4841853: calloc (vg_replace_malloc.c:1554)
+==812==    by 0x4AB88FB: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8A8C: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8E83: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8FB4: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -515,16 +549,16 @@
    fun:readline
    fun:main
 }
-==590== 496 bytes in 1 blocks are still reachable in loss record 22 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x4AAD399: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1F1B: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 496 bytes in 1 blocks are still reachable in loss record 24 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x4AAD399: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1F1B: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -538,20 +572,20 @@
    fun:readline
    fun:main
 }
-==590== 755 bytes in 1 blocks are still reachable in loss record 23 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x4AB897B: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8A8C: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8E83: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8FB4: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 755 bytes in 1 blocks are still reachable in loss record 25 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x4AB897B: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8A8C: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8E83: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8FB4: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -569,15 +603,15 @@
    fun:readline
    fun:main
 }
-==590== 1,024 bytes in 1 blocks are still reachable in loss record 24 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4882B8A: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48880E6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48710F6: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724D3: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 1,024 bytes in 1 blocks are still reachable in loss record 26 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4882B8A: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48880E6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48710F6: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724D3: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -590,15 +624,15 @@
    fun:readline
    fun:main
 }
-==590== 1,024 bytes in 1 blocks are still reachable in loss record 25 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4882BA0: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48880E6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48710F6: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724D3: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 1,024 bytes in 1 blocks are still reachable in loss record 27 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4882BA0: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48880E6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48710F6: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724D3: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -611,15 +645,15 @@
    fun:readline
    fun:main
 }
-==590== 1,024 bytes in 1 blocks are still reachable in loss record 26 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4882BE8: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48880E6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48710F6: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724D3: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 1,024 bytes in 1 blocks are still reachable in loss record 28 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4882BE8: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48880E6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48710F6: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724D3: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -632,15 +666,15 @@
    fun:readline
    fun:main
 }
-==590== 1,024 bytes in 1 blocks are still reachable in loss record 27 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4882C07: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48880E6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48710F6: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724D3: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 1,024 bytes in 1 blocks are still reachable in loss record 29 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4882C07: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48880E6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48710F6: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724D3: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -653,15 +687,15 @@
    fun:readline
    fun:main
 }
-==590== 1,024 bytes in 1 blocks are still reachable in loss record 28 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4882C1F: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48880E6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48710F6: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724D3: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 1,024 bytes in 1 blocks are still reachable in loss record 30 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4882C1F: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48880E6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48710F6: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724D3: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -674,15 +708,15 @@
    fun:readline
    fun:main
 }
-==590== 1,024 bytes in 1 blocks are still reachable in loss record 29 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4882C37: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48880E6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48710F6: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724D3: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 1,024 bytes in 1 blocks are still reachable in loss record 31 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4882C37: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48880E6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48710F6: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724D3: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -695,20 +729,20 @@
    fun:readline
    fun:main
 }
-==590== 1,486 bytes in 1 blocks are still reachable in loss record 30 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x4AB7FF2: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8A8C: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8E83: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8FB4: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 1,486 bytes in 1 blocks are still reachable in loss record 32 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x4AB7FF2: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8A8C: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8E83: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8FB4: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -726,15 +760,15 @@
    fun:readline
    fun:main
 }
-==590== 1,536 bytes in 1 blocks are still reachable in loss record 31 of 57
-==590==    at 0x4841A67: realloc (vg_replace_malloc.c:1649)
-==590==    by 0x4898041: xrealloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876944: rl_add_funmap_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876998: rl_initialize_funmap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487221C: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 1,536 bytes in 1 blocks are still reachable in loss record 33 of 60
+==812==    at 0x4841A67: realloc (vg_replace_malloc.c:1649)
+==812==    by 0x4898041: xrealloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876944: rl_add_funmap_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876998: rl_initialize_funmap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487221C: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -747,14 +781,14 @@
    fun:readline
    fun:main
 }
-==590== 2,032 bytes in 1 blocks are still reachable in loss record 32 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488D999: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 2,032 bytes in 1 blocks are still reachable in loss record 34 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488D999: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -766,15 +800,15 @@
    fun:readline
    fun:main
 }
-==590== 2,208 bytes in 138 blocks are still reachable in loss record 33 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48768F0: rl_add_funmap_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876998: rl_initialize_funmap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487221C: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 2,208 bytes in 138 blocks are still reachable in loss record 35 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48768F0: rl_add_funmap_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876998: rl_initialize_funmap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487221C: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -787,20 +821,20 @@
    fun:readline
    fun:main
 }
-==590== 3,792 bytes in 1 blocks are still reachable in loss record 34 of 57
-==590==    at 0x4841A67: realloc (vg_replace_malloc.c:1649)
-==590==    by 0x4AAF3B7: _nc_doalloc (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB86B0: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8A8C: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8E83: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB8FB4: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590== 
+==812== 3,792 bytes in 1 blocks are still reachable in loss record 36 of 60
+==812==    at 0x4841A67: realloc (vg_replace_malloc.c:1649)
+==812==    by 0x4AAF3B7: _nc_doalloc (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB86B0: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8A8C: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8E83: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB8FB4: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1AF5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1F04: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -818,16 +852,16 @@
    fun:rl_initialize
    fun:readline
 }
-==590== 3,792 bytes in 1 blocks are still reachable in loss record 35 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x4AAD26F: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB1F1B: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 3,792 bytes in 1 blocks are still reachable in loss record 37 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x4AAD26F: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB1F1B: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2459: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D75B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -841,14 +875,29 @@
    fun:readline
    fun:main
 }
-==590== 4,080 bytes in 1 blocks are still reachable in loss record 36 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488D9B9: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 4,016 bytes in 1 blocks are still reachable in loss record 38 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4891A5B: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x10955D: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xmalloc
+   fun:add_history
+   fun:main
+}
+==812== 4,080 bytes in 1 blocks are still reachable in loss record 39 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488D9B9: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -860,45 +909,18 @@
    fun:readline
    fun:main
 }
-==590== 4,112 bytes in 1 blocks are still reachable in loss record 37 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488CF45: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488D897: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   fun:malloc
-   fun:xmalloc
-   fun:rl_make_bare_keymap
-   fun:rl_generic_bind
-   fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
-   fun:_rl_init_terminal_io
-   fun:rl_initialize
-   fun:readline
-   fun:main
-}
-==590== 4,112 bytes in 1 blocks are still reachable in loss record 38 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488CFCA: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488D897: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 4,112 bytes in 1 blocks are still reachable in loss record 40 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488CF45: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488D897: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -914,18 +936,18 @@
    fun:readline
    fun:main
 }
-==590== 4,112 bytes in 1 blocks are still reachable in loss record 39 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488CFCA: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488D8A3: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 4,112 bytes in 1 blocks are still reachable in loss record 41 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488CFCA: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488D897: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -941,18 +963,18 @@
    fun:readline
    fun:main
 }
-==590== 4,112 bytes in 1 blocks are still reachable in loss record 40 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488CFCA: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488D8AF: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 4,112 bytes in 1 blocks are still reachable in loss record 42 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488CFCA: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488D8A3: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -968,17 +990,44 @@
    fun:readline
    fun:main
 }
-==590== 4,112 bytes in 1 blocks are still reachable in loss record 41 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4870F72: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4872274: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 4,112 bytes in 1 blocks are still reachable in loss record 43 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488CFCA: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488D8AF: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xmalloc
+   fun:rl_make_bare_keymap
+   fun:rl_generic_bind
+   fun:rl_bind_keyseq_if_unbound_in_map
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   fun:_rl_init_terminal_io
+   fun:rl_initialize
+   fun:readline
+   fun:main
+}
+==812== 4,112 bytes in 1 blocks are still reachable in loss record 44 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4870F72: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4872274: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -993,17 +1042,17 @@
    fun:readline
    fun:main
 }
-==590== 4,112 bytes in 1 blocks are still reachable in loss record 42 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4870F72: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4872283: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 4,112 bytes in 1 blocks are still reachable in loss record 45 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4870F72: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4872283: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -1018,17 +1067,17 @@
    fun:readline
    fun:main
 }
-==590== 4,112 bytes in 1 blocks are still reachable in loss record 43 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4870F72: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48722A1: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 4,112 bytes in 1 blocks are still reachable in loss record 46 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4870F72: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48722A1: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -1043,16 +1092,16 @@
    fun:readline
    fun:main
 }
-==590== 7,952 bytes in 1 blocks are still reachable in loss record 44 of 57
-==590==    at 0x4841853: calloc (vg_replace_malloc.c:1554)
-==590==    by 0x4AAE067: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AAE85F: _nc_find_type_entry (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x4AB2D9C: tgetstr_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
-==590==    by 0x488D79B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 7,952 bytes in 1 blocks are still reachable in loss record 47 of 60
+==812==    at 0x4841853: calloc (vg_replace_malloc.c:1554)
+==812==    by 0x4AAE067: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AAE85F: _nc_find_type_entry (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x4AB2D9C: tgetstr_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==812==    by 0x488D79B: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -1066,18 +1115,18 @@
    fun:readline
    fun:main
 }
-==590== 8,224 bytes in 2 blocks are still reachable in loss record 45 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488CFB7: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488D897: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 8,224 bytes in 2 blocks are still reachable in loss record 48 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488CFB7: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488D897: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -1093,18 +1142,18 @@
    fun:readline
    fun:main
 }
-==590== 8,224 bytes in 2 blocks are still reachable in loss record 46 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488CF45: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488D8A3: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 8,224 bytes in 2 blocks are still reachable in loss record 49 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488CF45: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488D8A3: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -1120,18 +1169,18 @@
    fun:readline
    fun:main
 }
-==590== 8,224 bytes in 2 blocks are still reachable in loss record 47 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488CFB7: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488D8A3: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 8,224 bytes in 2 blocks are still reachable in loss record 50 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488CFB7: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488D8A3: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -1147,18 +1196,18 @@
    fun:readline
    fun:main
 }
-==590== 8,224 bytes in 2 blocks are still reachable in loss record 48 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488CF45: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488D8AF: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 8,224 bytes in 2 blocks are still reachable in loss record 51 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488CF45: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488D8AF: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -1174,18 +1223,18 @@
    fun:readline
    fun:main
 }
-==590== 8,224 bytes in 2 blocks are still reachable in loss record 49 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488CFB7: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x488D8AF: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 8,224 bytes in 2 blocks are still reachable in loss record 52 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488CFB7: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x488D8AF: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48721FF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -1201,17 +1250,17 @@
    fun:readline
    fun:main
 }
-==590== 8,224 bytes in 2 blocks are still reachable in loss record 50 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4870F63: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4872274: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 8,224 bytes in 2 blocks are still reachable in loss record 53 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4870F63: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4872274: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -1226,17 +1275,17 @@
    fun:readline
    fun:main
 }
-==590== 8,224 bytes in 2 blocks are still reachable in loss record 51 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4870F63: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4872283: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 8,224 bytes in 2 blocks are still reachable in loss record 54 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4870F63: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4872283: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -1251,17 +1300,17 @@
    fun:readline
    fun:main
 }
-==590== 8,224 bytes in 2 blocks are still reachable in loss record 52 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4870F63: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48722A1: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 8,224 bytes in 2 blocks are still reachable in loss record 55 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4870F63: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48722A1: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -1276,16 +1325,16 @@
    fun:readline
    fun:main
 }
-==590== 8,224 bytes in 2 blocks are still reachable in loss record 53 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48722BF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 8,224 bytes in 2 blocks are still reachable in loss record 56 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48722BF: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -1299,16 +1348,16 @@
    fun:readline
    fun:main
 }
-==590== 8,224 bytes in 2 blocks are still reachable in loss record 54 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48722D2: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 8,224 bytes in 2 blocks are still reachable in loss record 57 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48722D2: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -1322,42 +1371,17 @@
    fun:readline
    fun:main
 }
-==590== 12,336 bytes in 3 blocks are still reachable in loss record 55 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4870F3A: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4872283: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   fun:malloc
-   fun:xmalloc
-   fun:rl_make_bare_keymap
-   fun:rl_generic_bind
-   fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
-   fun:rl_initialize
-   fun:readline
-   fun:main
-}
-==590== 12,336 bytes in 3 blocks are still reachable in loss record 56 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4870F3A: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48722A1: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 12,336 bytes in 3 blocks are still reachable in loss record 58 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4870F3A: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4872283: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -1372,17 +1396,42 @@
    fun:readline
    fun:main
 }
-==590== 28,784 bytes in 7 blocks are still reachable in loss record 57 of 57
-==590==    at 0x483C815: malloc (vg_replace_malloc.c:431)
-==590==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487FA92: rl_parse_and_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x487FC6C: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x4872228: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
-==590==    by 0x1094BF: main (in /tmp/dev/42Docker/09_minishell/minishell)
-==590== 
+==812== 12,336 bytes in 3 blocks are still reachable in loss record 59 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487EF1D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4870F3A: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48722A1: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xmalloc
+   fun:rl_make_bare_keymap
+   fun:rl_generic_bind
+   fun:rl_bind_keyseq_if_unbound_in_map
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   fun:rl_initialize
+   fun:readline
+   fun:main
+}
+==812== 28,784 bytes in 7 blocks are still reachable in loss record 60 of 60
+==812==    at 0x483C815: malloc (vg_replace_malloc.c:431)
+==812==    by 0x489800C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4876A91: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487DD79: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487FA92: rl_parse_and_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x487FC6C: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x4872228: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x48724AF: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==812==    by 0x1094FF: main (in /tmp/dev/42Docker/09_minishell/minishell)
+==812== 
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -1397,12 +1446,12 @@
    fun:readline
    fun:main
 }
-==590== LEAK SUMMARY:
-==590==    definitely lost: 0 bytes in 0 blocks
-==590==    indirectly lost: 0 bytes in 0 blocks
-==590==      possibly lost: 0 bytes in 0 blocks
-==590==    still reachable: 200,475 bytes in 214 blocks
-==590==         suppressed: 0 bytes in 0 blocks
-==590== 
-==590== For lists of detected and suppressed errors, rerun with: -s
-==590== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==812== LEAK SUMMARY:
+==812==    definitely lost: 63 bytes in 6 blocks
+==812==    indirectly lost: 0 bytes in 0 blocks
+==812==      possibly lost: 0 bytes in 0 blocks
+==812==    still reachable: 204,496 bytes in 216 blocks
+==812==         suppressed: 0 bytes in 0 blocks
+==812== 
+==812== For lists of detected and suppressed errors, rerun with: -s
+==812== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
