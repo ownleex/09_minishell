@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/08 23:55:04 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/08 23:59:46 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_init(t_minishell *shell, char **envp)
 	i = 0;
 	while (i < envp_len)
 	{
-		shell->envp[i] = strdup(envp[i]);
+		shell->envp[i] = ft_strdup(envp[i]);
 		if (!shell->envp[i])
 		{
 			perror("strdup");
