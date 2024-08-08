@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/08 03:39:24 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/08 23:55:04 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,44 @@
 
 void	ft_init(t_minishell *shell, char **envp)
 {
-	shell->envp = envp;
+	int		i;
+	int		envp_len;
+
+	envp_len = 0;
+	while (envp[envp_len])
+		envp_len++;
+	shell->envp = (char **)malloc(sizeof(char *) * (envp_len + 1));
+	if (!shell->envp)
+	{
+		perror("malloc");
+		free(shell);
+		return ;
+	}
+	i = 0;
+	while (i < envp_len)
+	{
+		shell->envp[i] = strdup(envp[i]);
+		if (!shell->envp[i])
+		{
+			perror("strdup");
+			while (i > 0)
+				free(shell->envp[--i]);
+			free(shell->envp);
+			free(shell);
+			return ;
+		}
+		i++;
+	}
+	shell->envp[i] = NULL;
 	shell->target_path = NULL;
 	shell->current_path = getcwd(NULL, 0);
 	if (!shell->current_path)
 	{
 		perror("getcwd");
+		i = 0;
+		while (shell->envp[i])
+			free(shell->envp[i++]);
+		free(shell->envp);
 		free(shell);
 		return ;
 	}
@@ -55,5 +87,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 	rl_clear_history();
 	free(shell.current_path);
+	free_array(shell.envp);
 	return (0);
 }

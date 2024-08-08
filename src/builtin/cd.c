@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/08 22:20:27 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/08 23:55:51 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_cd(t_minishell *shell)
 	char	*path;
 
 	if (!shell->current_arg[1])
-		return;
+		return ;
 	path = shell->current_arg[1];
 	ret = chdir(path);
 	if (ret == -1)
