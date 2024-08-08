@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/08 03:37:00 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/08 03:39:24 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	main(int argc, char **argv, char **envp)
 		shell.current_line = readline("minishell$> ");
 		if (shell.current_line == NULL)
 		{
-			printf("\b\b exit\n");
+			printf("\b exit\n");
 			break ;
 		}
 		if (ft_strlen(shell.current_line) > 0)
