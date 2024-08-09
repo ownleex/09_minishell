@@ -12,20 +12,22 @@ MAKEFILE="../Makefile"
 # Nettoyer le fichier de sortie s'il existe déjà
 > "$OUTPUT_FILE"
 
-# Fonction pour traiter un fichier et enlever l'entête 42
+# Fonction pour traiter un fichier et enlever les 11 premières lignes (entête 42)
 process_file() {
     local file="$1"
-    local skip_header=true
+    local line_number=0
+    
+    # Ajouter un commentaire avec le chemin relatif du fichier
+    echo "// Contenu du fichier $file" >> "$OUTPUT_FILE"
+
     while IFS= read -r line; do
-        # Si la ligne contient la fin de l'entête, désactiver le drapeau skip_header
-        if [[ "$line" == *"*/"* ]]; then
-            skip_header=false
+        # Ignorer les 11 premières lignes
+        line_number=$((line_number + 1))
+        if [ "$line_number" -le 11 ]; then
             continue
         fi
-        # Si nous sommes en dehors de l'entête, écrire la ligne dans le fichier de sortie
-        if [ "$skip_header" = false ]; then
-            echo "$line" >> "$OUTPUT_FILE"
-        fi
+        # Écrire la ligne dans le fichier de sortie après la ligne 11
+        echo "$line" >> "$OUTPUT_FILE"
     done < "$file"
 }
 
@@ -46,10 +48,9 @@ done
 # Ajouter une ligne vide pour séparer le code du Makefile du reste du code
 echo "" >> "$OUTPUT_FILE"
 
-# Ajouter le contenu du Makefile à la fin du fichier de sortie
+# Ajouter le contenu du Makefile à la fin du fichier de sortie en supprimant les 11 premières lignes
 if [ -f "$MAKEFILE" ]; then
-    echo "# Contenu du Makefile" >> "$OUTPUT_FILE"
-    cat "$MAKEFILE" >> "$OUTPUT_FILE"
+    process_file "$MAKEFILE"
 else
     echo "Makefile non trouvé."
 fi

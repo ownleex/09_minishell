@@ -1,3 +1,4 @@
+// Contenu du fichier ../include/minishell.h
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -61,8 +62,10 @@ void	free_args(t_minishell *shell);
 
 #endif
 
+// Contenu du fichier ../src/utils.c
 
 #include "minishell.h"
+// Contenu du fichier ../src/main.c
 
 #include "minishell.h"
 
@@ -144,6 +147,7 @@ int	main(int argc, char **argv, char **envp)
 	free_array(shell.envp);
 	return (0);
 }
+// Contenu du fichier ../src/exec/exec.c
 
 #include "minishell.h"
 
@@ -225,6 +229,7 @@ void	execute_command(t_minishell *shell)
 	free(shell->command_path);
 	free_args(shell);
 }
+// Contenu du fichier ../src/exec/utils.c
 
 #include "minishell.h"
 
@@ -262,6 +267,7 @@ void	free_args(t_minishell *shell)
 	free(shell->current_arg);
 	shell->current_arg = NULL;
 }
+// Contenu du fichier ../src/parsing/parsing.c
 
 #include "minishell.h"
 
@@ -400,6 +406,7 @@ void	parse_command(t_minishell *shell)
 	shell->current_arg = set_arguments(shell, count_len(shell->current_line));
 	shell->current_cmd = shell->current_arg[0];
 }
+// Contenu du fichier ../src/builtin/env.c
 
 #include "minishell.h"
 
@@ -414,6 +421,7 @@ void	ft_env(t_minishell *shell)
 		i++;
 	}
 }
+// Contenu du fichier ../src/builtin/pwd.c
 
 #include "minishell.h"
 
@@ -426,6 +434,7 @@ void	ft_pwd(void)
 	else
 		perror("pwd");
 }
+// Contenu du fichier ../src/builtin/ft_exit.c
 
 #include "minishell.h"
 
@@ -443,6 +452,7 @@ void	ft_exit(t_minishell *shell)
 	printf("exit\n");
 	exit(exit_code);
 }
+// Contenu du fichier ../src/builtin/builtin.c
 
 #include "minishell.h"
 
@@ -474,6 +484,7 @@ void	handle_builtin(t_minishell *shell)
 	else if (ft_strncmp(shell->current_cmd, "exit", 4) == 0)
 		ft_exit(shell);
 }
+// Contenu du fichier ../src/builtin/cd.c
 
 #include "minishell.h"
 
@@ -572,6 +583,7 @@ void	ft_cd(t_minishell *shell)
 	free(shell->current_path);
 	shell->current_path = new_path;
 }
+// Contenu du fichier ../src/builtin/echo.c
 
 #include "minishell.h"
 
@@ -589,6 +601,7 @@ void	ft_echo(t_minishell *shell)
 	}
 	printf("\n");
 }
+// Contenu du fichier ../src/signal/signal.c
 
 #include "minishell.h"
 
@@ -607,18 +620,7 @@ void	setup_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-# Contenu du Makefile
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/07/02 21:28:06 by ayarmaya          #+#    #+#              #
-#    Updated: 2024/08/04 03:17:38 by ayarmaya         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+// Contenu du fichier ../Makefile
 
 NAME := minishell
 
