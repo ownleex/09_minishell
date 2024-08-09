@@ -6,7 +6,7 @@
 /*   By: noldiane <noldiane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/09 15:10:39 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:19:24 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	get_arglen(t_minishell *shell, int start, int end)
 	len = 0;
 	index = start;
 	cursor = 0;
-	while (shell->current_line[index] && index <= end)
+	while (index <= end && shell->current_line[index])
 	{
 		if (is_separator(shell->current_line[index]))
 		{
