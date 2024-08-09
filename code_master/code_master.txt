@@ -132,7 +132,7 @@ int	main(int argc, char **argv, char **envp)
 		shell.current_line = readline("minishell$> ");
 		if (shell.current_line == NULL)
 		{
-			printf("\b exit\n");
+			printf("\bexit\n");
 			break ;
 		}
 		if (ft_strlen(shell.current_line) > 0)
