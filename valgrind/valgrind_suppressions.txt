@@ -5,36 +5,6 @@
    match-leak-kinds: reachable
    fun:malloc
    fun:strdup
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-   fun:_nc_first_db
-   fun:_nc_read_entry2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-   fun:_nc_setupterm
-   fun:tgetent_sp
-   fun:_rl_init_terminal_io
-   fun:rl_initialize
-   fun:readline
-   fun:main
-}
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   fun:malloc
-   fun:strdup
-   fun:_nc_setupterm
-   fun:tgetent_sp
-   fun:_rl_init_terminal_io
-   fun:rl_initialize
-   fun:readline
-   fun:main
-}
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   fun:malloc
-   fun:strdup
    fun:_nc_trim_sgr0
    fun:tgetent_sp
    fun:_rl_init_terminal_io
@@ -48,7 +18,7 @@
    match-leak-kinds: reachable
    fun:realloc
    fun:xrealloc
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:rl_expand_prompt
    fun:rl_set_prompt
    fun:readline
@@ -69,10 +39,15 @@
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
-   fun:xmalloc
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
-   fun:rl_expand_prompt
-   fun:rl_set_prompt
+   fun:strdup
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_first_db
+   fun:_nc_read_entry2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_setupterm
+   fun:tgetent_sp
+   fun:_rl_init_terminal_io
+   fun:rl_initialize
    fun:readline
    fun:main
 }
@@ -82,7 +57,85 @@
    match-leak-kinds: reachable
    fun:malloc
    fun:xmalloc
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+   fun:rl_initialize
+   fun:readline
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xmalloc
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+   fun:rl_expand_prompt
+   fun:rl_set_prompt
+   fun:readline
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:realloc
+   fun:_nc_doalloc
+   fun:_nc_tiparm
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_trim_sgr0
+   fun:tgetent_sp
+   fun:_rl_init_terminal_io
+   fun:rl_initialize
+   fun:readline
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:strdup
+   fun:_nc_setupterm
+   fun:tgetent_sp
+   fun:_rl_init_terminal_io
+   fun:rl_initialize
+   fun:readline
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:rl_initialize
+   fun:readline
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xmalloc
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+   fun:rl_parse_and_bind
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+   fun:rl_initialize
+   fun:readline
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:tsearch
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_tiparm
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_trim_sgr0
+   fun:tgetent_sp
+   fun:_rl_init_terminal_io
    fun:rl_initialize
    fun:readline
    fun:main
@@ -101,51 +154,14 @@
    <insert_a_suppression_name_here>
    Memcheck:Leak
    match-leak-kinds: reachable
-   fun:realloc
-   fun:_nc_doalloc
-   fun:tparm
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-   fun:_nc_trim_sgr0
-   fun:tgetent_sp
-   fun:_rl_init_terminal_io
-   fun:rl_initialize
-   fun:readline
-   fun:main
-}
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   fun:malloc
-   fun:rl_initialize
-   fun:readline
-   fun:main
-}
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: reachable
    fun:malloc
    fun:_nc_home_terminfo
    fun:_nc_first_db
    fun:_nc_read_entry2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_setupterm
    fun:tgetent_sp
    fun:_rl_init_terminal_io
-   fun:rl_initialize
-   fun:readline
-   fun:main
-}
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   fun:malloc
-   fun:xmalloc
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
-   fun:rl_parse_and_bind
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
    fun:rl_initialize
    fun:readline
    fun:main
@@ -157,10 +173,10 @@
    fun:realloc
    fun:_nc_doalloc
    fun:_nc_read_termtype
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_read_entry2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_setupterm
    fun:tgetent_sp
    fun:_rl_init_terminal_io
@@ -172,7 +188,7 @@
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_setupterm
    fun:tgetent_sp
    fun:_rl_init_terminal_io
@@ -187,7 +203,7 @@
    fun:calloc
    fun:_nc_first_db
    fun:_nc_read_entry2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_setupterm
    fun:tgetent_sp
    fun:_rl_init_terminal_io
@@ -200,8 +216,24 @@
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_setupterm
+   fun:tgetent_sp
+   fun:_rl_init_terminal_io
+   fun:rl_initialize
+   fun:readline
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:strdup
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_tiparm
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_trim_sgr0
    fun:tgetent_sp
    fun:_rl_init_terminal_io
    fun:rl_initialize
@@ -215,7 +247,7 @@
    fun:malloc
    fun:_nc_first_db
    fun:_nc_read_entry2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_setupterm
    fun:tgetent_sp
    fun:_rl_init_terminal_io
@@ -229,8 +261,9 @@
    match-leak-kinds: reachable
    fun:malloc
    fun:_nc_tparm_analyze
-   fun:tparm
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_tiparm
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_trim_sgr0
    fun:tgetent_sp
    fun:_rl_init_terminal_io
@@ -245,10 +278,10 @@
    fun:realloc
    fun:_nc_doalloc
    fun:_nc_read_termtype
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_read_entry2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_setupterm
    fun:tgetent_sp
    fun:_rl_init_terminal_io
@@ -259,8 +292,53 @@
    <insert_a_suppression_name_here>
    Memcheck:Leak
    match-leak-kinds: reachable
+   fun:calloc
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_tiparm
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_trim_sgr0
+   fun:tgetent_sp
+   fun:_rl_init_terminal_io
+   fun:rl_initialize
+   fun:readline
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
    fun:malloc
    fun:xmalloc
+   fun:rl_initialize
+   fun:readline
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:_nc_read_termtype
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_read_entry2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_setupterm
+   fun:tgetent_sp
+   fun:_rl_init_terminal_io
+   fun:rl_initialize
+   fun:readline
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_setupterm
+   fun:tgetent_sp
+   fun:_rl_init_terminal_io
    fun:rl_initialize
    fun:readline
    fun:main
@@ -281,42 +359,12 @@
    <insert_a_suppression_name_here>
    Memcheck:Leak
    match-leak-kinds: reachable
-   fun:calloc
-   fun:_nc_read_termtype
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-   fun:_nc_read_entry2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-   fun:_nc_setupterm
-   fun:tgetent_sp
-   fun:_rl_init_terminal_io
-   fun:rl_initialize
-   fun:readline
-   fun:main
-}
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   fun:malloc
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-   fun:_nc_setupterm
-   fun:tgetent_sp
-   fun:_rl_init_terminal_io
-   fun:rl_initialize
-   fun:readline
-   fun:main
-}
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: reachable
    fun:malloc
    fun:_nc_read_termtype
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_read_entry2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_setupterm
    fun:tgetent_sp
    fun:_rl_init_terminal_io
@@ -329,8 +377,48 @@
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
-   fun:xmalloc
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   fun:xrealloc
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+   fun:rl_redisplay
+   fun:readline_internal_setup
+   fun:readline
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xrealloc
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+   fun:rl_redisplay
+   fun:readline_internal_setup
+   fun:readline
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xrealloc
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+   fun:rl_redisplay
+   fun:readline_internal_setup
+   fun:readline
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xrealloc
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:rl_redisplay
    fun:readline_internal_setup
    fun:readline
@@ -342,7 +430,7 @@
    match-leak-kinds: reachable
    fun:malloc
    fun:xmalloc
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:rl_redisplay
    fun:readline_internal_setup
    fun:readline
@@ -354,7 +442,7 @@
    match-leak-kinds: reachable
    fun:malloc
    fun:xmalloc
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:rl_redisplay
    fun:readline_internal_setup
    fun:readline
@@ -366,7 +454,7 @@
    match-leak-kinds: reachable
    fun:malloc
    fun:xmalloc
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:rl_redisplay
    fun:readline_internal_setup
    fun:readline
@@ -378,38 +466,9 @@
    match-leak-kinds: reachable
    fun:malloc
    fun:xmalloc
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:rl_redisplay
    fun:readline_internal_setup
-   fun:readline
-   fun:main
-}
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   fun:malloc
-   fun:xmalloc
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
-   fun:rl_redisplay
-   fun:readline_internal_setup
-   fun:readline
-   fun:main
-}
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   fun:malloc
-   fun:_nc_read_termtype
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-   fun:_nc_read_entry2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-   fun:_nc_setupterm
-   fun:tgetent_sp
-   fun:_rl_init_terminal_io
-   fun:rl_initialize
    fun:readline
    fun:main
 }
@@ -430,6 +489,23 @@
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
+   fun:_nc_read_termtype
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_read_entry2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_setupterm
+   fun:tgetent_sp
+   fun:_rl_init_terminal_io
+   fun:rl_initialize
+   fun:readline
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
    fun:xmalloc
    fun:_rl_init_terminal_io
    fun:rl_initialize
@@ -455,10 +531,10 @@
    fun:realloc
    fun:_nc_doalloc
    fun:_nc_read_termtype
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_read_entry2
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_setupterm
    fun:tgetent_sp
    fun:_rl_init_terminal_io
@@ -470,7 +546,7 @@
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_setupterm
    fun:tgetent_sp
    fun:_rl_init_terminal_io
@@ -507,7 +583,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:_rl_init_terminal_io
    fun:rl_initialize
    fun:readline
@@ -522,7 +598,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:_rl_init_terminal_io
    fun:rl_initialize
    fun:readline
@@ -537,7 +613,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:_rl_init_terminal_io
    fun:rl_initialize
    fun:readline
@@ -552,7 +628,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:_rl_init_terminal_io
    fun:rl_initialize
    fun:readline
@@ -567,7 +643,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:rl_initialize
    fun:readline
    fun:main
@@ -581,7 +657,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:rl_initialize
    fun:readline
    fun:main
@@ -595,7 +671,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:rl_initialize
    fun:readline
    fun:main
@@ -605,7 +681,7 @@
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:calloc
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
    fun:_nc_find_type_entry
    fun:tgetstr_sp
    fun:_rl_init_terminal_io
@@ -622,7 +698,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:_rl_init_terminal_io
    fun:rl_initialize
    fun:readline
@@ -637,7 +713,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:_rl_init_terminal_io
    fun:rl_initialize
    fun:readline
@@ -652,7 +728,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:_rl_init_terminal_io
    fun:rl_initialize
    fun:readline
@@ -667,7 +743,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:_rl_init_terminal_io
    fun:rl_initialize
    fun:readline
@@ -682,7 +758,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:_rl_init_terminal_io
    fun:rl_initialize
    fun:readline
@@ -697,7 +773,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:rl_initialize
    fun:readline
    fun:main
@@ -711,7 +787,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:rl_initialize
    fun:readline
    fun:main
@@ -725,7 +801,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:rl_initialize
    fun:readline
    fun:main
@@ -765,7 +841,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:rl_initialize
    fun:readline
    fun:main
@@ -779,7 +855,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_bind_keyseq_if_unbound_in_map
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:rl_initialize
    fun:readline
    fun:main
@@ -793,7 +869,7 @@
    fun:rl_make_bare_keymap
    fun:rl_generic_bind
    fun:rl_parse_and_bind
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
    fun:rl_initialize
    fun:readline
    fun:main
