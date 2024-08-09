@@ -58,3 +58,7 @@ settings.json
 all
 
 minishell
+
+master_suppressions.txt
+master_suppressions_raw.txt
+code_master.txt
