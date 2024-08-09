@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/06 16:11:10 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/08 01:32:32 by ayarmaya         ###   ########.fr       */
+/*   Created: 2024/08/07 18:23:33 by ayarmaya          #+#    #+#             */
+/*   Updated: 2024/08/09 04:14:46 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_env(t_minishell *shell)
+void	ft_exit(t_minishell *shell)
 {
-	int	i;
+	int	exit_code;
 
-	i = 0;
-	while (shell->envp[i])
-	{
-		ft_putendl_fd(shell->envp[i], STDOUT_FILENO);
-		i++;
-	}
+	if (shell->current_arg[1])
+		exit_code = ft_atoi(shell->current_arg[1]);
+	else
+		exit_code = 0;
+	free(shell->current_path);
+	free_args(shell);
+	rl_clear_history();
+	printf("exit\n");
+	free_array(shell->envp);
+	exit(exit_code);
 }
