@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:23:33 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/07 22:40:29 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/09 02:23:02 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ void	ft_exit(t_minishell *shell)
 	free_args(shell);
 	rl_clear_history();
 	printf("exit\n");
+	free_array(shell->envp);
 	exit(exit_code);
 }
