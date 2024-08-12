@@ -6,11 +6,25 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/11 03:28:58 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/12 03:13:13 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_empty_or_whitespace(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ' && str[i] != '\t')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 void	ft_init(t_minishell *shell, char **envp)
 {
@@ -77,6 +91,11 @@ int	main(int argc, char **argv, char **envp)
 		{
 			printf("\b exit\n");
 			break ;
+		}
+		if (is_empty_or_whitespace(shell.current_line))
+		{
+			free(shell.current_line);
+			continue ;
 		}
 		if (ft_strlen(shell.current_line) > 0)
 		{
