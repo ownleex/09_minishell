@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/12 03:00:10 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/13 04:06:16 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,11 @@ void	ft_echo(t_minishell *shell)
 	}
 	while (shell->current_arg[i])
 	{
-		if (shell->current_arg[i][0] == '$' && ft_strlen(shell->current_arg[i]) > 1)
+		if (ft_strncmp(shell->current_arg[i], "$?", 3) == 0)
+		{
+			printf("%d", shell->exit_code);
+		}
+		else if (shell->current_arg[i][0] == '$' && ft_strlen(shell->current_arg[i]) > 1)
 		{
 			value = get_env_value(shell->envp, &shell->current_arg[i][1]);
 			if (value)
@@ -56,8 +60,11 @@ void	ft_echo(t_minishell *shell)
 		{
 			printf("%s", shell->current_arg[i]);
 		}
+		if (shell->current_arg[i + 1])
+			printf(" ");
 		i++;
 	}
 	if (newline)
 		printf("\n");
+	shell->exit_code = 0; // Mise à jour du code de sortie pour echo
 }
