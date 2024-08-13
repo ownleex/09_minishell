@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/07 18:23:16 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/13 06:02:51 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_minishell
 	char	*current_cmd;
 	char	*current_path;
 	char	*target_path;
+	int		exit_code;
 }	t_minishell;
 
 //Parsing
@@ -57,8 +58,13 @@ void	ft_pwd(void);
 void	ft_env(t_minishell *shell);
 	//CD
 void	ft_cd(t_minishell *shell);
-    // Exit
-void    ft_exit(t_minishell *shell);
+	//Exit
+void	ft_exit(t_minishell *shell);
+	//Export
+void	update_env(t_minishell *shell, const char *name, const char *value);
+void	ft_export(t_minishell *shell);
+	//Unset
+void	ft_unset(t_minishell *shell);
 
 //Signal
 void	handle_sigint(int sig);

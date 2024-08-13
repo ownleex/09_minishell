@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/05 02:02:40 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/13 04:21:49 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ char	*find_command_path(t_minishell *shell)
 
 	path = NULL;
 	i = 0;
+	if (access(shell->current_cmd, X_OK) == 0)
+	{
+		return (ft_strdup(shell->current_cmd));
+	}
 	while (shell->envp[i])
 	{
 		path_split = ft_split(shell->envp[i], '=');
@@ -60,6 +64,7 @@ char	*find_command_path(t_minishell *shell)
 void	execute_command(t_minishell *shell)
 {
 	pid_t	pid;
+	int		status;
 
 	if (is_builtin(shell))
 	{
@@ -72,6 +77,7 @@ void	execute_command(t_minishell *shell)
 		write(STDERR_FILENO, "bash: ", 7);
 		write(STDERR_FILENO, shell->current_cmd, ft_strlen(shell->current_cmd));
 		write(STDERR_FILENO, ": Command not found\n", 21);
+		shell->exit_code = 127;
 		return (free_args(shell));
 	}
 	pid = fork();
@@ -84,9 +90,18 @@ void	execute_command(t_minishell *shell)
 		}
 	}
 	else if (pid < 0)
+	{
 		perror("minishell");
+		shell->exit_code = 1;
+	}
 	else
-		waitpid(pid, NULL, 0);
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			shell->exit_code = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			shell->exit_code = 128 + WTERMSIG(status);
+	}
 	free(shell->command_path);
 	free_args(shell);
 }

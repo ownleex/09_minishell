@@ -6,7 +6,7 @@
 #    By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/02 21:28:06 by ayarmaya          #+#    #+#              #
-#    Updated: 2024/08/04 03:17:38 by ayarmaya         ###   ########.fr        #
+#    Updated: 2024/08/13 06:30:30 by ayarmaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,11 +19,16 @@ RMDIR := rm -rf
 
 LIBFT := libft/libft.a
 
-READLINE_PATH := $(shell brew --prefix readline)
-# !!!!! à enlever avant EVAL !!!!!
+UNAME_S := $(shell uname -s)
 
-HEADERS := -I./include -Ilibft/include -I$(READLINE_PATH)/include
-LIBS := $(LIBFT) -L$(READLINE_PATH)/lib -lreadline -ltermcap
+HEADERS := -I./include -Ilibft/include
+LIBS := $(LIBFT) -lreadline -ltermcap
+
+ifeq ($(UNAME_S), Darwin)
+    READLINE_PATH := $(shell brew --prefix readline)
+    HEADERS += -I$(READLINE_PATH)/include
+    LIBS += -L$(READLINE_PATH)/lib
+endif
 
 SRCDIR := src
 SRCS := $(shell find $(SRCDIR) -name '*.c')

@@ -40,8 +40,13 @@ done
 # Ajouter une ligne vide pour séparer les headers du reste du code
 echo "" >> "$OUTPUT_FILE"
 
-# Parcourir tous les fichiers .c dans le dossier src et ses sous-dossiers
-find "$SRC_DIR" -name "*.c" | while read -r file; do
+# Traiter main.c en priorité
+if [ -f "$SRC_DIR/main.c" ]; then
+    process_file "$SRC_DIR/main.c"
+fi
+
+# Parcourir tous les autres fichiers .c dans le dossier src et ses sous-dossiers, sauf main.c
+find "$SRC_DIR" -name "*.c" ! -name "main.c" | while read -r file; do
     process_file "$file"
 done
 
@@ -55,4 +60,4 @@ else
     echo "Makefile non trouvé."
 fi
 
-echo "Le contenu des fichiers .c, des headers .h, et du Makefile ont été fusionnés dans $OUTPUT_FILE"
+echo "Le contenu des fichiers .h, des headers .c, et du Makefile ont été fusionnés dans $OUTPUT_FILE"
