@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/13 04:22:24 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/13 05:11:17 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,15 @@ void	ft_echo(t_minishell *shell)
 		{
 			value = get_env_value(shell->envp, &shell->current_arg[i][1]);
 			if (value)
+			{
 				printf("%s", value);
+			}
 			else
-				printf("%s", shell->current_arg[i]);
+			{
+				printf("\n");
+				shell->exit_code = 0;
+				return ;
+			}
 		}
 		else
 		{

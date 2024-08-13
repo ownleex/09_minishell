@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:59:13 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/12 20:16:31 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/13 04:45:15 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ int	is_builtin(t_minishell *shell)
 		return (1);
 	else if (ft_strncmp(shell->current_cmd, "exit", 4) == 0)
 		return (1);
+	else if (ft_strncmp(shell->current_cmd, "export", 6) == 0)
+		return (1);
+	else if (ft_strncmp(shell->current_cmd, "unset", 5) == 0)
+		return (1);
 	return (0);
 }
 
@@ -39,4 +43,8 @@ void	handle_builtin(t_minishell *shell)
 		ft_cd(shell);
 	else if (ft_strncmp(shell->current_cmd, "exit", 4) == 0)
 		ft_exit(shell);
+	else if (ft_strncmp(shell->current_cmd, "export", 6) == 0)
+		ft_export(shell);
+	else if (ft_strncmp(shell->current_cmd, "unset", 5) == 0)
+		ft_unset(shell);
 }
