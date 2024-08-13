@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 16:11:10 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/13 03:48:49 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/13 04:21:25 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,5 @@ void	ft_env(t_minishell *shell)
 		ft_putendl_fd(shell->envp[i], STDOUT_FILENO);
 		i++;
 	}
-	shell->exit_code = 0; // Mise à jour du code de sortie
+	shell->exit_code = 0;
 }
-

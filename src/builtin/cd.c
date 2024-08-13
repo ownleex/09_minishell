@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/09 00:27:50 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/13 04:19:19 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,16 @@ void	ft_cd(t_minishell *shell)
 	char	*new_path;
 
 	if (!shell->current_arg[1])
+	{
+		shell->exit_code = 1;
 		return ;
+	}
 	path = shell->current_arg[1];
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
 	{
 		perror("getcwd");
+		shell->exit_code = 1;
 		return ;
 	}
 	ret = chdir(path);
@@ -93,6 +97,7 @@ void	ft_cd(t_minishell *shell)
 	{
 		perror("bash: cd");
 		free(oldpwd);
+		shell->exit_code = 1;
 		return ;
 	}
 	update_env(shell, "OLDPWD", oldpwd);
@@ -101,9 +106,11 @@ void	ft_cd(t_minishell *shell)
 	if (!new_path)
 	{
 		perror("getcwd");
+		shell->exit_code = 1;
 		return ;
 	}
 	update_env(shell, "PWD", new_path);
 	free(shell->current_path);
 	shell->current_path = new_path;
+	shell->exit_code = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/13 04:06:16 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/13 04:22:24 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,5 @@ void	ft_echo(t_minishell *shell)
 	}
 	if (newline)
 		printf("\n");
-	shell->exit_code = 0; // Mise à jour du code de sortie pour echo
+	shell->exit_code = 0;
 }

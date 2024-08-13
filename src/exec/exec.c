@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/13 04:10:49 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/13 04:21:49 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,4 +105,3 @@ void	execute_command(t_minishell *shell)
 	free(shell->command_path);
 	free_args(shell);
 }
-
