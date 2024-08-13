@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/09 02:19:05 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/13 05:11:17 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,27 +32,45 @@ char	*get_env_value(char **envp, char *var_name)
 void	ft_echo(t_minishell *shell)
 {
 	int		i;
+	int		newline;
 	char	*value;
 
 	i = 1;
+	newline = 1;
+	if (shell->current_arg[i] && ft_strncmp(shell->current_arg[i], "-n", 3) == 0)
+	{
+		newline = 0;
+		i++;
+	}
 	while (shell->current_arg[i])
 	{
-		if (i > 1)
-			printf(" ");
-		if (shell->current_arg[i][0] == '$' && \
-		ft_strlen(shell->current_arg[i]) > 1)
+		if (ft_strncmp(shell->current_arg[i], "$?", 3) == 0)
+		{
+			printf("%d", shell->exit_code);
+		}
+		else if (shell->current_arg[i][0] == '$' && ft_strlen(shell->current_arg[i]) > 1)
 		{
 			value = get_env_value(shell->envp, &shell->current_arg[i][1]);
 			if (value)
+			{
 				printf("%s", value);
+			}
 			else
-				printf("%s", shell->current_arg[i]);
+			{
+				printf("\n");
+				shell->exit_code = 0;
+				return ;
+			}
 		}
 		else
 		{
 			printf("%s", shell->current_arg[i]);
 		}
+		if (shell->current_arg[i + 1])
+			printf(" ");
 		i++;
 	}
-	printf("\n");
+	if (newline)
+		printf("\n");
+	shell->exit_code = 0;
 }
