@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/13 04:44:44 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/13 06:02:51 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	ft_cd(t_minishell *shell);
 	//Exit
 void	ft_exit(t_minishell *shell);
 	//Export
+void	update_env(t_minishell *shell, const char *name, const char *value);
 void	ft_export(t_minishell *shell);
 	//Unset
 void	ft_unset(t_minishell *shell);
