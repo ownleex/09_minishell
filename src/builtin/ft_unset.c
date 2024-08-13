@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 04:38:00 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/13 04:55:43 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/13 05:28:02 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	remove_env_var(t_minishell *shell, const char *name)
 	free(shell->envp);
 	shell->envp = new_envp;
 }
-
 
 void	ft_unset(t_minishell *shell)
 {
