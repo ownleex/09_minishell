@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 04:38:00 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/13 05:28:02 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/13 05:46:04 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ void	remove_env_var(t_minishell *shell, const char *name)
 	{
 		if (j != i)
 		{
-			new_envp[j < i ? j : j - 1] = shell->envp[j];
+			if (j < i)
+				new_envp[j] = shell->envp[j];
+			else
+				new_envp[j - 1] = shell->envp[j];
 		}
 		j++;
 	}
