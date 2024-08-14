@@ -6,7 +6,7 @@
 /*   By: noldiane <noldiane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/14 13:09:17 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:55:25 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ void	parse_command(t_minishell *shell)
 	char	**arguments;
 
 	len = count_args(shell->current_line);
-	arguments = (char **)malloc(sizeof(char *) * (len + 1));
+	arguments = (char **)malloc(sizeof(char *) * (len + 2));
 	shell->current_arg = arguments;
 	set_arguments(shell);
 	shell->current_cmd = shell->current_arg[0];
