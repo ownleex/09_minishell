@@ -6,17 +6,22 @@
 /*   By: noldiane <noldiane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/13 17:29:12 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:09:17 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	is_quote(int c)
+{
+	return (c == '"' || c == '\'');
+}
+
 int	is_separator(int character, int space)
 {
-	if (character == 34 || character == 39)
+	if (is_quote(character))
 		return (1);
-	if (character == 32 && space)
+	if (character == ' ' && space)
 		return (1);
 	return (0);
 }
@@ -32,11 +37,19 @@ int	jump_arg(char *line, int cursor)
 			index++;
 		return (index);
 	}
-	else
+	else if (is_quote(line[cursor]))
 	{
+		index = cursor + 1;
 		while (line[index] != line[cursor] && line[index] != '\0')
 			index++;
 		if (line[index] != '\0')
+			index++;
+		return (index);
+	}
+	else
+	{
+		while (line[index] != ' ' && line[index] != '\0' &&
+				!is_quote(line[index]))
 			index++;
 		return (index);
 	}
@@ -47,15 +60,14 @@ int	count_args(char *line)
 	int	len;
 	int	index;
 
-	len = 1;
+	len = 0;
 	index = 0;
 	while (line[index] != '\0')
 	{
 		if (is_separator(line[index], 1))
 		{
-			if (line[index] == ' ')
-				len++;
 			index = jump_arg(line, index);
+			len++;
 		}
 		else
 			index++;
@@ -65,24 +77,22 @@ int	count_args(char *line)
 
 int	get_arglen(t_minishell *shell, int start, int end)
 {
-	int	len;
-	int	index;
-	int	cursor;
+	int		len;
+	int		index;
+	char	quote_type;
 
 	len = 0;
 	index = start;
-	cursor = 0;
 	while (index <= end && shell->current_line[index])
 	{
-		if (is_separator(shell->current_line[index], 0))
+		if (is_quote(shell->current_line[index]))
 		{
-			cursor = index + 1;
-			while (shell->current_line[cursor] && shell->current_line[cursor] != shell->current_line[index])
+			quote_type = shell->current_line[index++];
+			while (shell->current_line[index] && shell->current_line[index] != quote_type)
 			{
 				len++;
-				cursor++;
+				index++;
 			}
-			index = cursor;
 		}
 		else
 			len++;
@@ -95,34 +105,37 @@ void	copy_inner_content(char *dest, char *src, int start, int end)
 {
 	int		index;
 	int		cursor;
+	char	quote_type;
 
-	cursor = 0;
 	index = start;
+	cursor = 0;
 	while (index <= end && src[index] != '\0')
-		dest[cursor++] = src[index++];
+	{
+		if (is_quote(src[index]))
+		{
+			quote_type = src[index++];
+			while (index <= end && src[index] != quote_type)
+				dest[cursor++] = src[index++];
+		}
+		else
+			dest[cursor++] = src[index];
+		index++;
+	}
 	dest[cursor] = '\0';
 }
 
 char	*remove_outer_quotes(t_minishell *shell, int start, int end)
 {
 	char	*str;
-	int		new_start = start;
-	int		new_end = end;
+	int		arg_len;
 
-	if (is_separator(shell->current_line[start], 0) &&
-		shell->current_line[start] == shell->current_line[end])
-	{
-		new_start++;
-		new_end--;
-	}
-	str = (char *)malloc(sizeof(char) * (new_end - new_start + 2));
+	arg_len = get_arglen(shell, start, end);
+	str = (char *)malloc(sizeof(char) * (arg_len + 1));
 	if (!str)
 		return (NULL);
-
-	copy_inner_content(str, shell->current_line, new_start, new_end);
+	copy_inner_content(str, shell->current_line, start, end);
 	return (str);
 }
-
 
 void	set_arg(t_minishell *shell, int start, int end, int pos)
 {
@@ -131,10 +144,12 @@ void	set_arg(t_minishell *shell, int start, int end, int pos)
 
 int	jump_quote(t_minishell *shell, int cursor)
 {
-	int	index;
+	int		index;
+	char	quote_type;
 
 	index = cursor + 1;
-	while (shell->current_line[index] && shell->current_line[index] != shell->current_line[cursor])
+	quote_type = shell->current_line[cursor];
+	while (shell->current_line[index] && shell->current_line[index] != quote_type)
 		index++;
 	return (index);
 }
@@ -157,27 +172,24 @@ void	**set_arguments(t_minishell *shell)
 			old_index = index;
 			len++;
 		}
-		if (is_separator(shell->current_line[index], 0))
+		else if (is_quote(shell->current_line[index]))
 			index = jump_quote(shell, index);
-		index++;
+		else
+			index++;
 	}
 	set_arg(shell, old_index, index - 1, len);
 	shell->current_arg[len + 1] = NULL;
-	//printf("ee: %d\n", len);
 	return (NULL);
 }
 
 void	parse_command(t_minishell *shell)
 {
-	int	len;
+	int		len;
 	char	**arguments;
 
 	len = count_args(shell->current_line);
 	arguments = (char **)malloc(sizeof(char *) * (len + 1));
-
-	//printf("lenght: %d\n", len);
 	shell->current_arg = arguments;
 	set_arguments(shell);
-	//printf("test: %s\n", shell->current_arg[1]);
 	shell->current_cmd = shell->current_arg[0];
 }
