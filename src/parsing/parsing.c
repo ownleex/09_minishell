@@ -6,60 +6,93 @@
 /*   By: noldiane <noldiane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/06 17:27:09 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:09:17 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_separator(int character)
+int	is_quote(int c)
 {
-	if (character == 34 || character == 39)
+	return (c == '"' || c == '\'');
+}
+
+int	is_separator(int character, int space)
+{
+	if (is_quote(character))
+		return (1);
+	if (character == ' ' && space)
 		return (1);
 	return (0);
 }
 
-int	count_len(char *line)
+int	jump_arg(char *line, int cursor)
+{
+	int	index;
+
+	index = cursor + 1;
+	if (line[cursor] == ' ')
+	{
+		while (line[index] == ' ' && line[index] != '\0')
+			index++;
+		return (index);
+	}
+	else if (is_quote(line[cursor]))
+	{
+		index = cursor + 1;
+		while (line[index] != line[cursor] && line[index] != '\0')
+			index++;
+		if (line[index] != '\0')
+			index++;
+		return (index);
+	}
+	else
+	{
+		while (line[index] != ' ' && line[index] != '\0' &&
+				!is_quote(line[index]))
+			index++;
+		return (index);
+	}
+}
+
+int	count_args(char *line)
 {
 	int	len;
 	int	index;
 
 	len = 0;
 	index = 0;
-	while (line[index])
+	while (line[index] != '\0')
 	{
-		if (line[index] == ' ')
-			index++;
-		else
+		if (is_separator(line[index], 1))
 		{
+			index = jump_arg(line, index);
 			len++;
-			while (line[index] && line[index] != ' ')
-				index++;
 		}
+		else
+			index++;
 	}
 	return (len);
 }
 
 int	get_arglen(t_minishell *shell, int start, int end)
 {
-	int	len;
-	int	index;
-	int	cursor;
+	int		len;
+	int		index;
+	char	quote_type;
 
 	len = 0;
 	index = start;
-	cursor = 0;
-	while (shell->current_line[index] && index <= end)
+	while (index <= end && shell->current_line[index])
 	{
-		if (is_separator(shell->current_line[index]))
+		if (is_quote(shell->current_line[index]))
 		{
-			cursor = index + 1;
-			while (shell->current_line[cursor] && shell->current_line[cursor] != shell->current_line[index])
+			quote_type = shell->current_line[index++];
+			while (shell->current_line[index] && shell->current_line[index] != quote_type)
 			{
 				len++;
-				cursor++;
+				index++;
 			}
-			index = cursor;
 		}
 		else
 			len++;
@@ -68,82 +101,95 @@ int	get_arglen(t_minishell *shell, int start, int end)
 	return (len);
 }
 
-int	set_cmd(t_minishell *shell, char **arguments)
+void	copy_inner_content(char *dest, char *src, int start, int end)
+{
+	int		index;
+	int		cursor;
+	char	quote_type;
+
+	index = start;
+	cursor = 0;
+	while (index <= end && src[index] != '\0')
+	{
+		if (is_quote(src[index]))
+		{
+			quote_type = src[index++];
+			while (index <= end && src[index] != quote_type)
+				dest[cursor++] = src[index++];
+		}
+		else
+			dest[cursor++] = src[index];
+		index++;
+	}
+	dest[cursor] = '\0';
+}
+
+char	*remove_outer_quotes(t_minishell *shell, int start, int end)
+{
+	char	*str;
+	int		arg_len;
+
+	arg_len = get_arglen(shell, start, end);
+	str = (char *)malloc(sizeof(char) * (arg_len + 1));
+	if (!str)
+		return (NULL);
+	copy_inner_content(str, shell->current_line, start, end);
+	return (str);
+}
+
+void	set_arg(t_minishell *shell, int start, int end, int pos)
+{
+	shell->current_arg[pos] = remove_outer_quotes(shell, start, end);
+}
+
+int	jump_quote(t_minishell *shell, int cursor)
+{
+	int		index;
+	char	quote_type;
+
+	index = cursor + 1;
+	quote_type = shell->current_line[cursor];
+	while (shell->current_line[index] && shell->current_line[index] != quote_type)
+		index++;
+	return (index);
+}
+
+void	**set_arguments(t_minishell *shell)
 {
 	int	len;
 	int	index;
+	int	old_index;
 
 	len = 0;
 	index = 0;
-	while (shell->current_line[len] != ' ' && shell->current_line[len])
-		len++;
-	arguments[0] = (char *)malloc(sizeof(char) * (len + 1));
-	while (shell->current_line[index] != ' ' && shell->current_line[index])
-	{
-		arguments[0][index] = shell->current_line[index];
-		index++;
-	}
-	arguments[0][index] = '\0';
-	return (len);
-}
-
-void	set_arg(t_minishell *shell, int start, int end, int pos, char **arguments)
-{
-	int		len;
-	int		index;
-	int		arg_index;
-	char	quote;
-
-	arg_index = 0;
-	index = start;
-	len = get_arglen(shell, start, end);
-	arguments[pos] = (char *)malloc(sizeof(char) * (len + 1));
-	while (shell->current_line[index] && index <= end)
-	{
-		if (is_separator(shell->current_line[index]))
-		{
-			quote = shell->current_line[index];
-			index++;
-			while (shell->current_line[index] && shell->current_line[index] != quote)
-				arguments[pos][arg_index++] = shell->current_line[index++];
-			if (shell->current_line[index] == quote)
-				index++;
-		}
-		else
-			arguments[pos][arg_index++] = shell->current_line[index++];
-	}
-	arguments[pos][arg_index] = '\0';
-}
-
-char	**set_arguments(t_minishell *shell, int arg_len)
-{
-	int	len;
-	int	index;
-	int	cursor;
-	char	**arguments;
-
-	len = 0;
-	arguments = (char **)malloc(sizeof(char *) * (arg_len + 1));
-	index = set_cmd(shell, arguments);
-	while (shell->current_line[index])
+	old_index = 0;
+	while (shell->current_line[index] != '\0')
 	{
 		if (shell->current_line[index] == ' ')
-			index++;
-		else
 		{
+			set_arg(shell, old_index, index - 1, len);
+			index = jump_arg(shell->current_line, index);
+			old_index = index;
 			len++;
-			cursor = index;
-			while (shell->current_line[index] && shell->current_line[index] != ' ')
-				index++;
-			set_arg(shell, cursor, index - 1, len, arguments);
 		}
+		else if (is_quote(shell->current_line[index]))
+			index = jump_quote(shell, index);
+		else
+			index++;
 	}
-	arguments[len + 1] = NULL;
-	return (arguments);
+	set_arg(shell, old_index, index - 1, len);
+	shell->current_arg[len + 1] = NULL;
+	return (NULL);
 }
 
 void	parse_command(t_minishell *shell)
 {
-	shell->current_arg = set_arguments(shell, count_len(shell->current_line));
+	int		len;
+	char	**arguments;
+
+	len = count_args(shell->current_line);
+	arguments = (char **)malloc(sizeof(char *) * (len + 1));
+	shell->current_arg = arguments;
+	set_arguments(shell);
 	shell->current_cmd = shell->current_arg[0];
 }
