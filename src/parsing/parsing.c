@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/14 16:55:25 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/15 18:57:47 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ int	jump_quote(t_minishell *shell, int cursor)
 	return (index);
 }
 
-void	**set_arguments(t_minishell *shell)
+void	set_arguments(t_minishell *shell)
 {
 	int	len;
 	int	index;
@@ -167,19 +167,19 @@ void	**set_arguments(t_minishell *shell)
 	{
 		if (shell->current_line[index] == ' ')
 		{
-			set_arg(shell, old_index, index - 1, len);
+			if (index > old_index)
+				set_arg(shell, old_index, index - 1, len++);
 			index = jump_arg(shell->current_line, index);
 			old_index = index;
-			len++;
 		}
 		else if (is_quote(shell->current_line[index]))
 			index = jump_quote(shell, index);
 		else
 			index++;
 	}
-	set_arg(shell, old_index, index - 1, len);
-	shell->current_arg[len + 1] = NULL;
-	return (NULL);
+	if (index > old_index)
+		set_arg(shell, old_index, index - 1, len++);
+	shell->current_arg[len] = NULL;
 }
 
 void	parse_command(t_minishell *shell)
