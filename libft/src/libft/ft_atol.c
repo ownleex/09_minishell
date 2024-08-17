@@ -1,28 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/29 01:44:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/15 21:18:45 by ayarmaya         ###   ########.fr       */
+/*   Created: 2024/03/24 18:20:45 by ayarmaya          #+#    #+#             */
+/*   Updated: 2024/05/02 00:45:32 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/libft.h"
 
-void	handle_sigint(int sig)
+long	ft_atol(const char *str)
 {
-	(void)sig;
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	write(STDOUT_FILENO, "\n", 1);
-	rl_redisplay();
-}
+	long	result;
+	int		sign;
+	int		i;
 
-void	setup_signals(void)
-{
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	result = 0;
+	sign = 1;
+	i = 0;
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
+		i++;
+	if (str[i] == '+')
+		i++;
+	else if (str[i] == '-')
+	{
+		sign = -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + str[i] - '0';
+		i++;
+	}
+	return (result * sign);
 }

@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/15 18:57:47 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/17 16:54:53 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	count_args(char *line)
 	return (len);
 }
 
-int	get_arglen(t_minishell *shell, int start, int end)
+int	get_arglen(t_shell *shell, int start, int end)
 {
 	int		len;
 	int		index;
@@ -124,7 +124,7 @@ void	copy_inner_content(char *dest, char *src, int start, int end)
 	dest[cursor] = '\0';
 }
 
-char	*remove_outer_quotes(t_minishell *shell, int start, int end)
+char	*remove_outer_quotes(t_shell *shell, int start, int end)
 {
 	char	*str;
 	int		arg_len;
@@ -137,12 +137,12 @@ char	*remove_outer_quotes(t_minishell *shell, int start, int end)
 	return (str);
 }
 
-void	set_arg(t_minishell *shell, int start, int end, int pos)
+void	set_arg(t_shell *shell, int start, int end, int pos)
 {
 	shell->current_arg[pos] = remove_outer_quotes(shell, start, end);
 }
 
-int	jump_quote(t_minishell *shell, int cursor)
+int	jump_quote(t_shell *shell, int cursor)
 {
 	int		index;
 	char	quote_type;
@@ -154,7 +154,7 @@ int	jump_quote(t_minishell *shell, int cursor)
 	return (index);
 }
 
-void	set_arguments(t_minishell *shell)
+void	set_arguments(t_shell *shell)
 {
 	int	len;
 	int	index;
@@ -182,7 +182,7 @@ void	set_arguments(t_minishell *shell)
 	shell->current_arg[len] = NULL;
 }
 
-void	parse_command(t_minishell *shell)
+void	parse_command(t_shell *shell)
 {
 	int		len;
 	char	**arguments;

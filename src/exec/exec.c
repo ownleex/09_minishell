@@ -6,13 +6,13 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/15 18:45:19 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/17 16:54:53 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*find_command_path(t_minishell *shell)
+char	*find_command_path(t_shell *shell)
 {
 	char	**path_split;
 	char	*path;
@@ -61,7 +61,7 @@ char	*find_command_path(t_minishell *shell)
 	return (NULL);
 }
 
-void	execute_command(t_minishell *shell)
+void	execute_command(t_shell *shell)
 {
 	pid_t	pid;
 	int		status;

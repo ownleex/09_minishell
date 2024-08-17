@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/13 06:02:51 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/17 16:54:53 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,43 +28,50 @@
 # include <readline/history.h>
 # include <limits.h>
 
-typedef struct s_minishell
+typedef struct s_shell
 {
-	char	**envp;
-	char	*current_line;
-	char	**current_arg;
-	char	*command_path;
-	char	*current_cmd;
-	char	*current_path;
-	char	*target_path;
-	int		exit_code;
-}	t_minishell;
+	char			**envp;
+	char			*current_line;
+	char			**current_arg;
+	char			*command_path;
+	char			*current_cmd;
+	char			*current_path;
+	char			*target_path;
+	int				exit_code;
+	char			*input_file;
+	char			*output_file;
+	int				append_output;
+	int				pipe_in;
+	int				pipe_out;
+	int				is_piped;
+	struct s_shell	*next;
+}	t_shell;
 
 //Parsing
-void	parse_command(t_minishell *shell);
+void	parse_command(t_shell *shell);
 
 //Exec
-char	*find_command_path(t_minishell *shell);
-void	execute_command(t_minishell *shell);
+char	*find_command_path(t_shell *shell);
+void	execute_command(t_shell *shell);
 
 //Builtin
-int		is_builtin(t_minishell *shell);
-void	handle_builtin(t_minishell *shell);
+int		is_builtin(t_shell *shell);
+void	handle_builtin(t_shell *shell);
 	//Echo
-void	ft_echo(t_minishell *shell);
+void	ft_echo(t_shell *shell);
 	//Pwd
 void	ft_pwd(void);
 	//Env
-void	ft_env(t_minishell *shell);
+void	ft_env(t_shell *shell);
 	//CD
-void	ft_cd(t_minishell *shell);
+void	ft_cd(t_shell *shell);
 	//Exit
-void	ft_exit(t_minishell *shell);
+void	ft_exit(t_shell *shell);
 	//Export
-void	update_env(t_minishell *shell, const char *name, const char *value);
-void	ft_export(t_minishell *shell);
+void	update_env(t_shell *shell, const char *name, const char *value);
+void	ft_export(t_shell *shell);
 	//Unset
-void	ft_unset(t_minishell *shell);
+void	ft_unset(t_shell *shell);
 
 //Signal
 void	handle_sigint(int sig);
@@ -74,6 +81,6 @@ void	setup_signals(void);
 
 //Utils exec
 void	free_array(char **array);
-void	free_args(t_minishell *shell);
+void	free_args(t_shell *shell);
 
 #endif

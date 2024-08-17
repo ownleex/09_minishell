@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_unset.c                                         :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 04:38:00 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/13 05:46:04 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/17 16:54:53 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	remove_env_var(t_minishell *shell, const char *name)
+void	remove_env_var(t_shell *shell, const char *name)
 {
 	int		i;
 	int		j;
@@ -58,7 +58,7 @@ void	remove_env_var(t_minishell *shell, const char *name)
 	shell->envp = new_envp;
 }
 
-void	ft_unset(t_minishell *shell)
+void	ft_unset(t_shell *shell)
 {
 	int	i;
 
