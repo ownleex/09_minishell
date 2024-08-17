@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_export.c                                        :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 04:37:37 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/13 06:03:18 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/17 16:54:53 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	get_envp_size(char **envp)
 	return (size);
 }
 
-void	update_env(t_minishell *shell, const char *name, const char *value)
+void	update_env(t_shell *shell, const char *name, const char *value)
 {
 	int		i;
 	int		name_len;
@@ -72,7 +72,7 @@ void	update_env(t_minishell *shell, const char *name, const char *value)
 	shell->envp = new_envp;
 }
 
-void	ft_export(t_minishell *shell)
+void	ft_export(t_shell *shell)
 {
 	int		i;
 	char	*name;

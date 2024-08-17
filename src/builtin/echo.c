@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/15 22:34:21 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/17 16:54:53 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*get_env_value(char **envp, char *var_name)
 	return (NULL);
 }
 
-void	ft_echo(t_minishell *shell)
+void	ft_echo(t_shell *shell)
 {
 	int		i;
 	int		newline;

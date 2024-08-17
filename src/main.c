@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/13 04:19:02 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/17 16:54:53 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	is_empty_or_whitespace(const char *str)
 	return (1);
 }
 
-void	ft_init(t_minishell *shell, char **envp)
+void	ft_init(t_shell *shell, char **envp)
 {
 	int		i;
 	int		envp_len;
@@ -80,7 +80,7 @@ void	void_argc_argv(int argc, char **argv)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_minishell	shell;
+	t_shell	shell;
 
 	void_argc_argv(argc, argv);
 	ft_init(&shell, envp);

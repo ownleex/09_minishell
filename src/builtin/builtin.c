@@ -6,13 +6,13 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:59:13 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/13 04:45:15 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/17 16:54:53 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_builtin(t_minishell *shell)
+int	is_builtin(t_shell *shell)
 {
 	if (ft_strncmp(shell->current_cmd, "echo", 4) == 0)
 		return (1);
@@ -31,7 +31,7 @@ int	is_builtin(t_minishell *shell)
 	return (0);
 }
 
-void	handle_builtin(t_minishell *shell)
+void	handle_builtin(t_shell *shell)
 {
 	if (ft_strncmp(shell->current_cmd, "echo", 4) == 0)
 		ft_echo(shell);

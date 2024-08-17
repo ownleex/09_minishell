@@ -6,13 +6,13 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 16:11:10 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/13 04:21:25 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/17 16:54:53 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_env(t_minishell *shell)
+void	ft_env(t_shell *shell)
 {
 	int	i;
 
