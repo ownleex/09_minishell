@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/18 16:30:53 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/18 17:35:11 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	setup_signals(void);
 
 //Utils main
 void	free_shell(t_shell *shell);
+void	ft_init(t_shell *shell, char **envp);
 
 //Utils exec
 void	free_array(char **array);
