@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/17 16:54:53 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/18 17:36:19 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int	jump_arg(char *line, int cursor)
 	}
 	else
 	{
-		while (line[index] != ' ' && line[index] != '\0' &&
-				!is_quote(line[index]))
+		while (line[index] != ' ' && line[index] != '\0' && \
+			!is_quote(line[index]))
 			index++;
 		return (index);
 	}
