@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:23:33 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/17 16:54:53 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/18 16:44:35 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,8 @@ void	ft_exit(t_shell *shell)
 		exit_code = ft_atoi(shell->current_arg[1]);
 	else
 		exit_code = 0;
-	free(shell->current_path);
-	free_args(shell);
-	rl_clear_history();
 	printf("exit\n");
-	free_array(shell->envp);
+	rl_clear_history();
+	free_shell(shell);
 	exit(exit_code);
 }
