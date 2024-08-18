@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/17 16:54:53 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/18 16:44:17 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ void	execute_command(t_shell *shell)
 	if (is_builtin(shell))
 	{
 		handle_builtin(shell);
-		return (free_args(shell));
+		free_args(shell);
+		return ;
 	}
 	shell->command_path = find_command_path(shell);
 	if (shell->command_path == NULL)
@@ -78,7 +79,8 @@ void	execute_command(t_shell *shell)
 		write(STDERR_FILENO, shell->current_cmd, ft_strlen(shell->current_cmd));
 		write(STDERR_FILENO, ": Command not found\n", 21);
 		shell->exit_code = 127;
-		return (free_args(shell));
+		free_args(shell);
+		return ;
 	}
 	pid = fork();
 	if (pid == 0)
@@ -86,6 +88,7 @@ void	execute_command(t_shell *shell)
 		if (execve(shell->command_path, shell->current_arg, shell->envp) == -1)
 		{
 			perror("minishell");
+			free(shell->command_path);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -103,5 +106,6 @@ void	execute_command(t_shell *shell)
 			shell->exit_code = 128 + WTERMSIG(status);
 	}
 	free(shell->command_path);
+	shell->command_path = NULL;
 	free_args(shell);
 }
