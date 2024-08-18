@@ -6,7 +6,7 @@
 /*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/18 17:28:37 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/18 17:41:33 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int	jump_arg(char *line, int cursor)
 	}
 	else
 	{
-		while (line[index] != ' ' && line[index] != '\0' &&
-				!is_quote(line[index]))
+		while (line[index] != ' ' && line[index] != '\0' && \
+			!is_quote(line[index]))
 			index++;
 		return (index);
 	}
