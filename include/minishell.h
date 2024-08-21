@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/18 17:35:11 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/21 12:14:37 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@ typedef struct s_shell
 }	t_shell;
 
 //Parsing
+void	handle_cmd(t_shell *shell);
+void	count_instance(t_shell *shell);
 void	parse_command(t_shell *shell);
+//void	handle_pipes(t_shell *shell);
+//void	handle_redirections(t_shell *shell);
 
 //Exec
 char	*find_command_path(t_shell *shell);

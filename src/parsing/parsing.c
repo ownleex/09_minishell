@@ -6,7 +6,7 @@
 /*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/18 17:41:33 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/21 12:14:57 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,6 @@
 int	is_quote(int c)
 {
 	return (c == '"' || c == '\'');
-}
-
-int	is_redirection(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0' && i < 3)
-	{
-		if (str[i] != '>' && str[i] != '<')
-			return (0);
-		i++;
-	}
-	if (i == 2 && str[0] != str[1])
-		return (0);
-	return (1);
 }
 
 int	is_separator(int character, int space)
@@ -198,39 +182,6 @@ void	set_arguments(t_shell *shell)
 	shell->current_arg[len] = NULL;
 }
 
-void	look_redirection(t_shell *shell)
-{
-	int	i;
-
-	if (!shell || !shell->current_arg)
-		return ;
-	i = 0;
-	while (shell->current_arg[i])
-	{
-		if (shell->current_arg[i] != NULL && is_redirection(shell->current_arg[i]))
-		{
-			if (ft_strlen(shell->current_arg[i]) == 2)
-				shell->append_output = 1;
-			else
-				shell->append_output = 0;
-			if (shell->current_arg[i][0] == '<')
-			{
-				shell->output_file = NULL;
-				shell->input_file = (char *)malloc(sizeof(char) * (ft_strlen(shell->current_arg[i + 1]) + 1));
-				ft_strlcpy(shell->input_file, shell->current_arg[i + 1], ft_strlen(shell->current_arg[i + 1]) + 1);
-			}
-			else if (shell->current_arg[i][0] == '>')
-			{
-				shell->input_file = NULL;
-				shell->output_file = (char *)malloc(sizeof(char) * (ft_strlen(shell->current_arg[i + 1]) + 1));
-				ft_strlcpy(shell->output_file, shell->current_arg[i + 1], ft_strlen(shell->current_arg[i + 1]) + 1);
-			}
-			break;
-		}
-		i++;
-	}
-}
-
 void	parse_command(t_shell *shell)
 {
 	int		len;
@@ -240,6 +191,7 @@ void	parse_command(t_shell *shell)
 	arguments = (char **)malloc(sizeof(char *) * (len + 2));
 	shell->current_arg = arguments;
 	set_arguments(shell);
-	look_redirection(shell);
+	handle_cmd(shell);
+	//look_redirection(shell);
 	shell->current_cmd = shell->current_arg[0];
 }
