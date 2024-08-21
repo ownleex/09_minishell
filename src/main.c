@@ -6,25 +6,11 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/18 16:44:06 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/21 22:41:20 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	free_shell(t_shell *shell)
-{
-	if (shell->current_path)
-		free(shell->current_path);
-	if (shell->envp)
-		free_array(shell->envp);
-	if (shell->current_line)
-		free(shell->current_line);
-	if (shell->command_path)
-		free(shell->command_path);
-	free_args(shell);
-	free(shell);
-}
 
 int	is_empty_or_whitespace(const char *str)
 {
@@ -136,6 +122,14 @@ int	main(int argc, char **argv, char **envp)
 			parse_command(shell);
 			execute_command(shell);
 		}
+		free_all_shells(shell);
+		shell = malloc(sizeof(t_shell));
+		if (!shell)
+		{
+			perror("malloc");
+			return (1);
+		}
+		ft_init(shell, envp);
 	}
 	rl_clear_history();
 	free_shell(shell);
