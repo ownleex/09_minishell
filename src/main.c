@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/21 22:41:20 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/22 00:35:54 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,16 +122,13 @@ int	main(int argc, char **argv, char **envp)
 			parse_command(shell);
 			execute_command(shell);
 		}
-		free_all_shells(shell);
-		shell = malloc(sizeof(t_shell));
-		if (!shell)
-		{
-			perror("malloc");
-			return (1);
-		}
-		ft_init(shell, envp);
+		free_all_shells(shell->next);
+		shell->next = NULL;
+		free(shell->current_line);
+		shell->current_line = NULL;
 	}
 	rl_clear_history();
 	free_shell(shell);
 	return (0);
 }
+
