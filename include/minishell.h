@@ -6,15 +6,13 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/18 17:35:11 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:00:45 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/include/ft_printf.h"
-# include "../libft/include/get_next_line.h"
 # include "../libft/include/libft.h"
 # include <stdio.h>
 # include <unistd.h>
@@ -48,6 +46,8 @@ typedef struct s_shell
 }	t_shell;
 
 //Parsing
+void	handle_cmd(t_shell *shell);
+void	count_instance(t_shell *shell);
 void	parse_command(t_shell *shell);
 
 //Exec
@@ -79,10 +79,14 @@ void	setup_signals(void);
 
 //Utils main
 void	free_shell(t_shell *shell);
+void	free_all_shells(t_shell *shell);
 void	ft_init(t_shell *shell, char **envp);
 
 //Utils exec
 void	free_array(char **array);
 void	free_args(t_shell *shell);
+
+//Init
+void	ft_init(t_shell *shell, char **envp);
 
 #endif

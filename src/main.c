@@ -6,25 +6,59 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/18 16:44:06 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:29:55 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_shell(t_shell *shell)
+/* debug function to print shell instance data */
+void	print_shell_instance(t_shell *shell)
 {
-	if (shell->current_path)
-		free(shell->current_path);
-	if (shell->envp)
-		free_array(shell->envp);
-	if (shell->current_line)
-		free(shell->current_line);
-	if (shell->command_path)
-		free(shell->command_path);
-	free_args(shell);
-	free(shell);
+	int	index;
+	int arg_index;
+
+	index = 0;
+	while (shell)
+	{
+		printf("\nShell instance #%d:\n", index);
+		printf("  current_line: %s\n", shell->current_line ? shell->current_line : "(null)");
+		printf("  current_cmd: %s\n", shell->current_cmd ? shell->current_cmd : "(null)");
+		// Ajout de l'affichage de current_arg
+		if (shell->current_arg)
+		{
+			printf("  current_arg:\n");
+			arg_index = 0;
+			while (shell->current_arg[arg_index])
+			{
+				printf("    arg[%d]: %s\n", arg_index, shell->current_arg[arg_index]);
+				arg_index++;
+			}
+		}
+		else
+		{
+			printf("  current_arg: (null)\n");
+		}
+		printf("  command_path: %s\n", shell->command_path ? shell->command_path : "(null)");
+		printf("  current_path: %s\n", shell->current_path ? shell->current_path : "(null)");
+		printf("  target_path: %s\n", shell->target_path ? shell->target_path : "(null)");
+		printf("  input_file: %s\n", shell->input_file ? shell->input_file : "(null)");
+		printf("  output_file: %s\n", shell->output_file ? shell->output_file : "(null)");
+		printf("  append_output: %d\n", shell->append_output);
+		printf("  pipe_in: %d\n", shell->pipe_in);
+		printf("  pipe_out: %d\n", shell->pipe_out);
+		printf("  is_piped: %d\n", shell->is_piped);
+		printf("  exit_code: %d\n", shell->exit_code);
+
+
+
+		printf("  next: %p\n", (void *)shell->next);
+		printf("\n");
+		shell = shell->next;
+		index++;
+	}
 }
+
 
 int	is_empty_or_whitespace(const char *str)
 {
@@ -38,64 +72,6 @@ int	is_empty_or_whitespace(const char *str)
 		i++;
 	}
 	return (1);
-}
-
-void	ft_init(t_shell *shell, char **envp)
-{
-	int		i;
-	int		envp_len;
-
-	shell->current_line = NULL;
-	shell->current_arg = NULL;
-	shell->command_path = NULL;
-	shell->current_cmd = NULL;
-	shell->current_path = NULL;
-	shell->target_path = NULL;
-	shell->exit_code = 0;
-	shell->input_file = NULL;
-	shell->output_file = NULL;
-	shell->append_output = 0;
-	shell->pipe_in = -1;
-	shell->pipe_out = -1;
-	shell->is_piped = 0;
-	shell->next = NULL;
-	envp_len = 0;
-	while (envp[envp_len])
-		envp_len++;
-	shell->envp = (char **)malloc(sizeof(char *) * (envp_len + 1));
-	if (!shell->envp)
-	{
-		perror("malloc");
-		free(shell);
-		return ;
-	}
-	i = 0;
-	while (i < envp_len)
-	{
-		shell->envp[i] = ft_strdup(envp[i]);
-		if (!shell->envp[i])
-		{
-			perror("strdup");
-			while (i > 0)
-				free(shell->envp[--i]);
-			free(shell->envp);
-			free(shell);
-			return ;
-		}
-		i++;
-	}
-	shell->envp[i] = NULL;
-	shell->current_path = getcwd(NULL, 0);
-	if (!shell->current_path)
-	{
-		perror("getcwd");
-		i = 0;
-		while (shell->envp[i])
-			free(shell->envp[i++]);
-		free(shell->envp);
-		free(shell);
-		return ;
-	}
 }
 
 void	void_argc_argv(int argc, char **argv)
@@ -134,10 +110,16 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(shell->current_line);
 			parse_command(shell);
+			print_shell_instance(shell); //debug
 			execute_command(shell);
 		}
+		free_all_shells(shell->next);
+		shell->next = NULL;
+		free(shell->current_line);
+		shell->current_line = NULL;
 	}
 	rl_clear_history();
 	free_shell(shell);
 	return (0);
 }
+

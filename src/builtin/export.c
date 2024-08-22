@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 04:37:37 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/17 16:54:53 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/22 02:40:30 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,13 @@ void	update_env(t_shell *shell, const char *name, const char *value)
 	shell->envp = new_envp;
 }
 
-void	ft_export(t_shell *shell)
+void ft_export(t_shell *shell)
 {
 	int		i;
 	char	*name;
 	char	*value;
 	char	*equal_sign;
+	int		exists;
 
 	if (!shell->current_arg[1])
 	{
@@ -104,7 +105,23 @@ void	ft_export(t_shell *shell)
 		}
 		else
 		{
-			update_env(shell, shell->current_arg[i], "");
+			exists = 0;
+			name = shell->current_arg[i];
+			int j = 0;
+			while (shell->envp[j])
+			{
+				if (ft_strncmp(shell->envp[j], name, ft_strlen(name)) == 0 &&
+					shell->envp[j][ft_strlen(name)] == '=')
+				{
+					exists = 1;
+					break ;
+				}
+				j++;
+			}
+			if (!exists)
+			{
+				shell->exit_code = 0;
+			}
 		}
 		i++;
 	}
