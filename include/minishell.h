@@ -6,15 +6,13 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/22 01:48:42 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/22 02:54:21 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/include/ft_printf.h"
-# include "../libft/include/get_next_line.h"
 # include "../libft/include/libft.h"
 # include <stdio.h>
 # include <unistd.h>
