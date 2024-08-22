@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/22 02:54:21 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:00:45 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ typedef struct s_shell
 void	handle_cmd(t_shell *shell);
 void	count_instance(t_shell *shell);
 void	parse_command(t_shell *shell);
-//void	handle_pipes(t_shell *shell);
-//void	handle_redirections(t_shell *shell);
 
 //Exec
 char	*find_command_path(t_shell *shell);
