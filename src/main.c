@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/22 01:18:37 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/22 01:48:15 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,64 +53,6 @@ int	is_empty_or_whitespace(const char *str)
 		i++;
 	}
 	return (1);
-}
-
-void	ft_init(t_shell *shell, char **envp)
-{
-	int		i;
-	int		envp_len;
-
-	shell->current_line = NULL;
-	shell->current_arg = NULL;
-	shell->command_path = NULL;
-	shell->current_cmd = NULL;
-	shell->current_path = NULL;
-	shell->target_path = NULL;
-	shell->exit_code = 0;
-	shell->input_file = NULL;
-	shell->output_file = NULL;
-	shell->append_output = 0;
-	shell->pipe_in = -1;
-	shell->pipe_out = -1;
-	shell->is_piped = 0;
-	shell->next = NULL;
-	envp_len = 0;
-	while (envp[envp_len])
-		envp_len++;
-	shell->envp = (char **)malloc(sizeof(char *) * (envp_len + 1));
-	if (!shell->envp)
-	{
-		perror("malloc");
-		free(shell);
-		return ;
-	}
-	i = 0;
-	while (i < envp_len)
-	{
-		shell->envp[i] = ft_strdup(envp[i]);
-		if (!shell->envp[i])
-		{
-			perror("strdup");
-			while (i > 0)
-				free(shell->envp[--i]);
-			free(shell->envp);
-			free(shell);
-			return ;
-		}
-		i++;
-	}
-	shell->envp[i] = NULL;
-	shell->current_path = getcwd(NULL, 0);
-	if (!shell->current_path)
-	{
-		perror("getcwd");
-		i = 0;
-		while (shell->envp[i])
-			free(shell->envp[i++]);
-		free(shell->envp);
-		free(shell);
-		return ;
-	}
 }
 
 void	void_argc_argv(int argc, char **argv)

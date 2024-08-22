@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/21 22:39:14 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/22 01:48:42 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,8 @@ void	ft_init(t_shell *shell, char **envp);
 //Utils exec
 void	free_array(char **array);
 void	free_args(t_shell *shell);
+
+//Init
+void	ft_init(t_shell *shell, char **envp);
 
 #endif
