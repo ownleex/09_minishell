@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/22 03:24:30 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/22 04:20:29 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	print_shell_instance(t_shell *shell)
 		index++;
 	}
 }
-
 
 int	is_empty_or_whitespace(const char *str)
 {
