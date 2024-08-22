@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/22 04:20:29 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:29:55 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 void	print_shell_instance(t_shell *shell)
 {
 	int	index;
+	int arg_index;
 
 	index = 0;
 	while (shell)
@@ -23,6 +24,21 @@ void	print_shell_instance(t_shell *shell)
 		printf("\nShell instance #%d:\n", index);
 		printf("  current_line: %s\n", shell->current_line ? shell->current_line : "(null)");
 		printf("  current_cmd: %s\n", shell->current_cmd ? shell->current_cmd : "(null)");
+		// Ajout de l'affichage de current_arg
+		if (shell->current_arg)
+		{
+			printf("  current_arg:\n");
+			arg_index = 0;
+			while (shell->current_arg[arg_index])
+			{
+				printf("    arg[%d]: %s\n", arg_index, shell->current_arg[arg_index]);
+				arg_index++;
+			}
+		}
+		else
+		{
+			printf("  current_arg: (null)\n");
+		}
 		printf("  command_path: %s\n", shell->command_path ? shell->command_path : "(null)");
 		printf("  current_path: %s\n", shell->current_path ? shell->current_path : "(null)");
 		printf("  target_path: %s\n", shell->target_path ? shell->target_path : "(null)");
@@ -33,12 +49,16 @@ void	print_shell_instance(t_shell *shell)
 		printf("  pipe_out: %d\n", shell->pipe_out);
 		printf("  is_piped: %d\n", shell->is_piped);
 		printf("  exit_code: %d\n", shell->exit_code);
+
+
+
 		printf("  next: %p\n", (void *)shell->next);
 		printf("\n");
 		shell = shell->next;
 		index++;
 	}
 }
+
 
 int	is_empty_or_whitespace(const char *str)
 {
