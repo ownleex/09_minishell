@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/22 16:29:55 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/23 13:24:45 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	print_shell_instance(t_shell *shell)
 		printf("  pipe_out: %d\n", shell->pipe_out);
 		printf("  is_piped: %d\n", shell->is_piped);
 		printf("  exit_code: %d\n", shell->exit_code);
-
+		printf("  instance_count: %d\n", shell->instance_count);
 
 
 		printf("  next: %p\n", (void *)shell->next);
