@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 01:47:46 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/22 02:04:02 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/23 13:35:31 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	ft_init_variables(t_shell *shell)
 	shell->pipe_out = -1;
 	shell->is_piped = 0;
 	shell->next = NULL;
+	shell->instance_count = 1;
 }
 
 int	ft_set_env(t_shell *shell, char **envp)
