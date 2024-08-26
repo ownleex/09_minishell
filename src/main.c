@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/26 23:27:31 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/27 00:00:22 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	void_argc_argv(argc, argv);
 	setup_signals();
+	shell->exit_code = 0;
 	while (1)
 	{
 		ft_init(shell, env);

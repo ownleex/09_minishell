@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 01:47:46 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/26 23:26:30 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/26 23:58:55 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_init_variables(t_shell *shell)
 	shell->current_cmd = NULL;
 	shell->current_path = NULL;
 	shell->target_path = NULL;
-	shell->exit_code = 0;
+	//shell->exit_code = 0;
 	shell->input_file = NULL;
 	shell->output_file = NULL;
 	shell->append_output = 0;
