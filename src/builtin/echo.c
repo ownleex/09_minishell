@@ -6,30 +6,30 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/22 01:11:07 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/26 23:20:41 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_env_value(char **envp, char *var_name)
+char	*get_env_value(char **env, char *var_name)
 {
-	int		i;
-	int		var_len;
+	int	i;
+	int	var_len;
 
 	var_len = ft_strlen(var_name);
 	i = 0;
-	while (envp[i])
+	while (env[i])
 	{
-		if (ft_strncmp(envp[i], var_name, var_len) == 0 && \
-		envp[i][var_len] == '=')
-			return (&envp[i][var_len + 1]);
+		if (ft_strncmp(env[i], var_name, var_len) == 0 && \
+		env[i][var_len] == '=')
+			return (&env[i][var_len + 1]);
 		i++;
 	}
 	return (NULL);
 }
 
-void	ft_echo(t_shell *shell)
+void	ft_echo(t_shell *shell, char **env)
 {
 	int		i;
 	int		newline;
@@ -50,7 +50,7 @@ void	ft_echo(t_shell *shell)
 		}
 		else if (shell->current_arg[i][0] == '$' && ft_strlen(shell->current_arg[i]) > 1)
 		{
-			value = get_env_value(shell->envp, &shell->current_arg[i][1]);
+			value = get_env_value(env, &shell->current_arg[i][1]);
 			if (value)
 			{
 				printf("%s", value);

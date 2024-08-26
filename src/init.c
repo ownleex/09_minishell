@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 01:47:46 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/23 13:35:31 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/26 23:26:30 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,33 +31,6 @@ void	ft_init_variables(t_shell *shell)
 	shell->instance_count = 1;
 }
 
-int	ft_set_env(t_shell *shell, char **envp)
-{
-	int		i;
-	int		envp_len;
-
-	envp_len = 0;
-	while (envp[envp_len])
-		envp_len++;
-	shell->envp = (char **)malloc(sizeof(char *) * (envp_len + 1));
-	i = 0;
-	while (i < envp_len)
-	{
-		shell->envp[i] = ft_strdup(envp[i]);
-		if (!shell->envp[i])
-		{
-			perror("strdup");
-			while (i > 0)
-				free(shell->envp[--i]);
-			free(shell->envp);
-			return (0);
-		}
-		i++;
-	}
-	shell->envp[i] = NULL;
-	return (1);
-}
-
 int	ft_set_current_path(t_shell *shell)
 {
 	shell->current_path = getcwd(NULL, 0);
@@ -69,22 +42,42 @@ int	ft_set_current_path(t_shell *shell)
 	return (1);
 }
 
-void	ft_init(t_shell *shell, char **envp)
+char	**init_env(char **envp)
 {
-	int	i;
+	int		i;
+	char	**new_envp;
+	int		envp_len;
 
+	envp_len = 0;
+	while (envp[envp_len])
+		envp_len++;
+	new_envp = (char **)malloc(sizeof(char *) * (envp_len + 1));
+	if (!new_envp)
+		return (NULL);
 	i = 0;
-	ft_init_variables(shell);
-	if (!ft_set_env(shell, envp))
+	while (i < envp_len)
 	{
-		free(shell);
-		return ;
+		new_envp[i] = ft_strdup(envp[i]);
+		if (!new_envp[i])
+		{
+			perror("strdup");
+			while (i > 0)
+				free(new_envp[--i]);
+			free(new_envp);
+			return (NULL);
+		}
+		i++;
 	}
+	new_envp[i] = NULL;
+	return (new_envp);
+}
+
+void	ft_init(t_shell *shell, char **env)
+{
+	(void)env;
+	ft_init_variables(shell);
 	if (!ft_set_current_path(shell))
 	{
-		while (shell->envp[i])
-			free(shell->envp[i++]);
-		free(shell->envp);
 		free(shell);
 		return ;
 	}

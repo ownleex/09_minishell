@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:59:13 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/17 16:54:53 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/26 23:18:36 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,21 @@ int	is_builtin(t_shell *shell)
 	return (0);
 }
 
-void	handle_builtin(t_shell *shell)
+char	**handle_builtin(t_shell *shell, char **env)
 {
 	if (ft_strncmp(shell->current_cmd, "echo", 4) == 0)
-		ft_echo(shell);
+		ft_echo(shell, env);
 	else if (ft_strncmp(shell->current_cmd, "pwd", 3) == 0)
 		ft_pwd();
 	else if (ft_strncmp(shell->current_cmd, "env", 3) == 0)
-		ft_env(shell);
+		ft_env(shell, env);
 	else if (ft_strncmp(shell->current_cmd, "cd", 2) == 0)
-		ft_cd(shell);
+		ft_cd(shell, env);
 	else if (ft_strncmp(shell->current_cmd, "exit", 4) == 0)
 		ft_exit(shell);
 	else if (ft_strncmp(shell->current_cmd, "export", 6) == 0)
-		ft_export(shell);
+		env = ft_export(shell, env);
 	else if (ft_strncmp(shell->current_cmd, "unset", 5) == 0)
-		ft_unset(shell);
+		env = ft_unset(shell, env);
+	return (env);
 }
