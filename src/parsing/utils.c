@@ -6,7 +6,7 @@
 /*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 11:38:10 by noldiane          #+#    #+#             */
-/*   Updated: 2024/08/23 13:37:12 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:21:41 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ void	handle_cmd(t_shell *shell)
 				main_shell->input_file = ft_strdup(shell->current_arg[i + 1]);
 			else if (shell->current_arg[i][0] == '>')
 				main_shell->output_file = ft_strdup(shell->current_arg[i + 1]);
-			if (ft_strlen(shell->current_arg[i]))
+			if (ft_strlen(shell->current_arg[i]) == 2)
 				main_shell->append_output = 1;
 			main_shell = main_shell->next;
 			c++;
