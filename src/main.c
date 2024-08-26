@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/23 13:24:45 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:34:09 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,11 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	}
 	void_argc_argv(argc, argv);
-	ft_init(shell, envp);
+	//ft_init(shell, envp);
 	setup_signals();
 	while (1)
 	{
+		ft_init(shell, envp);
 		shell->current_line = readline("minishell$> ");
 		if (shell->current_line == NULL)
 		{
@@ -110,7 +111,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(shell->current_line);
 			parse_command(shell);
-			print_shell_instance(shell); //debug
+			//print_shell_instance(shell); //debug
 			execute_command(shell);
 		}
 		free_all_shells(shell->next);

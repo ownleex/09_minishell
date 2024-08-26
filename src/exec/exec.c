@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/18 16:44:17 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:32:58 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,47 +65,87 @@ void	execute_command(t_shell *shell)
 {
 	pid_t	pid;
 	int		status;
+	int		pipe_fds[2];
 
-	if (is_builtin(shell))
+	while (shell)
 	{
-		handle_builtin(shell);
-		free_args(shell);
-		return ;
-	}
-	shell->command_path = find_command_path(shell);
-	if (shell->command_path == NULL)
-	{
-		write(STDERR_FILENO, "bash: ", 7);
-		write(STDERR_FILENO, shell->current_cmd, ft_strlen(shell->current_cmd));
-		write(STDERR_FILENO, ": Command not found\n", 21);
-		shell->exit_code = 127;
-		free_args(shell);
-		return ;
-	}
-	pid = fork();
-	if (pid == 0)
-	{
-		if (execve(shell->command_path, shell->current_arg, shell->envp) == -1)
+		if (shell->is_piped)
+		{
+			if (pipe(pipe_fds) == -1)
+			{
+				perror("pipe");
+				shell->exit_code = 1;
+				return ;
+			}
+			shell->pipe_out = pipe_fds[1];
+			shell->next->pipe_in = pipe_fds[0];
+		}
+		
+		pid = fork();
+		if (pid == 0)
+		{
+			// Redirection des pipes pour l'exécution
+			if (shell->pipe_in != -1)
+			{
+				dup2(shell->pipe_in, STDIN_FILENO);
+				close(shell->pipe_in);
+			}
+			if (shell->pipe_out != -1)
+			{
+				dup2(shell->pipe_out, STDOUT_FILENO);
+				close(shell->pipe_out);
+			}
+
+			// Fermeture des descripteurs inutilisés
+			if (shell->pipe_out != -1)
+				close(shell->pipe_out);
+			if (shell->pipe_in != -1)
+				close(shell->pipe_in);
+			
+			if (is_builtin(shell))
+			{
+				handle_builtin(shell);
+				free_args(shell);
+				exit(shell->exit_code);
+			}
+			else
+			{
+				shell->command_path = find_command_path(shell);
+				if (!shell->command_path)
+				{
+					write(STDERR_FILENO, "bash: ", 7);
+					write(STDERR_FILENO, shell->current_cmd, ft_strlen(shell->current_cmd));
+					write(STDERR_FILENO, ": Command not found\n", 21);
+					exit(127);
+				}
+				if (execve(shell->command_path, shell->current_arg, shell->envp) == -1)
+				{
+					perror("minishell");
+					exit(EXIT_FAILURE);
+				}
+			}
+		}
+		else if (pid < 0)
 		{
 			perror("minishell");
-			free(shell->command_path);
-			exit(EXIT_FAILURE);
+			shell->exit_code = 1;
 		}
+		else
+		{
+			// Fermeture des pipes inutilisés dans le processus parent
+			if (shell->pipe_out != -1)
+				close(shell->pipe_out);
+			if (shell->pipe_in != -1)
+				close(shell->pipe_in);
+			
+			waitpid(pid, &status, 0);
+			if (WIFEXITED(status))
+				shell->exit_code = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				shell->exit_code = 128 + WTERMSIG(status);
+		}
+
+		// Passer à la prochaine instance de shell pour les pipes suivants
+		shell = shell->next;
 	}
-	else if (pid < 0)
-	{
-		perror("minishell");
-		shell->exit_code = 1;
-	}
-	else
-	{
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			shell->exit_code = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			shell->exit_code = 128 + WTERMSIG(status);
-	}
-	free(shell->command_path);
-	shell->command_path = NULL;
-	free_args(shell);
 }

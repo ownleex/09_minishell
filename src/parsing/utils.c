@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 11:38:10 by noldiane          #+#    #+#             */
-/*   Updated: 2024/08/26 16:21:41 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:27:43 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	complete_instance(t_shell *shell, t_shell *instance, int start, int end)
 		d++;
 	}
 	instance->current_arg[d] = NULL;
+	instance->current_cmd = instance->current_arg[0];
 }
 
 void	free_main_shell(t_shell *shell)
