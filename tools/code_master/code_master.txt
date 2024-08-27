@@ -1,0 +1,1306 @@
+// Contenu du fichier ../../include/minishell.h
+
+#ifndef MINISHELL_H
+# define MINISHELL_H
+
+# include "../libft/include/libft.h"
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/time.h>
+# include <sys/wait.h>
+# include <errno.h>
+# include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <limits.h>
+
+typedef struct s_shell
+{
+	char			*current_line;
+	char			**current_arg;
+	char			*command_path;
+	char			*current_cmd;
+	char			*current_path;
+	char			*target_path;
+	int				exit_code;
+	char			*input_file;
+	char			*output_file;
+	int				append_output;
+	int				pipe_in;
+	int				pipe_out;
+	int				is_piped;
+	int				instance_count;
+	struct s_shell	*next;
+}	t_shell;
+
+// Environment management
+char	**update_env(char **env, const char *name, const char *value);
+char	**remove_env_var(char **env, const char *name);;
+
+// Parsing
+void	handle_cmd(t_shell *shell);
+void	count_instance(t_shell *shell);
+void	parse_command(t_shell *shell);
+
+// Exec
+char	*find_command_path(t_shell *shell, char **env);
+void	execute_command(t_shell *shell, char **env);
+
+// Builtin
+int		is_builtin(t_shell *shell);
+char	**handle_builtin(t_shell *shell, char **env);
+	// Echo
+void	ft_echo(t_shell *shell, char **env);
+	// Pwd
+void	ft_pwd(void);
+	// Env
+void	ft_env(t_shell *shell, char **env);
+	// CD
+void	ft_cd(t_shell *shell, char **env);
+	// Exit
+void	ft_exit(t_shell *shell);
+	// Export
+char	**ft_export(t_shell *shell, char **env);
+	// Unset
+char	**ft_unset(t_shell *shell, char **env);
+
+// Signal
+void	handle_sigint(int sig);
+void	setup_signals(void);
+
+// Utils main
+void	free_shell(t_shell *shell);
+void	free_all_shells(t_shell *shell);
+
+// Utils exec
+void	free_array(char **array);
+void	free_args(t_shell *shell);
+
+// Init
+void	ft_init(t_shell *shell);
+char	**init_env(char **envp);
+
+#endif
+#endif
+
+// Contenu du fichier ../../src/main.c
+
+#include "minishell.h"
+
+/* debug function to print shell instance data */
+void	print_shell_instance(t_shell *shell)
+{
+	int	index;
+	int arg_index;
+
+	index = 0;
+	while (shell)
+	{
+		printf("\nShell instance #%d:\n", index);
+		printf("  current_line: %s\n", shell->current_line ? shell->current_line : "(null)");
+		printf("  current_cmd: %s\n", shell->current_cmd ? shell->current_cmd : "(null)");
+		// Ajout de l'affichage de current_arg
+		if (shell->current_arg)
+		{
+			printf("  current_arg:\n");
+			arg_index = 0;
+			while (shell->current_arg[arg_index])
+			{
+				printf("    arg[%d]: %s\n", arg_index, shell->current_arg[arg_index]);
+				arg_index++;
+			}
+		}
+		else
+		{
+			printf("  current_arg: (null)\n");
+		}
+		printf("  command_path: %s\n", shell->command_path ? shell->command_path : "(null)");
+		printf("  current_path: %s\n", shell->current_path ? shell->current_path : "(null)");
+		printf("  target_path: %s\n", shell->target_path ? shell->target_path : "(null)");
+		printf("  input_file: %s\n", shell->input_file ? shell->input_file : "(null)");
+		printf("  output_file: %s\n", shell->output_file ? shell->output_file : "(null)");
+		printf("  append_output: %d\n", shell->append_output);
+		printf("  pipe_in: %d\n", shell->pipe_in);
+		printf("  pipe_out: %d\n", shell->pipe_out);
+		printf("  is_piped: %d\n", shell->is_piped);
+		printf("  exit_code: %d\n", shell->exit_code);
+		printf("  instance_count: %d\n", shell->instance_count);
+
+
+		printf("  next: %p\n", (void *)shell->next);
+		printf("\n");
+		shell = shell->next;
+		index++;
+	}
+}
+
+
+int	is_empty_or_whitespace(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ' && str[i] != '\t')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	void_argc_argv(int argc, char **argv)
+{
+	(void)argc;
+	(void)argv;
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_shell	*shell;
+	char	**env;
+
+	env = init_env(envp);
+	if (!env)
+	{
+		perror("init_env");
+		return (1);
+	}
+	shell = malloc(sizeof(t_shell));
+	if (!shell)
+	{
+		perror("malloc");
+		free_array(env);
+		return (1);
+	}
+	void_argc_argv(argc, argv);
+	setup_signals();
+	shell->exit_code = 0;
+	while (1)
+	{
+		ft_init(shell);
+		shell->current_line = readline("minishell$> ");
+		if (shell->current_line == NULL)
+		{
+			printf("\b exit\n");
+			break ;
+		}
+		if (is_empty_or_whitespace(shell->current_line))
+		{
+			free(shell->current_line);
+			continue ;
+		}
+		if (ft_strlen(shell->current_line) > 0)
+		{
+			add_history(shell->current_line);
+			parse_command(shell);
+			if (is_builtin(shell))
+				env = handle_builtin(shell, env);
+			else
+				execute_command(shell, env);
+		}
+		free_all_shells(shell->next);
+		shell->next = NULL;
+		free(shell->current_line);
+		shell->current_line = NULL;
+	}
+	rl_clear_history();
+	free_shell(shell);
+	free_array(env);
+	return (0);
+}
+// Contenu du fichier ../../src/init.c
+
+#include "minishell.h"
+
+void	ft_init_variables(t_shell *shell)
+{
+	shell->current_line = NULL;
+	shell->current_arg = NULL;
+	shell->command_path = NULL;
+	shell->current_cmd = NULL;
+	shell->current_path = NULL;
+	shell->target_path = NULL;
+	//shell->exit_code = 0;
+	shell->input_file = NULL;
+	shell->output_file = NULL;
+	shell->append_output = 0;
+	shell->pipe_in = -1;
+	shell->pipe_out = -1;
+	shell->is_piped = 0;
+	shell->next = NULL;
+	shell->instance_count = 1;
+}
+
+int	ft_set_current_path(t_shell *shell)
+{
+	shell->current_path = getcwd(NULL, 0);
+	if (!shell->current_path)
+	{
+		perror("getcwd");
+		return (0);
+	}
+	return (1);
+}
+
+char	**init_env(char **envp)
+{
+	int		i;
+	char	**new_envp;
+	int		envp_len;
+	char	*shlvl_str;
+	int		shlvl;
+
+	envp_len = 0;
+	while (envp[envp_len])
+		envp_len++;
+	new_envp = (char **)malloc(sizeof(char *) * (envp_len + 1));
+	if (!new_envp)
+		return (NULL);
+	i = 0;
+	while (i < envp_len)
+	{
+		new_envp[i] = ft_strdup(envp[i]);
+		if (!new_envp[i])
+		{
+			perror("strdup");
+			while (i > 0)
+				free(new_envp[--i]);
+			free(new_envp);
+			return (NULL);
+		}
+		i++;
+	}
+	new_envp[i] = NULL;
+	shlvl_str = getenv("SHLVL");
+	if (shlvl_str)
+	{
+		shlvl = ft_atoi(shlvl_str);
+		shlvl++;
+	}
+	else
+		shlvl = 1;
+	shlvl_str = ft_itoa(shlvl);
+	if (shlvl_str)
+	{
+		new_envp = update_env(new_envp, "SHLVL", shlvl_str);
+		free(shlvl_str);
+	}
+	return (new_envp);
+}
+
+
+void	ft_init(t_shell *shell)
+{
+	ft_init_variables(shell);
+	if (!ft_set_current_path(shell))
+	{
+		free(shell);
+		return ;
+	}
+}
+// Contenu du fichier ../../src/utils.c
+
+#include "minishell.h"
+
+void	free_all_shells(t_shell *shell)
+{
+	t_shell	*temp;
+
+	while (shell)
+	{
+		temp = shell->next;
+		free_shell(shell);
+		shell = temp;
+	}
+}
+
+void	free_shell(t_shell *shell)
+{
+	if (shell == NULL)
+		return ;
+
+	if (shell->current_path)
+	{
+		free(shell->current_path);
+		shell->current_path = NULL;
+	}
+	if (shell->current_line)
+	{
+		free(shell->current_line);
+		shell->current_line = NULL;
+	}
+	if (shell->command_path)
+	{
+		free(shell->command_path);
+		shell->command_path = NULL;
+	}
+	if (shell->input_file)
+	{
+		free(shell->input_file);
+		shell->input_file = NULL;
+	}
+	if (shell->output_file)
+	{
+		free(shell->output_file);
+		shell->output_file = NULL;
+	}
+	free_args(shell);
+	free(shell);
+}
+// Contenu du fichier ../../src/exec/exec.c
+
+#include "minishell.h"
+
+char	*find_command_path(t_shell *shell, char **env)
+{
+	char	**path_split;
+	char	*path;
+	char	*full_path;
+	char	*temp;
+	int		i;
+
+	path = NULL;
+	i = 0;
+	if (access(shell->current_cmd, X_OK) == 0)
+	{
+		return (ft_strdup(shell->current_cmd));
+	}
+	while (env[i])
+	{
+		path_split = ft_split(env[i], '=');
+		if (ft_strncmp(path_split[0], "PATH", 4) == 0)
+		{
+			path = ft_strdup(path_split[1]);
+			free_array(path_split);
+			break ;
+		}
+		free_array(path_split);
+		i++;
+	}
+	if (!path)
+		return (NULL);
+	path_split = ft_split(path, ':');
+	free(path);
+	i = 0;
+	while (path_split[i])
+	{
+		full_path = ft_strjoin(path_split[i], "/");
+		temp = full_path;
+		full_path = ft_strjoin(full_path, shell->current_cmd);
+		free(temp);
+		if (access(full_path, X_OK) == 0)
+		{
+			free_array(path_split);
+			return (full_path);
+		}
+		free(full_path);
+		i++;
+	}
+	free_array(path_split);
+	return (NULL);
+}
+
+void	execute_command(t_shell *shell, char **env)
+{
+	pid_t	pid;
+	int		status;
+	int		pipe_fds[2];
+
+	while (shell)
+	{
+		if (shell->is_piped)
+		{
+			if (pipe(pipe_fds) == -1)
+			{
+				perror("pipe");
+				shell->exit_code = 1;
+				return ;
+			}
+			shell->pipe_out = pipe_fds[1];
+			shell->next->pipe_in = pipe_fds[0];
+		}
+		pid = fork();
+		if (pid == 0)
+		{
+			if (shell->pipe_in != -1)
+			{
+				dup2(shell->pipe_in, STDIN_FILENO);
+				close(shell->pipe_in);
+			}
+			if (shell->pipe_out != -1)
+			{
+				dup2(shell->pipe_out, STDOUT_FILENO);
+				close(shell->pipe_out);
+			}
+			if (shell->pipe_out != -1)
+				close(shell->pipe_out);
+			if (shell->pipe_in != -1)
+				close(shell->pipe_in);
+			if (is_builtin(shell))
+			{
+				handle_builtin(shell, env);
+				free_args(shell);
+				exit(shell->exit_code);
+			}
+			else
+			{
+				shell->command_path = find_command_path(shell, env);
+				if (!shell->command_path)
+				{
+					write(STDERR_FILENO, "bash: ", 7);
+					write(STDERR_FILENO, shell->current_cmd, ft_strlen(shell->current_cmd));
+					write(STDERR_FILENO, ": Command not found\n", 21);
+					exit(127);
+				}
+				if (execve(shell->command_path, shell->current_arg, env) == -1)
+				{
+					perror("minishell");
+					exit(EXIT_FAILURE);
+				}
+			}
+		}
+		else if (pid < 0)
+		{
+			perror("minishell");
+			shell->exit_code = 1;
+		}
+		else
+		{
+			if (shell->pipe_out != -1)
+				close(shell->pipe_out);
+			if (shell->pipe_in != -1)
+				close(shell->pipe_in);
+			waitpid(pid, &status, 0);
+			if (WIFEXITED(status))
+				shell->exit_code = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				shell->exit_code = 128 + WTERMSIG(status);
+		}
+		shell = shell->next;
+	}
+}
+// Contenu du fichier ../../src/exec/utils.c
+
+#include "minishell.h"
+
+void	free_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		array[i] = NULL;
+		i++;
+	}
+	free(array);
+	array = NULL;
+}
+
+void	free_args(t_shell *shell)
+{
+	int	i;
+
+	if (!shell || !shell->current_arg)
+		return ;
+	i = 0;
+	while (shell->current_arg[i])
+	{
+		if (shell->current_arg[i] != NULL)
+		{
+			free(shell->current_arg[i]);
+			shell->current_arg[i] = NULL;
+		}
+		i++;
+	}
+	free(shell->current_arg);
+	shell->current_arg = NULL;
+}
+// Contenu du fichier ../../src/signal.c
+
+#include "minishell.h"
+
+void	handle_sigint(int sig)
+{
+	(void)sig;
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	write(STDOUT_FILENO, "\n", 1);
+	rl_redisplay();
+}
+
+void	setup_signals(void)
+{
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
+}
+// Contenu du fichier ../../src/parsing/parsing.c
+
+#include "minishell.h"
+
+int	is_quote(int c)
+{
+	return (c == '"' || c == '\'');
+}
+
+int	is_separator(int character, int space)
+{
+	if (is_quote(character))
+		return (1);
+	if (character == ' ' && space)
+		return (1);
+	return (0);
+}
+
+int	jump_arg(char *line, int cursor)
+{
+	int	index;
+
+	index = cursor + 1;
+	if (line[cursor] == ' ')
+	{
+		while (line[index] == ' ' && line[index] != '\0')
+			index++;
+		return (index);
+	}
+	else if (is_quote(line[cursor]))
+	{
+		index = cursor + 1;
+		while (line[index] != line[cursor] && line[index] != '\0')
+			index++;
+		if (line[index] != '\0')
+			index++;
+		return (index);
+	}
+	else
+	{
+		while (line[index] != ' ' && line[index] != '\0' && \
+			!is_quote(line[index]))
+			index++;
+		return (index);
+	}
+}
+
+int	count_args(char *line)
+{
+	int	len;
+	int	index;
+
+	len = 0;
+	index = 0;
+	while (line[index] != '\0')
+	{
+		if (is_separator(line[index], 1))
+		{
+			index = jump_arg(line, index);
+			len++;
+		}
+		else
+			index++;
+	}
+	return (len);
+}
+
+int	get_arglen(t_shell *shell, int start, int end)
+{
+	int		len;
+	int		index;
+	char	quote_type;
+
+	len = 0;
+	index = start;
+	while (index <= end && shell->current_line[index])
+	{
+		if (is_quote(shell->current_line[index]))
+		{
+			quote_type = shell->current_line[index++];
+			while (shell->current_line[index] && shell->current_line[index] != quote_type)
+			{
+				len++;
+				index++;
+			}
+		}
+		else
+			len++;
+		index++;
+	}
+	return (len);
+}
+
+void	copy_inner_content(char *dest, char *src, int start, int end)
+{
+	int		index;
+	int		cursor;
+	char	quote_type;
+
+	index = start;
+	cursor = 0;
+	while (index <= end && src[index] != '\0')
+	{
+		if (is_quote(src[index]))
+		{
+			quote_type = src[index++];
+			while (index <= end && src[index] != quote_type)
+				dest[cursor++] = src[index++];
+		}
+		else
+			dest[cursor++] = src[index];
+		index++;
+	}
+	dest[cursor] = '\0';
+}
+
+char	*remove_outer_quotes(t_shell *shell, int start, int end)
+{
+	char	*str;
+	int		arg_len;
+
+	arg_len = get_arglen(shell, start, end);
+	str = (char *)malloc(sizeof(char) * (arg_len + 1));
+	if (!str)
+		return (NULL);
+	copy_inner_content(str, shell->current_line, start, end);
+	return (str);
+}
+
+void	set_arg(t_shell *shell, int start, int end, int pos)
+{
+	shell->current_arg[pos] = remove_outer_quotes(shell, start, end);
+}
+
+int	jump_quote(t_shell *shell, int cursor)
+{
+	int		index;
+	char	quote_type;
+
+	index = cursor + 1;
+	quote_type = shell->current_line[cursor];
+	while (shell->current_line[index] && shell->current_line[index] != quote_type)
+		index++;
+	return (index);
+}
+
+void	set_arguments(t_shell *shell)
+{
+	int	len;
+	int	index;
+	int	old_index;
+
+	len = 0;
+	index = 0;
+	old_index = 0;
+	while (shell->current_line[index] != '\0')
+	{
+		if (shell->current_line[index] == ' ')
+		{
+			if (index > old_index)
+				set_arg(shell, old_index, index - 1, len++);
+			index = jump_arg(shell->current_line, index);
+			old_index = index;
+		}
+		else if (is_quote(shell->current_line[index]))
+			index = jump_quote(shell, index);
+		else
+			index++;
+	}
+	if (index > old_index)
+		set_arg(shell, old_index, index - 1, len++);
+	shell->current_arg[len] = NULL;
+}
+
+void	parse_command(t_shell *shell)
+{
+	int		len;
+	char	**arguments;
+
+	len = count_args(shell->current_line);
+	arguments = (char **)malloc(sizeof(char *) * (len + 2));
+	shell->current_arg = arguments;
+	set_arguments(shell);
+	handle_cmd(shell);
+	//look_redirection(shell);
+	shell->current_cmd = shell->current_arg[0];
+}
+// Contenu du fichier ../../src/parsing/utils.c
+
+#include "minishell.h"
+
+int	is_redirecion(char *str)
+{
+	int	len;
+
+	len = ft_strlen(str);
+	if (len > 2)
+		return (0);
+	if (str[0] != '<' && str[0] != '>')
+		return (0);
+	if (len == 1)
+		return (1);
+	else if (str[0] == str[1])
+		return (1);
+	return (0);
+}
+
+void	count_instance(t_shell *shell)
+{
+	int	i;
+
+	i = 0;
+	while (shell->next)
+	{
+		shell = shell->next;
+		i++;
+	}
+	printf("There is %d minishell instances\n", i);
+}
+
+int	find_end(t_shell *shell, int start)
+{
+	int	i;
+
+	i = start + 1;
+	while (shell->current_arg[i])
+	{
+		if (shell->current_arg[i][0] == '|' || is_redirecion(shell->current_arg[i]))
+			break;
+		i++;
+	}
+	return (i);
+}
+
+void	complete_instance(t_shell *shell, t_shell *instance, int start, int end)
+{
+	int	i;
+	int	d;
+
+	d = 0;
+	i = start + 1;
+	instance->current_arg = (char **)malloc(sizeof(char *) * ((end - start)));
+	while (i < end && shell->current_arg[i])
+	{
+		instance->current_arg[d] = ft_strdup(shell->current_arg[i]);
+		i++;
+		d++;
+	}
+	instance->current_arg[d] = NULL;
+	instance->current_cmd = instance->current_arg[0];
+}
+
+void	free_main_shell(t_shell *shell)
+{
+	int	i;
+	int	b;
+
+	if (shell == NULL || shell->current_arg == NULL)
+		return ;
+	i = 0;
+	while (shell->current_arg[i] != NULL)
+	{
+		if ((shell->current_arg[i][0] == '|' && shell->current_arg[i + 1] != NULL) || (is_redirecion(shell->current_arg[i]) && shell->current_arg[i + 1] != NULL))
+		{
+			b = i;
+			while (shell->current_arg[b] != NULL)
+			{
+				free(shell->current_arg[b]);
+				b++;
+			}
+			shell->current_arg[i] = NULL;
+			return;
+		}
+		i++;
+	}
+}
+
+void	handle_cmd(t_shell *shell)
+{
+	int	i;
+	int	c;
+	int pipe_fds[2];
+	t_shell	*main_shell;
+
+	i = 0;
+	c = 1;
+	main_shell = shell;
+	while (shell->current_arg[i])
+	{
+		if (shell->current_arg[i][0] == '|' && shell->current_arg[i + 1])
+		{
+			main_shell->next = malloc(sizeof(t_shell));
+			if (!main_shell->next)
+				return;
+			ft_init(main_shell->next);
+			complete_instance(shell, main_shell->next, i, find_end(shell, i));
+			if (pipe(pipe_fds) == -1)
+			{
+				perror("pipe");
+				return;
+			}
+			main_shell->is_piped = 1;
+			main_shell->pipe_out = pipe_fds[1];
+			main_shell->next->pipe_in = pipe_fds[0];
+			main_shell = main_shell->next;
+			i++;
+			c++;
+			main_shell->instance_count = c;
+		}
+		else if (is_redirecion(shell->current_arg[i]) && shell->current_arg[i + 1])
+		{
+			main_shell->next = malloc(sizeof(t_shell));
+			if (!main_shell->next)
+				return;
+			ft_init(main_shell->next);
+			complete_instance(shell, main_shell->next, i, find_end(shell, i));
+			if (shell->current_arg[i][0] == '<')
+				main_shell->input_file = ft_strdup(shell->current_arg[i + 1]);
+			else if (shell->current_arg[i][0] == '>')
+				main_shell->output_file = ft_strdup(shell->current_arg[i + 1]);
+			if (ft_strlen(shell->current_arg[i]) == 2)
+				main_shell->append_output = 1;
+			main_shell = main_shell->next;
+			c++;
+			main_shell->instance_count = c;
+		}
+		i++;
+	}
+	free_main_shell(shell);
+}
+// Contenu du fichier ../../src/builtin/exit.c
+
+#include "minishell.h"
+
+void	ft_exit(t_shell *shell)
+{
+	int	exit_code;
+
+	if (shell->current_arg[1])
+		exit_code = ft_atoi(shell->current_arg[1]);
+	else
+		exit_code = 0;
+	printf("exit\n");
+	rl_clear_history();
+	free_shell(shell);
+	exit(exit_code);
+}
+// Contenu du fichier ../../src/builtin/unset.c
+
+#include "minishell.h"
+
+char	**remove_env_var(char **env, const char *name)
+{
+	int		i;
+	int		j;
+	int		name_len;
+	int		envp_size;
+	char	**new_envp;
+
+	name_len = ft_strlen(name);
+	i = 0;
+	envp_size = 0;
+	while (env[envp_size])
+		envp_size++;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], name, name_len) == 0 && env[i][name_len] == '=')
+			break ;
+		i++;
+	}
+	if (!env[i])
+		return (env);
+	new_envp = (char **)malloc(sizeof(char *) * envp_size);
+	if (!new_envp)
+	{
+		perror("malloc");
+		return (env);
+	}
+	j = 0;
+	while (env[j])
+	{
+		if (j != i)
+		{
+			if (j < i)
+				new_envp[j] = env[j];
+			else
+				new_envp[j - 1] = env[j];
+		}
+		j++;
+	}
+	new_envp[envp_size - 1] = NULL;
+	free(env[i]);
+	free(env);
+	return (new_envp);
+}
+
+char	**ft_unset(t_shell *shell, char **env)
+{
+	int	i;
+
+	if (!shell->current_arg[1])
+	{
+		shell->exit_code = 0;
+		return (env);
+	}
+	i = 1;
+	while (shell->current_arg[i])
+	{
+		env = remove_env_var(env, shell->current_arg[i]);
+		i++;
+	}
+	shell->exit_code = 0;
+	return (env);
+}
+// Contenu du fichier ../../src/builtin/env.c
+
+#include "minishell.h"
+
+void	ft_env(t_shell *shell, char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+	{
+		ft_putendl_fd(env[i], STDOUT_FILENO);
+		i++;
+	}
+	shell->exit_code = 0;
+}
+// Contenu du fichier ../../src/builtin/pwd.c
+
+#include "minishell.h"
+
+void	ft_pwd(void)
+{
+	char	cwd[PATH_MAX];
+
+	if (getcwd(cwd, PATH_MAX))
+		printf("%s\n", cwd);
+	else
+		perror("pwd");
+}
+// Contenu du fichier ../../src/builtin/builtin.c
+
+#include "minishell.h"
+
+int	is_builtin(t_shell *shell)
+{
+	if (ft_strncmp(shell->current_cmd, "echo", 4) == 0)
+		return (1);
+	else if (ft_strncmp(shell->current_cmd, "pwd", 3) == 0)
+		return (1);
+	else if (ft_strncmp(shell->current_cmd, "env", 3) == 0)
+		return (1);
+	else if (ft_strncmp(shell->current_cmd, "cd", 2) == 0)
+		return (1);
+	else if (ft_strncmp(shell->current_cmd, "exit", 4) == 0)
+		return (1);
+	else if (ft_strncmp(shell->current_cmd, "export", 6) == 0)
+		return (1);
+	else if (ft_strncmp(shell->current_cmd, "unset", 5) == 0)
+		return (1);
+	return (0);
+}
+
+char	**handle_builtin(t_shell *shell, char **env)
+{
+	if (ft_strncmp(shell->current_cmd, "echo", 4) == 0)
+		ft_echo(shell, env);
+	else if (ft_strncmp(shell->current_cmd, "pwd", 3) == 0)
+		ft_pwd();
+	else if (ft_strncmp(shell->current_cmd, "env", 3) == 0)
+		ft_env(shell, env);
+	else if (ft_strncmp(shell->current_cmd, "cd", 2) == 0)
+		ft_cd(shell, env);
+	else if (ft_strncmp(shell->current_cmd, "exit", 4) == 0)
+		ft_exit(shell);
+	else if (ft_strncmp(shell->current_cmd, "export", 6) == 0)
+		env = ft_export(shell, env);
+	else if (ft_strncmp(shell->current_cmd, "unset", 5) == 0)
+		env = ft_unset(shell, env);
+	return (env);
+}
+// Contenu du fichier ../../src/builtin/export.c
+
+#include "minishell.h"
+
+int	get_envp_size(char **envp)
+{
+	int	size;
+
+	size = 0;
+	while (envp[size])
+		size++;
+	return (size);
+}
+
+char	**update_env(char **env, const char *name, const char *value)
+{
+	int		i;
+	int		name_len;
+	int		value_len;
+	int		envp_size;
+	char	*new_var;
+	char	**new_envp;
+
+	name_len = ft_strlen(name);
+	value_len = ft_strlen(value);
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], name, name_len) == 0 && env[i][name_len] == '=')
+		{
+			free(env[i]);
+			new_var = (char *)malloc(name_len + value_len + 2);
+			if (!new_var)
+				return (env); // Si l'allocation échoue, retourne l'environnement inchangé
+			ft_strlcpy(new_var, name, name_len + 1);
+			ft_strlcat(new_var, "=", name_len + 2);
+			ft_strlcat(new_var, value, name_len + value_len + 2);
+			env[i] = new_var;
+			return (env);
+		}
+		i++;
+	}
+	envp_size = get_envp_size(env);
+	new_envp = (char **)malloc(sizeof(char *) * (envp_size + 2));
+	if (!new_envp)
+		return (env); // Si l'allocation échoue, retourne l'environnement inchangé
+	i = 0;
+	while (i < envp_size)
+	{
+		new_envp[i] = env[i];
+		i++;
+	}
+	new_var = (char *)malloc(name_len + value_len + 2);
+	if (!new_var)
+		return (env); // Si l'allocation échoue, retourne l'environnement inchangé
+	ft_strlcpy(new_var, name, name_len + 1);
+	ft_strlcat(new_var, "=", name_len + 2);
+	ft_strlcat(new_var, value, name_len + value_len + 2);
+	new_envp[envp_size] = new_var;
+	new_envp[envp_size + 1] = NULL;
+	free(env);
+	return (new_envp);
+}
+
+char	**ft_export(t_shell *shell, char **env)
+{
+	int		i;
+	char	*name;
+	char	*value;
+	char	*equal_sign;
+	int		exists;
+
+	if (!shell->current_arg[1])
+	{
+		i = 0;
+		while (env[i])
+		{
+			printf("declare -x %s\n", env[i]);
+			i++;
+		}
+		shell->exit_code = 0;
+		return (env);
+	}
+	i = 1;
+	while (shell->current_arg[i])
+	{
+		equal_sign = ft_strchr(shell->current_arg[i], '=');
+		if (equal_sign)
+		{
+			name = ft_substr(shell->current_arg[i], 0, equal_sign - shell->current_arg[i]);
+			value = ft_strdup(equal_sign + 1);
+			env = update_env(env, name, value);
+			free(name);
+			free(value);
+		}
+		else
+		{
+			exists = 0;
+			name = shell->current_arg[i];
+			int j = 0;
+			while (env[j])
+			{
+				if (ft_strncmp(env[j], name, ft_strlen(name)) == 0 &&
+					env[j][ft_strlen(name)] == '=')
+				{
+					exists = 1;
+					break ;
+				}
+				j++;
+			}
+			if (!exists)
+			{
+				shell->exit_code = 0;
+			}
+		}
+		i++;
+	}
+	shell->exit_code = 0;
+	return (env);
+}
+// Contenu du fichier ../../src/builtin/cd.c
+
+#include "minishell.h"
+
+void ft_cd(t_shell *shell, char **env)
+{
+	int		ret;
+	char	*path;
+	char	*oldpwd;
+	char	*new_path;
+
+	if (!shell->current_arg[1])
+	{
+		shell->exit_code = 1;
+		return ;
+	}
+	path = shell->current_arg[1];
+	oldpwd = getcwd(NULL, 0);
+	if (!oldpwd)
+	{
+		perror("getcwd");
+		shell->exit_code = 1;
+		return ;
+	}
+	ret = chdir(path);
+	if (ret == -1)
+	{
+		perror("bash: cd");
+		free(oldpwd);
+		shell->exit_code = 1;
+		return ;
+	}
+	update_env(env, "OLDPWD", oldpwd);
+	free(oldpwd);
+	new_path = getcwd(NULL, 0);
+	if (!new_path)
+	{
+		perror("getcwd");
+		shell->exit_code = 1;
+		return ;
+	}
+	update_env(env, "PWD", new_path);
+	free(shell->current_path);
+	shell->current_path = new_path;
+	shell->exit_code = 0;
+}
+// Contenu du fichier ../../src/builtin/echo.c
+
+#include "minishell.h"
+
+char	*get_env_value(char **env, char *var_name)
+{
+	int	i;
+	int	var_len;
+
+	var_len = ft_strlen(var_name);
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], var_name, var_len) == 0 && \
+		env[i][var_len] == '=')
+			return (&env[i][var_len + 1]);
+		i++;
+	}
+	return (NULL);
+}
+
+void	ft_echo(t_shell *shell, char **env)
+{
+	int		i;
+	int		newline;
+	char	*value;
+
+	i = 1;
+	newline = 1;
+	if (shell->current_arg[i] && ft_strncmp(shell->current_arg[i], "-n", 3) == 0)
+	{
+		newline = 0;
+		i++;
+	}
+	while (shell->current_arg[i])
+	{
+		if (ft_strncmp(shell->current_arg[i], "$?", 3) == 0)
+		{
+			printf("%d", shell->exit_code);
+		}
+		else if (shell->current_arg[i][0] == '$' && ft_strlen(shell->current_arg[i]) > 1)
+		{
+			value = get_env_value(env, &shell->current_arg[i][1]);
+			if (value)
+			{
+				printf("%s", value);
+			}
+			else
+			{
+				printf("\n");
+				shell->exit_code = 0;
+				return ;
+			}
+		}
+		else
+		{
+			printf("%s", shell->current_arg[i]);
+		}
+		if (shell->current_arg[i + 1])
+			printf(" ");
+		i++;
+	}
+	if (newline)
+		printf("\n");
+	shell->exit_code = 0;
+}
+
+// Contenu du fichier ../../Makefile
+
+NAME := minishell
+
+CC := gcc
+CFLAGS := -Wall -Wextra -Werror
+RM := rm -f
+RMDIR := rm -rf
+
+LIBFT := libft/libft.a
+
+UNAME_S := $(shell uname -s)
+
+HEADERS := -I./include -Ilibft/include
+LIBS := $(LIBFT) -lreadline -ltermcap
+
+ifeq ($(UNAME_S), Darwin)
+    READLINE_PATH := $(shell brew --prefix readline)
+    HEADERS += -I$(READLINE_PATH)/include
+    LIBS += -L$(READLINE_PATH)/lib
+endif
+
+SRCDIR := src
+SRCS := $(shell find $(SRCDIR) -name '*.c')
+
+OBJDIR := obj
+OBJS := $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+		make -C libft
+		$(CC) $(OBJS) $(LIBS) -o $(NAME)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+		@mkdir -p $(dir $@)
+		$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
+
+clean:
+		$(RMDIR) $(OBJDIR)
+		make -C libft clean
+
+fclean: clean
+		$(RM) $(NAME)
+		make -C libft fclean
+
+re: fclean all
+
+.PHONY: all clean fclean re

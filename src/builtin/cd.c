@@ -6,13 +6,13 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/17 16:54:53 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/26 23:19:17 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_cd(t_shell *shell)
+void ft_cd(t_shell *shell, char **env)
 {
 	int		ret;
 	char	*path;
@@ -40,7 +40,7 @@ void	ft_cd(t_shell *shell)
 		shell->exit_code = 1;
 		return ;
 	}
-	update_env(shell, "OLDPWD", oldpwd);
+	update_env(env, "OLDPWD", oldpwd);
 	free(oldpwd);
 	new_path = getcwd(NULL, 0);
 	if (!new_path)
@@ -49,7 +49,7 @@ void	ft_cd(t_shell *shell)
 		shell->exit_code = 1;
 		return ;
 	}
-	update_env(shell, "PWD", new_path);
+	update_env(env, "PWD", new_path);
 	free(shell->current_path);
 	shell->current_path = new_path;
 	shell->exit_code = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/23 13:21:15 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/27 02:08:44 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 
 typedef struct s_shell
 {
-	char			**envp;
 	char			*current_line;
 	char			**current_arg;
 	char			*command_path;
@@ -46,48 +45,51 @@ typedef struct s_shell
 	struct s_shell	*next;
 }	t_shell;
 
-//Parsing
+// Environment management
+char	**update_env(char **env, const char *name, const char *value);
+char	**remove_env_var(char **env, const char *name);;
+
+// Parsing
 void	handle_cmd(t_shell *shell);
 void	count_instance(t_shell *shell);
 void	parse_command(t_shell *shell);
 
-//Exec
-char	*find_command_path(t_shell *shell);
-void	execute_command(t_shell *shell);
+// Exec
+char	*find_command_path(t_shell *shell, char **env);
+void	execute_command(t_shell *shell, char **env);
 
-//Builtin
+// Builtin
 int		is_builtin(t_shell *shell);
-void	handle_builtin(t_shell *shell);
-	//Echo
-void	ft_echo(t_shell *shell);
-	//Pwd
+char	**handle_builtin(t_shell *shell, char **env);
+	// Echo
+void	ft_echo(t_shell *shell, char **env);
+	// Pwd
 void	ft_pwd(void);
-	//Env
-void	ft_env(t_shell *shell);
-	//CD
-void	ft_cd(t_shell *shell);
-	//Exit
+	// Env
+void	ft_env(t_shell *shell, char **env);
+	// CD
+void	ft_cd(t_shell *shell, char **env);
+	// Exit
 void	ft_exit(t_shell *shell);
-	//Export
-void	update_env(t_shell *shell, const char *name, const char *value);
-void	ft_export(t_shell *shell);
-	//Unset
-void	ft_unset(t_shell *shell);
+	// Export
+char	**ft_export(t_shell *shell, char **env);
+	// Unset
+char	**ft_unset(t_shell *shell, char **env);
 
-//Signal
+// Signal
 void	handle_sigint(int sig);
 void	setup_signals(void);
 
-//Utils main
+// Utils main
 void	free_shell(t_shell *shell);
 void	free_all_shells(t_shell *shell);
-void	ft_init(t_shell *shell, char **envp);
 
-//Utils exec
+// Utils exec
 void	free_array(char **array);
 void	free_args(t_shell *shell);
 
-//Init
-void	ft_init(t_shell *shell, char **envp);
+// Init
+void	ft_init(t_shell *shell);
+char	**init_env(char **envp);
 
 #endif

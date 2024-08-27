@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Dossier source contenant les fichiers .c, en remontant d'un niveau
-SRC_DIR="../src"
+SRC_DIR="../../src"
 # Dossier contenant les fichiers .h, en remontant d'un niveau
-INCLUDE_DIR="../include"
+INCLUDE_DIR="../../include"
 # Fichier de sortie dans le dossier actuel (code_master)
 OUTPUT_FILE="./code_master.txt"
 # Fichier Makefile, en remontant d'un niveau
-MAKEFILE="../Makefile"
+MAKEFILE="../../Makefile"
 
 # Nettoyer le fichier de sortie s'il existe déjà
 > "$OUTPUT_FILE"

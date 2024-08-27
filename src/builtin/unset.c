@@ -6,13 +6,13 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 04:38:00 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/21 23:53:57 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/26 23:24:00 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	remove_env_var(t_shell *shell, const char *name)
+char	**remove_env_var(char **env, const char *name)
 {
 	int		i;
 	int		j;
@@ -23,55 +23,55 @@ void	remove_env_var(t_shell *shell, const char *name)
 	name_len = ft_strlen(name);
 	i = 0;
 	envp_size = 0;
-	while (shell->envp[envp_size])
+	while (env[envp_size])
 		envp_size++;
-	while (shell->envp[i])
+	while (env[i])
 	{
-		if (ft_strncmp(shell->envp[i], name, name_len) == 0 && shell->envp[i][name_len] == '=')
+		if (ft_strncmp(env[i], name, name_len) == 0 && env[i][name_len] == '=')
 			break ;
 		i++;
 	}
-	if (!shell->envp[i])
-		return ;
+	if (!env[i])
+		return (env);
 	new_envp = (char **)malloc(sizeof(char *) * envp_size);
 	if (!new_envp)
 	{
 		perror("malloc");
-		shell->exit_code = 1;
-		return ;
+		return (env);
 	}
 	j = 0;
-	while (shell->envp[j])
+	while (env[j])
 	{
 		if (j != i)
 		{
 			if (j < i)
-				new_envp[j] = shell->envp[j];
+				new_envp[j] = env[j];
 			else
-				new_envp[j - 1] = shell->envp[j];
+				new_envp[j - 1] = env[j];
 		}
 		j++;
 	}
 	new_envp[envp_size - 1] = NULL;
-	free(shell->envp[i]);
-	free(shell->envp);
-	shell->envp = new_envp;
+	free(env[i]);
+	free(env);
+	return (new_envp);
 }
 
-void	ft_unset(t_shell *shell)
+char	**ft_unset(t_shell *shell, char **env)
 {
 	int	i;
 
 	if (!shell->current_arg[1])
 	{
 		shell->exit_code = 0;
-		return ;
+		return (env);
 	}
 	i = 1;
 	while (shell->current_arg[i])
 	{
-		remove_env_var(shell, shell->current_arg[i]);
+		env = remove_env_var(env, shell->current_arg[i]);
 		i++;
 	}
 	shell->exit_code = 0;
+	return (env);
 }

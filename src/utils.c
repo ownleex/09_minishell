@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 23:03:51 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/21 22:38:49 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/26 23:26:53 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,6 @@ void	free_shell(t_shell *shell)
 	{
 		free(shell->current_path);
 		shell->current_path = NULL;
-	}
-	if (shell->envp)
-	{
-		free_array(shell->envp);
-		shell->envp = NULL;
 	}
 	if (shell->current_line)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 04:37:37 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/26 16:39:15 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/26 23:22:43 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	get_envp_size(char **envp)
 	return (size);
 }
 
-void	update_env(t_shell *shell, const char *name, const char *value)
+char	**update_env(char **env, const char *name, const char *value)
 {
 	int		i;
 	int		name_len;
@@ -34,45 +34,45 @@ void	update_env(t_shell *shell, const char *name, const char *value)
 	name_len = ft_strlen(name);
 	value_len = ft_strlen(value);
 	i = 0;
-	while (shell->envp[i])
+	while (env[i])
 	{
-		if (ft_strncmp(shell->envp[i], name, name_len) == 0 && shell->envp[i][name_len] == '=')
+		if (ft_strncmp(env[i], name, name_len) == 0 && env[i][name_len] == '=')
 		{
-			free(shell->envp[i]);
+			free(env[i]);
 			new_var = (char *)malloc(name_len + value_len + 2);
 			if (!new_var)
-				return ;
+				return (env); // Si l'allocation échoue, retourne l'environnement inchangé
 			ft_strlcpy(new_var, name, name_len + 1);
 			ft_strlcat(new_var, "=", name_len + 2);
 			ft_strlcat(new_var, value, name_len + value_len + 2);
-			shell->envp[i] = new_var;
-			return ;
+			env[i] = new_var;
+			return (env);
 		}
 		i++;
 	}
-	envp_size = get_envp_size(shell->envp);
+	envp_size = get_envp_size(env);
 	new_envp = (char **)malloc(sizeof(char *) * (envp_size + 2));
 	if (!new_envp)
-		return ;
+		return (env); // Si l'allocation échoue, retourne l'environnement inchangé
 	i = 0;
 	while (i < envp_size)
 	{
-		new_envp[i] = shell->envp[i];
+		new_envp[i] = env[i];
 		i++;
 	}
 	new_var = (char *)malloc(name_len + value_len + 2);
 	if (!new_var)
-		return ;
+		return (env); // Si l'allocation échoue, retourne l'environnement inchangé
 	ft_strlcpy(new_var, name, name_len + 1);
 	ft_strlcat(new_var, "=", name_len + 2);
 	ft_strlcat(new_var, value, name_len + value_len + 2);
 	new_envp[envp_size] = new_var;
 	new_envp[envp_size + 1] = NULL;
-	free(shell->envp);
-	shell->envp = new_envp;
+	free(env);
+	return (new_envp);
 }
 
-void ft_export(t_shell *shell)
+char	**ft_export(t_shell *shell, char **env)
 {
 	int		i;
 	char	*name;
@@ -83,13 +83,13 @@ void ft_export(t_shell *shell)
 	if (!shell->current_arg[1])
 	{
 		i = 0;
-		while (shell->envp[i])
+		while (env[i])
 		{
-			printf("declare -x %s\n", shell->envp[i]);
+			printf("declare -x %s\n", env[i]);
 			i++;
 		}
 		shell->exit_code = 0;
-		return ;
+		return (env);
 	}
 	i = 1;
 	while (shell->current_arg[i])
@@ -99,7 +99,7 @@ void ft_export(t_shell *shell)
 		{
 			name = ft_substr(shell->current_arg[i], 0, equal_sign - shell->current_arg[i]);
 			value = ft_strdup(equal_sign + 1);
-			update_env(shell, name, value);
+			env = update_env(env, name, value);
 			free(name);
 			free(value);
 		}
@@ -108,10 +108,10 @@ void ft_export(t_shell *shell)
 			exists = 0;
 			name = shell->current_arg[i];
 			int j = 0;
-			while (shell->envp[j])
+			while (env[j])
 			{
-				if (ft_strncmp(shell->envp[j], name, ft_strlen(name)) == 0 &&
-					shell->envp[j][ft_strlen(name)] == '=')
+				if (ft_strncmp(env[j], name, ft_strlen(name)) == 0 &&
+					env[j][ft_strlen(name)] == '=')
 				{
 					exists = 1;
 					break ;
@@ -126,4 +126,5 @@ void ft_export(t_shell *shell)
 		i++;
 	}
 	shell->exit_code = 0;
+	return (env);
 }
