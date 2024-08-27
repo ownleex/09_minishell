@@ -36,7 +36,6 @@ typedef struct s_shell
 }	t_shell;
 
 // Environment management
-char	**init_env(char **envp);
 char	**update_env(char **env, const char *name, const char *value);
 char	**remove_env_var(char **env, const char *name);;
 
@@ -74,14 +73,14 @@ void	setup_signals(void);
 // Utils main
 void	free_shell(t_shell *shell);
 void	free_all_shells(t_shell *shell);
-void	ft_init(t_shell *shell, char **env);
 
 // Utils exec
 void	free_array(char **array);
 void	free_args(t_shell *shell);
 
 // Init
-void	ft_init(t_shell *shell, char **env);
+void	ft_init(t_shell *shell);
+char	**init_env(char **envp);
 
 #endif
 #endif
@@ -181,7 +180,7 @@ int	main(int argc, char **argv, char **envp)
 	shell->exit_code = 0;
 	while (1)
 	{
-		ft_init(shell, env);
+		ft_init(shell);
 		shell->current_line = readline("minishell$> ");
 		if (shell->current_line == NULL)
 		{
@@ -251,6 +250,8 @@ char	**init_env(char **envp)
 	int		i;
 	char	**new_envp;
 	int		envp_len;
+	char	*shlvl_str;
+	int		shlvl;
 
 	envp_len = 0;
 	while (envp[envp_len])
@@ -273,12 +274,26 @@ char	**init_env(char **envp)
 		i++;
 	}
 	new_envp[i] = NULL;
+	shlvl_str = getenv("SHLVL");
+	if (shlvl_str)
+	{
+		shlvl = ft_atoi(shlvl_str);
+		shlvl++;
+	}
+	else
+		shlvl = 1;
+	shlvl_str = ft_itoa(shlvl);
+	if (shlvl_str)
+	{
+		new_envp = update_env(new_envp, "SHLVL", shlvl_str);
+		free(shlvl_str);
+	}
 	return (new_envp);
 }
 
-void	ft_init(t_shell *shell, char **env)
+
+void	ft_init(t_shell *shell)
 {
-	(void)env;
 	ft_init_variables(shell);
 	if (!ft_set_current_path(shell))
 	{
@@ -817,7 +832,7 @@ void	handle_cmd(t_shell *shell)
 			main_shell->next = malloc(sizeof(t_shell));
 			if (!main_shell->next)
 				return;
-			ft_init(main_shell->next, NULL);
+			ft_init(main_shell->next);
 			complete_instance(shell, main_shell->next, i, find_end(shell, i));
 			if (pipe(pipe_fds) == -1)
 			{
@@ -837,7 +852,7 @@ void	handle_cmd(t_shell *shell)
 			main_shell->next = malloc(sizeof(t_shell));
 			if (!main_shell->next)
 				return;
-			ft_init(main_shell->next, NULL);
+			ft_init(main_shell->next);
 			complete_instance(shell, main_shell->next, i, find_end(shell, i));
 			if (shell->current_arg[i][0] == '<')
 				main_shell->input_file = ft_strdup(shell->current_arg[i + 1]);
