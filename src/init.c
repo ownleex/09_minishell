@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 01:47:46 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/26 23:58:55 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/27 02:01:55 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ char	**init_env(char **envp)
 	int		i;
 	char	**new_envp;
 	int		envp_len;
+	char	*shlvl_str;
+	int		shlvl;
 
 	envp_len = 0;
 	while (envp[envp_len])
@@ -69,8 +71,23 @@ char	**init_env(char **envp)
 		i++;
 	}
 	new_envp[i] = NULL;
+	shlvl_str = getenv("SHLVL");
+	if (shlvl_str)
+	{
+		shlvl = ft_atoi(shlvl_str);
+		shlvl++;
+	}
+	else
+		shlvl = 1;
+	shlvl_str = ft_itoa(shlvl);
+	if (shlvl_str)
+	{
+		new_envp = update_env(new_envp, "SHLVL", shlvl_str);
+		free(shlvl_str);
+	}
 	return (new_envp);
 }
+
 
 void	ft_init(t_shell *shell, char **env)
 {
