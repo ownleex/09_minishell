@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/26 23:17:51 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/27 02:08:44 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ typedef struct s_shell
 }	t_shell;
 
 // Environment management
-char	**init_env(char **envp);
 char	**update_env(char **env, const char *name, const char *value);
 char	**remove_env_var(char **env, const char *name);;
 
@@ -84,13 +83,13 @@ void	setup_signals(void);
 // Utils main
 void	free_shell(t_shell *shell);
 void	free_all_shells(t_shell *shell);
-void	ft_init(t_shell *shell, char **env);
 
 // Utils exec
 void	free_array(char **array);
 void	free_args(t_shell *shell);
 
 // Init
-void	ft_init(t_shell *shell, char **env);
+void	ft_init(t_shell *shell);
+char	**init_env(char **envp);
 
 #endif

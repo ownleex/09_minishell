@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/27 00:00:22 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/27 02:06:11 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	main(int argc, char **argv, char **envp)
 	shell->exit_code = 0;
 	while (1)
 	{
-		ft_init(shell, env);
+		ft_init(shell);
 		shell->current_line = readline("minishell$> ");
 		if (shell->current_line == NULL)
 		{

@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 01:47:46 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/27 02:01:55 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/27 02:05:43 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,8 @@ char	**init_env(char **envp)
 }
 
 
-void	ft_init(t_shell *shell, char **env)
+void	ft_init(t_shell *shell)
 {
-	(void)env;
 	ft_init_variables(shell);
 	if (!ft_set_current_path(shell))
 	{

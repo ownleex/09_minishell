@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 11:38:10 by noldiane          #+#    #+#             */
-/*   Updated: 2024/08/26 22:23:54 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/27 02:06:34 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	handle_cmd(t_shell *shell)
 			main_shell->next = malloc(sizeof(t_shell));
 			if (!main_shell->next)
 				return;
-			ft_init(main_shell->next, NULL);
+			ft_init(main_shell->next);
 			complete_instance(shell, main_shell->next, i, find_end(shell, i));
 			if (pipe(pipe_fds) == -1)
 			{
@@ -135,7 +135,7 @@ void	handle_cmd(t_shell *shell)
 			main_shell->next = malloc(sizeof(t_shell));
 			if (!main_shell->next)
 				return;
-			ft_init(main_shell->next, NULL);
+			ft_init(main_shell->next);
 			complete_instance(shell, main_shell->next, i, find_end(shell, i));
 			if (shell->current_arg[i][0] == '<')
 				main_shell->input_file = ft_strdup(shell->current_arg[i + 1]);
