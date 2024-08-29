@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 11:38:10 by noldiane          #+#    #+#             */
-/*   Updated: 2024/08/27 02:06:34 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/29 12:51:07 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,20 +132,12 @@ void	handle_cmd(t_shell *shell)
 		}
 		else if (is_redirecion(shell->current_arg[i]) && shell->current_arg[i + 1])
 		{
-			main_shell->next = malloc(sizeof(t_shell));
-			if (!main_shell->next)
-				return;
-			ft_init(main_shell->next);
-			complete_instance(shell, main_shell->next, i, find_end(shell, i));
 			if (shell->current_arg[i][0] == '<')
 				main_shell->input_file = ft_strdup(shell->current_arg[i + 1]);
 			else if (shell->current_arg[i][0] == '>')
 				main_shell->output_file = ft_strdup(shell->current_arg[i + 1]);
 			if (ft_strlen(shell->current_arg[i]) == 2)
 				main_shell->append_output = 1;
-			main_shell = main_shell->next;
-			c++;
-			main_shell->instance_count = c;
 		}
 		i++;
 	}
