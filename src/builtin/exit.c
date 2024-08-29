@@ -6,13 +6,13 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:23:33 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/18 16:44:35 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/29 01:58:33 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_exit(t_shell *shell)
+void	ft_exit(t_shell *shell, char **env)
 {
 	int	exit_code;
 
@@ -22,6 +22,8 @@ void	ft_exit(t_shell *shell)
 		exit_code = 0;
 	printf("exit\n");
 	rl_clear_history();
-	free_shell(shell);
+	//free_shell(shell);
+	free_all_shells(shell);
+	free_array(env);
 	exit(exit_code);
 }

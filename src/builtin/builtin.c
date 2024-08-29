@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:59:13 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/28 01:57:04 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/29 01:55:40 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	**handle_builtin(t_shell *shell, char **env)
 	else if (ft_strncmp(shell->current_cmd, "env", 3) == 0)
 		ft_env(shell, env);
 	else if (ft_strncmp(shell->current_cmd, "exit", 4) == 0)
-		ft_exit(shell);
+		ft_exit(shell, env);
 	else if (ft_strncmp(shell->current_cmd, "cd", 2) == 0)
 		env = ft_cd(shell, env);
 	else if (ft_strncmp(shell->current_cmd, "export", 6) == 0)

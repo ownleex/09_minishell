@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 19:19:50 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/23 13:34:54 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/29 03:10:19 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	free_array(char **array)
 {
 	int	i;
 
+	if (!array)
+		return ;
 	i = 0;
 	while (array[i])
 	{

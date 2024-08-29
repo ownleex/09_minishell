@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/28 02:57:17 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/29 01:56:12 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	ft_pwd(void);
 	// Env
 void	ft_env(t_shell *shell, char **env);
 	// Exit
-void	ft_exit(t_shell *shell);
+void	ft_exit(t_shell *shell, char **env);
 	// CD
 char	**ft_cd(t_shell *shell, char **env);
 	// Export
