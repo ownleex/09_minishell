@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/29 03:47:25 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:27:51 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,14 @@ char	*find_command_path(t_shell *shell, char **env)
 	return (NULL);
 }
 
-void	execute_command(t_shell *shell, char **env)
+void execute_command(t_shell *shell, char **env)
 {
 	pid_t	pid;
 	int		status;
 	int		pipe_fds[2];
+	int		infile_fd = -1;
+	int		outfile_fd = -1;
+	int		temp_fd;
 
 	while (shell)
 	{
@@ -75,7 +78,7 @@ void	execute_command(t_shell *shell, char **env)
 			{
 				perror("pipe");
 				shell->exit_code = 1;
-				return ;
+				return;
 			}
 			shell->pipe_out = pipe_fds[1];
 			shell->next->pipe_in = pipe_fds[0];
@@ -83,6 +86,54 @@ void	execute_command(t_shell *shell, char **env)
 		pid = fork();
 		if (pid == 0)
 		{
+			// Gestion des redirections d'entrée
+			if (shell->input_file)
+			{
+				infile_fd = open(shell->input_file, O_RDONLY);
+				if (infile_fd == -1)
+				{
+					perror("open input_file");
+					exit(EXIT_FAILURE);
+				}
+				dup2(infile_fd, STDIN_FILENO);
+				close(infile_fd);
+			}
+			// Parcourir toutes les commandes liées pour gérer les redirections de sortie
+			t_shell *current = shell;
+			while (current)
+			{
+				if (current->output_file)
+				{
+					if (current->append_output)
+						temp_fd = open(current->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+					else
+						temp_fd = open(current->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
+					if (temp_fd == -1)
+					{
+						perror("open output_file");
+						exit(EXIT_FAILURE);
+					}
+					// Garder la dernière redirection active pour rediriger la sortie
+					if (current->next == NULL || current->next->output_file == NULL)
+					{
+						outfile_fd = temp_fd; // Utiliser ce fichier pour la redirection de sortie
+					}
+					else
+					{
+						close(temp_fd); // Fermer les fichiers intermédiaires
+					}
+				}
+				current = current->next;
+			}
+
+			if (outfile_fd != -1)
+			{
+				dup2(outfile_fd, STDOUT_FILENO);
+				close(outfile_fd);
+			}
+
+			// Gestion des pipes
 			if (shell->pipe_in != -1)
 			{
 				dup2(shell->pipe_in, STDIN_FILENO);
@@ -93,10 +144,6 @@ void	execute_command(t_shell *shell, char **env)
 				dup2(shell->pipe_out, STDOUT_FILENO);
 				close(shell->pipe_out);
 			}
-			if (shell->pipe_out != -1)
-				close(shell->pipe_out);
-			if (shell->pipe_in != -1)
-				close(shell->pipe_in);
 			if (is_builtin(shell))
 			{
 				handle_builtin(shell, env);
@@ -108,9 +155,9 @@ void	execute_command(t_shell *shell, char **env)
 				shell->command_path = find_command_path(shell, env);
 				if (!shell->command_path)
 				{
-					write(STDERR_FILENO, "bash: ", 7);
+					write(STDERR_FILENO, "bash: ", 6);
 					write(STDERR_FILENO, shell->current_cmd, ft_strlen(shell->current_cmd));
-					write(STDERR_FILENO, ": Command not found\n", 21);
+					write(STDERR_FILENO, ": Command not found\n", 20);
 					exit(127);
 				}
 				if (execve(shell->command_path, shell->current_arg, env) == -1)
@@ -137,6 +184,7 @@ void	execute_command(t_shell *shell, char **env)
 			else if (WIFSIGNALED(status))
 				shell->exit_code = 128 + WTERMSIG(status);
 		}
+		free_args(shell);
 		free_args(shell);
 		shell = shell->next;
 	}
