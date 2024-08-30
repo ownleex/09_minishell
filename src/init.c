@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 01:47:46 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/29 03:41:44 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/31 01:54:38 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	ft_init_variables(t_shell *shell)
 	shell->pipe_in = -1;
 	shell->pipe_out = -1;
 	shell->is_piped = 0;
+	shell->has_single_quote = 0;
 	shell->instance_count = 1;
 	shell->next = NULL;
 }
