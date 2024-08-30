@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/29 13:16:38 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/31 01:12:01 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void	copy_inner_content(char *dest, char *src, int start, int end)
 	dest[cursor] = '\0';
 }
 
-char	*remove_outer_quotes(t_shell *shell, int start, int end)
+char *remove_outer_quotes(t_shell *shell, int start, int end)
 {
 	char	*str;
 	int		arg_len;
@@ -148,6 +148,11 @@ char	*remove_outer_quotes(t_shell *shell, int start, int end)
 	str = (char *)malloc(sizeof(char) * (arg_len + 1));
 	if (!str)
 		return (NULL);
+	if (shell->current_line[start] == '\'')
+		shell->has_single_quote = 1;
+	else
+		shell->has_single_quote = 0;
+
 	copy_inner_content(str, shell->current_line, start, end);
 	return (str);
 }
