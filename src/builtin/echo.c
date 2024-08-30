@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/28 02:43:07 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/31 01:28:41 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,14 @@ char	*get_env_value(char **env, char *var_name)
 	return (NULL);
 }
 
-void	ft_echo(t_shell *shell, char **env)
+void ft_echo(t_shell *shell, char **env)
 {
 	int		i;
 	int		newline;
 	char	*value;
+	char	*var_start;
+	char	var_name[128];
+	char	*str;
 
 	i = 1;
 	newline = 1;
@@ -44,27 +47,32 @@ void	ft_echo(t_shell *shell, char **env)
 	}
 	while (shell->current_arg[i])
 	{
-		if (ft_strncmp(shell->current_arg[i], "$?", 3) == 0)
+		if (shell->has_single_quote)
 		{
-			printf("%d", shell->exit_code);
-		}
-		else if (shell->current_arg[i][0] == '$' && ft_strlen(shell->current_arg[i]) > 1)
-		{
-			value = get_env_value(env, &shell->current_arg[i][1]);
-			if (value)
-			{
-				printf("%s", value);
-			}
-			else
-			{
-				printf("\n");
-				shell->exit_code = 0;
-				return ;
-			}
+			printf("%s", shell->current_arg[i]);
 		}
 		else
 		{
-			printf("%s", shell->current_arg[i]);
+			str = shell->current_arg[i];
+			while (*str)
+			{
+				if (*str == '$')
+				{
+					var_start = str + 1;
+					while (*var_start && (ft_isalnum(*var_start) || *var_start == '_'))
+						var_start++;
+					ft_bzero(var_name, sizeof(var_name));
+					ft_strlcpy(var_name, str + 1, var_start - str);
+					value = get_env_value(env, var_name);
+					if (value)
+						printf("%s", value);
+					str = var_start;
+				}
+				else
+				{
+					printf("%c", *str++);
+				}
+			}
 		}
 		if (shell->current_arg[i + 1])
 			printf(" ");
