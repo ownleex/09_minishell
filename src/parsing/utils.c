@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 11:38:10 by noldiane          #+#    #+#             */
-/*   Updated: 2024/08/27 02:06:34 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:18:20 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	find_end(t_shell *shell, int start)
 	while (shell->current_arg[i])
 	{
 		if (shell->current_arg[i][0] == '|' || is_redirecion(shell->current_arg[i]))
-			break;
+			break ;
 		i++;
 	}
 	return (i);
@@ -92,17 +92,18 @@ void	free_main_shell(t_shell *shell)
 				b++;
 			}
 			shell->current_arg[i] = NULL;
-			return;
+			return ;
 		}
 		i++;
 	}
 }
 
-void	handle_cmd(t_shell *shell)
+void handle_cmd(t_shell *shell)
 {
-	int	i;
-	int	c;
-	int pipe_fds[2];
+	int		i;
+	int		c;
+	int		pipe_fds[2];
+	int		fd;
 	t_shell	*main_shell;
 
 	i = 0;
@@ -114,13 +115,13 @@ void	handle_cmd(t_shell *shell)
 		{
 			main_shell->next = malloc(sizeof(t_shell));
 			if (!main_shell->next)
-				return;
+				return ;
 			ft_init(main_shell->next);
 			complete_instance(shell, main_shell->next, i, find_end(shell, i));
 			if (pipe(pipe_fds) == -1)
 			{
 				perror("pipe");
-				return;
+				return ;
 			}
 			main_shell->is_piped = 1;
 			main_shell->pipe_out = pipe_fds[1];
@@ -132,20 +133,23 @@ void	handle_cmd(t_shell *shell)
 		}
 		else if (is_redirecion(shell->current_arg[i]) && shell->current_arg[i + 1])
 		{
-			main_shell->next = malloc(sizeof(t_shell));
-			if (!main_shell->next)
-				return;
-			ft_init(main_shell->next);
-			complete_instance(shell, main_shell->next, i, find_end(shell, i));
 			if (shell->current_arg[i][0] == '<')
+			{
 				main_shell->input_file = ft_strdup(shell->current_arg[i + 1]);
+			}
 			else if (shell->current_arg[i][0] == '>')
+			{
 				main_shell->output_file = ft_strdup(shell->current_arg[i + 1]);
-			if (ft_strlen(shell->current_arg[i]) == 2)
-				main_shell->append_output = 1;
-			main_shell = main_shell->next;
-			c++;
-			main_shell->instance_count = c;
+				if (ft_strlen(shell->current_arg[i]) == 2)
+				{
+					main_shell->append_output = 1;
+					fd = open(shell->current_arg[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+				}
+				else
+					fd = open(shell->current_arg[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				if (fd != -1)
+					close(fd);
+			}
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/21 12:14:57 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:16:38 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 int	is_quote(int c)
 {
 	return (c == '"' || c == '\'');
+}
+
+int	is_single_pipe(char *line, int p)
+{
+	if (line[p + 1] == '|' || line[p - 1] == '|')
+		return (0);
+	else if (line[p + 1] == ' ' || line[p - 1] == ' ')
+		return (0);
+	return (1);
 }
 
 int	is_separator(int character, int space)
@@ -69,11 +78,17 @@ int	count_args(char *line)
 			index = jump_arg(line, index);
 			len++;
 		}
+		else if (line[index] == '|' && is_single_pipe(line, index))
+		{
+			index++;
+			len += 2;
+		}
 		else
 			index++;
 	}
 	return (len);
 }
+
 
 int	get_arglen(t_shell *shell, int start, int end)
 {
@@ -174,6 +189,14 @@ void	set_arguments(t_shell *shell)
 		}
 		else if (is_quote(shell->current_line[index]))
 			index = jump_quote(shell, index);
+		else if (shell->current_line[index] == '|' && is_single_pipe(shell->current_line, index))
+		{
+			if (index > old_index)
+				set_arg(shell, old_index, index - 1, len++);
+			set_arg(shell, index, index, len++);
+			index++;
+			old_index = index;
+		}
 		else
 			index++;
 	}
