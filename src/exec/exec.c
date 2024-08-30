@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/30 17:06:50 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:27:51 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,7 @@ void execute_command(t_shell *shell, char **env)
 			else if (WIFSIGNALED(status))
 				shell->exit_code = 128 + WTERMSIG(status);
 		}
+		free_args(shell);
 		free_args(shell);
 		shell = shell->next;
 	}

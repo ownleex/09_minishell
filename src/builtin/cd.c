@@ -6,13 +6,13 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/26 23:19:17 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/28 01:45:41 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_cd(t_shell *shell, char **env)
+char **ft_cd(t_shell *shell, char **env)
 {
 	int		ret;
 	char	*path;
@@ -22,7 +22,7 @@ void ft_cd(t_shell *shell, char **env)
 	if (!shell->current_arg[1])
 	{
 		shell->exit_code = 1;
-		return ;
+		return (env);
 	}
 	path = shell->current_arg[1];
 	oldpwd = getcwd(NULL, 0);
@@ -30,7 +30,7 @@ void ft_cd(t_shell *shell, char **env)
 	{
 		perror("getcwd");
 		shell->exit_code = 1;
-		return ;
+		return (env);
 	}
 	ret = chdir(path);
 	if (ret == -1)
@@ -38,19 +38,20 @@ void ft_cd(t_shell *shell, char **env)
 		perror("bash: cd");
 		free(oldpwd);
 		shell->exit_code = 1;
-		return ;
+		return (env);
 	}
-	update_env(env, "OLDPWD", oldpwd);
+	env = update_env(env, "OLDPWD", oldpwd);
 	free(oldpwd);
 	new_path = getcwd(NULL, 0);
 	if (!new_path)
 	{
 		perror("getcwd");
 		shell->exit_code = 1;
-		return ;
+		return (env);
 	}
-	update_env(env, "PWD", new_path);
+	env = update_env(env, "PWD", new_path);
 	free(shell->current_path);
 	shell->current_path = new_path;
 	shell->exit_code = 0;
+	return (env);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/29 13:16:41 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:28:18 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ void	ft_echo(t_shell *shell, char **env);
 void	ft_pwd(void);
 	// Env
 void	ft_env(t_shell *shell, char **env);
-	// CD
-void	ft_cd(t_shell *shell, char **env);
 	// Exit
-void	ft_exit(t_shell *shell);
+void	ft_exit(t_shell *shell, char **env);
+	// CD
+char	**ft_cd(t_shell *shell, char **env);
 	// Export
 char	**ft_export(t_shell *shell, char **env);
 	// Unset
