@@ -1,0 +1,20 @@
+VALGRIND SUPPRESSIONS
+
+creation raw fichier de suppresions valgrind
+
+lancer Valgrind avec cette commande :
+
+valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all ./minishell 2> tools/valgrind/valgrind_suppressions_raw.txt
+
+utiliser le logiciel, en quittant valgrind va envoyer le rapport d'erreur dans valgrind_suppressions_raw.txt
+
+lancer ./extract_suppressions...
+
+copier le contenu de save_suppressions.txt dans valgrind_suppressions.txt à la fin 
+
+puis copier tout le contenu de valgrind_suppressions.txt dans save_suppressions.txt
+
+puis lancer valgrind avec les suppressions avec la commande :
+
+valgrind --leak-check=full --show-leak-kinds=all --suppressions=tools/valgrind/valgrind_suppressions.txt ./minishell
+
