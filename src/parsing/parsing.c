@@ -6,7 +6,7 @@
 /*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/31 14:25:07 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/31 14:48:00 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,5 @@ void	parse_command(t_shell *shell)
 	shell->current_arg = arguments;
 	set_arguments(shell);
 	handle_cmd(shell);
-	
 	shell->current_cmd = shell->current_arg[0];
 }

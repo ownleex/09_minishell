@@ -62,3 +62,4 @@ valgrind/valgrind_suppressions.txt
 valgrind/valgrind_suppressions_raw.txt
 valgrind/master_suppressions/valgrind_suppressions.txt
 code_master/code_master.txt
+tools/code_master/code_master.txt

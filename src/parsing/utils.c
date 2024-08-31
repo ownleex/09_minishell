@@ -6,7 +6,7 @@
 /*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 11:38:10 by noldiane          #+#    #+#             */
-/*   Updated: 2024/08/31 14:11:25 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/31 14:39:57 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	is_single_pipe(char *line, int p)
 {
 	if (line[p + 1] == '|' || line[p - 1] == '|')
 		return (0);
-	else if (line[p + 1] == ' ' || line[p - 1] == ' ')
+	else if (line[p + 1] == ' ' && line[p - 1] == ' ')
 		return (0);
 	return (1);
 }

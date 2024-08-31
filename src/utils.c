@@ -6,7 +6,7 @@
 /*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 23:03:51 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/30 17:33:41 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/31 14:33:59 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,36 +24,26 @@ void	free_all_shells(t_shell *shell)
 	}
 }
 
+void	free_null_args(char *args)
+{
+	free(args);
+	args = NULL;
+}
+
 void	free_shell(t_shell *shell)
 {
 	if (shell == NULL)
 		return ;
-
 	if (shell->current_path)
-	{
-		free(shell->current_path);
-		shell->current_path = NULL;
-	}
+		free_null_args(shell->current_path);
 	if (shell->current_line)
-	{
-		free(shell->current_line);
-		shell->current_line = NULL;
-	}
+		free_null_args(shell->current_line);
 	if (shell->command_path)
-	{
-		free(shell->command_path);
-		shell->command_path = NULL;
-	}
+		free_null_args(shell->command_path);
 	if (shell->input_file)
-	{
-		free(shell->input_file);
-		shell->input_file = NULL;
-	}
+		free_null_args(shell->input_file);
 	if (shell->output_file)
-	{
-		free(shell->output_file);
-		shell->output_file = NULL;
-	}
+		free_null_args(shell->output_file);
 	free_args(shell);
 	free(shell);
 }

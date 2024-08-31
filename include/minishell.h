@@ -6,7 +6,7 @@
 /*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/31 14:27:24 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/31 14:33:21 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,19 @@ typedef struct s_shell
 	struct s_shell	*next;
 }	t_shell;
 
-// Environment management
-char	**update_env(char **env, const char *name, const char *value);
-char	**remove_env_var(char **env, const char *name);;
+// Utils main
+void	free_shell(t_shell *shell);
+void	free_all_shells(t_shell *shell);
+
+// Init
+	// Init_env
+char	**init_env(char **envp);
+	// Init_vars
+void	ft_init(t_shell *shell);
+
+// Signal
+void	handle_sigint(int sig);
+void	setup_signals(void);
 
 // Parsing
 void	handle_cmd(t_shell *shell);
@@ -68,9 +78,16 @@ void	set_arg(t_shell *shell, int start, int end, int pos);
 void	free_main_shell(t_shell *shell);
 int		find_end(t_shell *shell, int start);
 
+// Environment management
+char	**update_env(char **env, const char *name, const char *value);
+char	**remove_env_var(char **env, const char *name);
+
 // Exec
 char	*find_command_path(t_shell *shell, char **env);
 void	execute_command(t_shell *shell, char **env);
+	// Utils exec
+void	free_array(char **array);
+void	free_args(t_shell *shell);
 
 // Builtin
 int		is_builtin(t_shell *shell);
