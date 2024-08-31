@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:23:33 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/29 01:58:33 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/31 02:19:53 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	ft_exit(t_shell *shell, char **env)
 		exit_code = 0;
 	printf("exit\n");
 	rl_clear_history();
-	//free_shell(shell);
 	free_all_shells(shell);
 	free_array(env);
 	exit(exit_code);
