@@ -6,17 +6,42 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/28 01:45:41 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/31 02:19:14 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char **ft_cd(t_shell *shell, char **env)
+char	*change_directory(t_shell *shell, char **env, char *path)
 {
 	int		ret;
-	char	*path;
 	char	*oldpwd;
+	char	*new_path;
+
+	oldpwd = getcwd(NULL, 0);
+	if (!oldpwd)
+	{
+		perror("getcwd");
+		shell->exit_code = 1;
+		return (NULL);
+	}
+	ret = chdir(path);
+	if (ret == -1)
+	{
+		perror("bash: cd");
+		free(oldpwd);
+		shell->exit_code = 1;
+		return (NULL);
+	}
+	env = update_env(env, "OLDPWD", oldpwd);
+	free(oldpwd);
+	new_path = getcwd(NULL, 0);
+	return (new_path);
+}
+
+char	**ft_cd(t_shell *shell, char **env)
+{
+	char	*path;
 	char	*new_path;
 
 	if (!shell->current_arg[1])
@@ -25,30 +50,9 @@ char **ft_cd(t_shell *shell, char **env)
 		return (env);
 	}
 	path = shell->current_arg[1];
-	oldpwd = getcwd(NULL, 0);
-	if (!oldpwd)
-	{
-		perror("getcwd");
-		shell->exit_code = 1;
-		return (env);
-	}
-	ret = chdir(path);
-	if (ret == -1)
-	{
-		perror("bash: cd");
-		free(oldpwd);
-		shell->exit_code = 1;
-		return (env);
-	}
-	env = update_env(env, "OLDPWD", oldpwd);
-	free(oldpwd);
-	new_path = getcwd(NULL, 0);
+	new_path = change_directory(shell, env, path);
 	if (!new_path)
-	{
-		perror("getcwd");
-		shell->exit_code = 1;
 		return (env);
-	}
 	env = update_env(env, "PWD", new_path);
 	free(shell->current_path);
 	shell->current_path = new_path;
