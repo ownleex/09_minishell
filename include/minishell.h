@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/31 01:02:55 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/31 03:25:02 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,40 @@ typedef struct s_shell
 	int				pipe_in;
 	int				pipe_out;
 	int				is_piped;
-	int             has_single_quote;
+	int				has_single_quote;
 	int				instance_count;
 	struct s_shell	*next;
 }	t_shell;
 
-// Environment management
-char	**update_env(char **env, const char *name, const char *value);
-char	**remove_env_var(char **env, const char *name);;
+// Utils main
+void	free_shell(t_shell *shell);
+void	free_all_shells(t_shell *shell);
+
+// Init
+	// Init_env
+char	**init_env(char **envp);
+	// Init_vars
+void	ft_init(t_shell *shell);
+
+// Signal
+void	handle_sigint(int sig);
+void	setup_signals(void);
 
 // Parsing
 void	handle_cmd(t_shell *shell);
 void	count_instance(t_shell *shell);
 void	parse_command(t_shell *shell);
 
+// Environment management
+char	**update_env(char **env, const char *name, const char *value);
+char	**remove_env_var(char **env, const char *name);
+
 // Exec
 char	*find_command_path(t_shell *shell, char **env);
 void	execute_command(t_shell *shell, char **env);
+	// Utils exec
+void	free_array(char **array);
+void	free_args(t_shell *shell);
 
 // Builtin
 int		is_builtin(t_shell *shell);
@@ -76,21 +93,5 @@ char	**ft_cd(t_shell *shell, char **env);
 char	**ft_export(t_shell *shell, char **env);
 	// Unset
 char	**ft_unset(t_shell *shell, char **env);
-
-// Signal
-void	handle_sigint(int sig);
-void	setup_signals(void);
-
-// Utils main
-void	free_shell(t_shell *shell);
-void	free_all_shells(t_shell *shell);
-
-// Utils exec
-void	free_array(char **array);
-void	free_args(t_shell *shell);
-
-// Init
-void	ft_init(t_shell *shell);
-char	**init_env(char **envp);
 
 #endif
