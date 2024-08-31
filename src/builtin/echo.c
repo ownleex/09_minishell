@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/31 02:14:03 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/31 02:43:49 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void	ft_echo(t_shell *shell, char **env)
 			printf("%s", shell->current_arg[i]);
 		else
 			expand_and_print(shell->current_arg[i], env);
-
 		if (shell->current_arg[i + 1])
 			printf(" ");
 		i++;
