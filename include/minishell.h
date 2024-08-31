@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/30 17:28:18 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/31 14:27:24 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_shell
 	int				pipe_in;
 	int				pipe_out;
 	int				is_piped;
+	int				has_single_quote;
 	int				instance_count;
 	struct s_shell	*next;
 }	t_shell;
@@ -51,8 +52,21 @@ char	**remove_env_var(char **env, const char *name);;
 
 // Parsing
 void	handle_cmd(t_shell *shell);
-void	count_instance(t_shell *shell);
 void	parse_command(t_shell *shell);
+	// Utils
+int		is_quote(int c);
+int		is_redirecion(char *str);
+int		is_single_pipe(char *line, int p);
+int		is_separator(int character, int space);
+void	copy_inner_content(char *dest, char *src, int start, int end);
+	// Arguments
+int		count_args(char *line);
+int		jump_arg(char *line, int cursor);
+int		get_arglen(t_shell *shell, int start, int end);
+void	set_arg(t_shell *shell, int start, int end, int pos);
+	// Addons
+void	free_main_shell(t_shell *shell);
+int		find_end(t_shell *shell, int start);
 
 // Exec
 char	*find_command_path(t_shell *shell, char **env);
@@ -91,5 +105,9 @@ void	free_args(t_shell *shell);
 // Init
 void	ft_init(t_shell *shell);
 char	**init_env(char **envp);
+
+// Debug
+
+void	print_shell_instance(t_shell *shell);
 
 #endif

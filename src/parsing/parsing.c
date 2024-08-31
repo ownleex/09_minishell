@@ -6,156 +6,11 @@
 /*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/29 13:16:38 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/08/31 14:25:07 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	is_quote(int c)
-{
-	return (c == '"' || c == '\'');
-}
-
-int	is_single_pipe(char *line, int p)
-{
-	if (line[p + 1] == '|' || line[p - 1] == '|')
-		return (0);
-	else if (line[p + 1] == ' ' || line[p - 1] == ' ')
-		return (0);
-	return (1);
-}
-
-int	is_separator(int character, int space)
-{
-	if (is_quote(character))
-		return (1);
-	if (character == ' ' && space)
-		return (1);
-	return (0);
-}
-
-int	jump_arg(char *line, int cursor)
-{
-	int	index;
-
-	index = cursor + 1;
-	if (line[cursor] == ' ')
-	{
-		while (line[index] == ' ' && line[index] != '\0')
-			index++;
-		return (index);
-	}
-	else if (is_quote(line[cursor]))
-	{
-		index = cursor + 1;
-		while (line[index] != line[cursor] && line[index] != '\0')
-			index++;
-		if (line[index] != '\0')
-			index++;
-		return (index);
-	}
-	else
-	{
-		while (line[index] != ' ' && line[index] != '\0' && \
-			!is_quote(line[index]))
-			index++;
-		return (index);
-	}
-}
-
-int	count_args(char *line)
-{
-	int	len;
-	int	index;
-
-	len = 0;
-	index = 0;
-	while (line[index] != '\0')
-	{
-		if (is_separator(line[index], 1))
-		{
-			index = jump_arg(line, index);
-			len++;
-		}
-		else if (line[index] == '|' && is_single_pipe(line, index))
-		{
-			index++;
-			len += 2;
-		}
-		else
-			index++;
-	}
-	return (len);
-}
-
-
-int	get_arglen(t_shell *shell, int start, int end)
-{
-	int		len;
-	int		index;
-	char	quote_type;
-
-	len = 0;
-	index = start;
-	while (index <= end && shell->current_line[index])
-	{
-		if (is_quote(shell->current_line[index]))
-		{
-			quote_type = shell->current_line[index++];
-			while (shell->current_line[index] && shell->current_line[index] != quote_type)
-			{
-				len++;
-				index++;
-			}
-		}
-		else
-			len++;
-		index++;
-	}
-	return (len);
-}
-
-void	copy_inner_content(char *dest, char *src, int start, int end)
-{
-	int		index;
-	int		cursor;
-	char	quote_type;
-
-	index = start;
-	cursor = 0;
-	while (index <= end && src[index] != '\0')
-	{
-		if (is_quote(src[index]))
-		{
-			quote_type = src[index++];
-			while (index <= end && src[index] != quote_type)
-				dest[cursor++] = src[index++];
-		}
-		else
-			dest[cursor++] = src[index];
-		index++;
-	}
-	dest[cursor] = '\0';
-}
-
-char	*remove_outer_quotes(t_shell *shell, int start, int end)
-{
-	char	*str;
-	int		arg_len;
-
-	arg_len = get_arglen(shell, start, end);
-	str = (char *)malloc(sizeof(char) * (arg_len + 1));
-	if (!str)
-		return (NULL);
-	copy_inner_content(str, shell->current_line, start, end);
-	return (str);
-}
-
-void	set_arg(t_shell *shell, int start, int end, int pos)
-{
-	shell->current_arg[pos] = remove_outer_quotes(shell, start, end);
-}
 
 int	jump_quote(t_shell *shell, int cursor)
 {
@@ -164,9 +19,27 @@ int	jump_quote(t_shell *shell, int cursor)
 
 	index = cursor + 1;
 	quote_type = shell->current_line[cursor];
-	while (shell->current_line[index] && shell->current_line[index] != quote_type)
+	while (shell->current_line[index] && \
+	shell->current_line[index] != quote_type)
 		index++;
 	return (index);
+}
+
+void	process_argument(t_shell *shell, int *index, int *old_index, int *len)
+{
+	if (*index > *old_index)
+		set_arg(shell, *old_index, *index - 1, (*len)++);
+	*index = jump_arg(shell->current_line, *index);
+	*old_index = *index;
+}
+
+void	process_pipe(t_shell *shell, int *index, int *old_index, int *len)
+{
+	if (*index > *old_index)
+		set_arg(shell, *old_index, *index - 1, (*len)++);
+	set_arg(shell, *index, *index, (*len)++);
+	(*index)++;
+	*old_index = *index;
 }
 
 void	set_arguments(t_shell *shell)
@@ -181,22 +54,12 @@ void	set_arguments(t_shell *shell)
 	while (shell->current_line[index] != '\0')
 	{
 		if (shell->current_line[index] == ' ')
-		{
-			if (index > old_index)
-				set_arg(shell, old_index, index - 1, len++);
-			index = jump_arg(shell->current_line, index);
-			old_index = index;
-		}
+			process_argument(shell, &index, &old_index, &len);
 		else if (is_quote(shell->current_line[index]))
 			index = jump_quote(shell, index);
-		else if (shell->current_line[index] == '|' && is_single_pipe(shell->current_line, index))
-		{
-			if (index > old_index)
-				set_arg(shell, old_index, index - 1, len++);
-			set_arg(shell, index, index, len++);
-			index++;
-			old_index = index;
-		}
+		else if (shell->current_line[index] == '|' && \
+		is_single_pipe(shell->current_line, index))
+			process_pipe(shell, &index, &old_index, &len);
 		else
 			index++;
 	}
@@ -215,6 +78,6 @@ void	parse_command(t_shell *shell)
 	shell->current_arg = arguments;
 	set_arguments(shell);
 	handle_cmd(shell);
-	//look_redirection(shell);
+	
 	shell->current_cmd = shell->current_arg[0];
 }
