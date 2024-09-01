@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/31 03:50:03 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/01 22:00:17 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*get_home_directory(char **env)
 {
 	while (*env)
 	{
-		if (ft_strncmp(*env, "HOME=", 5) == 0)
+		if (ft_strcmp(*env, "HOME=") == 0)
 			return (*env + 5);
 		env++;
 	}

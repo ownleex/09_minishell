@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 04:37:37 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/26 23:22:43 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/01 22:04:40 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	**ft_export(t_shell *shell, char **env)
 			int j = 0;
 			while (env[j])
 			{
-				if (ft_strncmp(env[j], name, ft_strlen(name)) == 0 &&
+				if (ft_strcmp(env[j], name) == 0 &&
 					env[j][ft_strlen(name)] == '=')
 				{
 					exists = 1;
