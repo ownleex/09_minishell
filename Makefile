@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+         #
+#    By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/02 21:28:06 by ayarmaya          #+#    #+#              #
-#    Updated: 2024/08/13 06:30:30 by ayarmaya         ###   ########.fr        #
+#    Updated: 2024/09/01 17:15:06 by noldiane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minishell
 
 CC := gcc
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := -g -Wall -Wextra -Werror
 RM := rm -f
 RMDIR := rm -rf
 

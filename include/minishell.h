@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/31 03:25:02 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/01 16:41:09 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_shell
 	char			*current_path;
 	char			*target_path;
 	int				exit_code;
+	int				parsing_exit_code;
 	char			*input_file;
 	char			*output_file;
 	int				append_output;
@@ -62,8 +63,21 @@ void	setup_signals(void);
 
 // Parsing
 void	handle_cmd(t_shell *shell);
-void	count_instance(t_shell *shell);
 void	parse_command(t_shell *shell);
+	// Utils
+int		is_quote(int c);
+int		is_redirecion(char *str);
+int		is_single_pipe(char *line, int p);
+int		is_separator(int character, int space);
+void	copy_inner_content(char *dest, char *src, int start, int end);
+	// Arguments
+int		count_args(char *line);
+int		jump_arg(char *line, int cursor);
+int		get_arglen(t_shell *shell, int start, int end);
+void	set_arg(t_shell *shell, int start, int end, int pos);
+	// Addons
+void	free_main_shell(t_shell *shell);
+int		find_end(t_shell *shell, int start);
 
 // Environment management
 char	**update_env(char **env, const char *name, const char *value);
@@ -93,5 +107,25 @@ char	**ft_cd(t_shell *shell, char **env);
 char	**ft_export(t_shell *shell, char **env);
 	// Unset
 char	**ft_unset(t_shell *shell, char **env);
+
+// Signal
+void	handle_sigint(int sig);
+void	setup_signals(void);
+
+// Utils main
+void	free_shell(t_shell *shell);
+void	free_all_shells(t_shell *shell);
+
+// Utils exec
+void	free_array(char **array);
+void	free_args(t_shell *shell);
+
+// Init
+void	ft_init(t_shell *shell);
+char	**init_env(char **envp);
+
+// Debug
+
+void	print_shell_instance(t_shell *shell);
 
 #endif

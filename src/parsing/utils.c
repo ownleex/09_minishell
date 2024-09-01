@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 11:38:10 by noldiane          #+#    #+#             */
-/*   Updated: 2024/08/30 17:18:20 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/08/31 14:39:57 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,130 +28,48 @@ int	is_redirecion(char *str)
 	return (0);
 }
 
-void	count_instance(t_shell *shell)
+int	is_quote(int c)
 {
-	int	i;
-
-	i = 0;
-	while (shell->next)
-	{
-		shell = shell->next;
-		i++;
-	}
-	printf("There is %d minishell instances\n", i);
+	return (c == '"' || c == '\'');
 }
 
-int	find_end(t_shell *shell, int start)
+int	is_single_pipe(char *line, int p)
 {
-	int	i;
-
-	i = start + 1;
-	while (shell->current_arg[i])
-	{
-		if (shell->current_arg[i][0] == '|' || is_redirecion(shell->current_arg[i]))
-			break ;
-		i++;
-	}
-	return (i);
+	if (line[p + 1] == '|' || line[p - 1] == '|')
+		return (0);
+	else if (line[p + 1] == ' ' && line[p - 1] == ' ')
+		return (0);
+	return (1);
 }
 
-void	complete_instance(t_shell *shell, t_shell *instance, int start, int end)
+int	is_separator(int character, int space)
 {
-	int	i;
-	int	d;
-
-	d = 0;
-	i = start + 1;
-	instance->current_arg = (char **)malloc(sizeof(char *) * ((end - start)));
-	while (i < end && shell->current_arg[i])
-	{
-		instance->current_arg[d] = ft_strdup(shell->current_arg[i]);
-		i++;
-		d++;
-	}
-	instance->current_arg[d] = NULL;
-	instance->current_cmd = instance->current_arg[0];
+	if (is_quote(character))
+		return (1);
+	if (character == ' ' && space)
+		return (1);
+	return (0);
 }
 
-void	free_main_shell(t_shell *shell)
+void	copy_inner_content(char *dest, char *src, int start, int end)
 {
-	int	i;
-	int	b;
+	int		index;
+	int		cursor;
+	char	quote_type;
 
-	if (shell == NULL || shell->current_arg == NULL)
-		return ;
-	i = 0;
-	while (shell->current_arg[i] != NULL)
+	index = start;
+	cursor = 0;
+	while (index <= end && src[index] != '\0')
 	{
-		if ((shell->current_arg[i][0] == '|' && shell->current_arg[i + 1] != NULL) || (is_redirecion(shell->current_arg[i]) && shell->current_arg[i + 1] != NULL))
+		if (is_quote(src[index]))
 		{
-			b = i;
-			while (shell->current_arg[b] != NULL)
-			{
-				free(shell->current_arg[b]);
-				b++;
-			}
-			shell->current_arg[i] = NULL;
-			return ;
+			quote_type = src[index++];
+			while (index <= end && src[index] != quote_type)
+				dest[cursor++] = src[index++];
 		}
-		i++;
+		else
+			dest[cursor++] = src[index];
+		index++;
 	}
-}
-
-void handle_cmd(t_shell *shell)
-{
-	int		i;
-	int		c;
-	int		pipe_fds[2];
-	int		fd;
-	t_shell	*main_shell;
-
-	i = 0;
-	c = 1;
-	main_shell = shell;
-	while (shell->current_arg[i])
-	{
-		if (shell->current_arg[i][0] == '|' && shell->current_arg[i + 1])
-		{
-			main_shell->next = malloc(sizeof(t_shell));
-			if (!main_shell->next)
-				return ;
-			ft_init(main_shell->next);
-			complete_instance(shell, main_shell->next, i, find_end(shell, i));
-			if (pipe(pipe_fds) == -1)
-			{
-				perror("pipe");
-				return ;
-			}
-			main_shell->is_piped = 1;
-			main_shell->pipe_out = pipe_fds[1];
-			main_shell->next->pipe_in = pipe_fds[0];
-			main_shell = main_shell->next;
-			i++;
-			c++;
-			main_shell->instance_count = c;
-		}
-		else if (is_redirecion(shell->current_arg[i]) && shell->current_arg[i + 1])
-		{
-			if (shell->current_arg[i][0] == '<')
-			{
-				main_shell->input_file = ft_strdup(shell->current_arg[i + 1]);
-			}
-			else if (shell->current_arg[i][0] == '>')
-			{
-				main_shell->output_file = ft_strdup(shell->current_arg[i + 1]);
-				if (ft_strlen(shell->current_arg[i]) == 2)
-				{
-					main_shell->append_output = 1;
-					fd = open(shell->current_arg[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
-				}
-				else
-					fd = open(shell->current_arg[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				if (fd != -1)
-					close(fd);
-			}
-		}
-		i++;
-	}
-	free_main_shell(shell);
+	dest[cursor] = '\0';
 }
