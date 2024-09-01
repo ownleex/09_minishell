@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/01 22:19:25 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/02 00:43:08 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ char	**remove_env_var(char **env, const char *name);
 // Exec
 char	*find_command_path(t_shell *shell, char **env);
 void	execute_command(t_shell *shell, char **env);
+	//herdeoc
+void	handle_heredoc(t_shell *shell);
 	// Utils exec
 void	free_array(char **array);
 void	free_args(t_shell *shell);
@@ -98,7 +100,7 @@ char	**handle_builtin(t_shell *shell, char **env);
 	// Echo
 void	ft_echo(t_shell *shell, char **env);
 	// Pwd
-void	ft_pwd(void);
+void	ft_pwd(t_shell *shell);
 	// Env
 void	ft_env(t_shell *shell, char **env);
 	// Exit

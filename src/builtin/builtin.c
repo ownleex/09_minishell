@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:59:13 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/01 22:11:02 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/02 00:35:19 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	**handle_builtin(t_shell *shell, char **env)
 	if (ft_strcmp(shell->current_cmd, "echo") == 0)
 		ft_echo(shell, env);
 	else if (ft_strcmp(shell->current_cmd, "pwd") == 0)
-		ft_pwd();
+		ft_pwd(shell);
 	else if (ft_strcmp(shell->current_cmd, "env") == 0)
 		ft_env(shell, env);
 	else if (ft_strcmp(shell->current_cmd, "exit") == 0)

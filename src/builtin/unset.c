@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 04:38:00 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/01 22:08:25 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/02 00:40:04 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	find_env_var_index(char **env, const char *name)
 	name_len = ft_strlen(name);
 	while (env[i])
 	{
-		if (ft_strcmp(env[i], name) == 0 && env[i][name_len] == '=')
+		if (ft_strncmp(env[i], name, name_len) == 0 && env[i][name_len] == '=')
 			return (i);
 		i++;
 	}
