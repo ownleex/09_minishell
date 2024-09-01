@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   instances.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 13:55:57 by noldiane          #+#    #+#             */
-/*   Updated: 2024/08/31 14:17:54 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/09/01 22:20:13 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,12 @@ void	handle_redirections(t_shell *shell, int i, t_shell *main_shell)
 {
 	int	fd;
 
-	if (shell->current_arg[i][0] == '<')
+	if (shell->current_arg[i][0] == '<' && shell->current_arg[i][1] == '<')
+	{
+		main_shell->heredoc_delimiter = ft_strdup(shell->current_arg[i + 1]);
+		main_shell->is_heredoc = 1;
+	}
+	else if (shell->current_arg[i][0] == '<')
 	{
 		main_shell->input_file = ft_strdup(shell->current_arg[i + 1]);
 	}
