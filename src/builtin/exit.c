@@ -6,37 +6,49 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:23:33 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/01 21:38:11 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/01 23:26:30 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_exit(t_shell *shell, char **env)
+void	exit_and_cleanup(t_shell *shell, char **env, int exit_code)
 {
+	printf("exit\n");
+	free_all_shells(shell);
+	free_array(env);
+	rl_clear_history();
+	exit(exit_code);
+}
+
+int	calculate_exit_code(t_shell *shell)
+{
+	int	exit_code;
 	int	i;
 
 	i = 0;
-	printf("exit\n");
 	if (shell->current_arg[1])
 	{
 		while (shell->current_arg[1][i])
 		{
-			if (!isdigit(shell->current_arg[1][i]))
+			if (!ft_isdigit(shell->current_arg[1][i++]))
 			{
 				printf("bash: exit: %s: numeric argument required\n", \
 				shell->current_arg[1]);
-				exit(2);
+				return (2);
 			}
-			i++;
 		}
-		exit(atoi(shell->current_arg[1]));
+		exit_code = ft_atoi(shell->current_arg[1]);
 	}
 	else
-	{
-		exit(0);
-	}
-	rl_clear_history();
-	free_all_shells(shell);
-	free_array(env);
+		exit_code = shell->exit_code;
+	return (exit_code);
+}
+
+void	ft_exit(t_shell *shell, char **env)
+{
+	int	exit_code;
+
+	exit_code = calculate_exit_code(shell);
+	exit_and_cleanup(shell, env, exit_code);
 }
