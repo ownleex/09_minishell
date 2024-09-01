@@ -6,7 +6,7 @@
 /*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/31 14:33:21 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/09/01 16:41:09 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_shell
 	char			*current_path;
 	char			*target_path;
 	int				exit_code;
+	int				parsing_exit_code;
 	char			*input_file;
 	char			*output_file;
 	int				append_output;
