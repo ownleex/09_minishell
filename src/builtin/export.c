@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 04:37:37 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/01 22:04:40 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/02 02:45:01 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	**update_env(char **env, const char *name, const char *value)
 			free(env[i]);
 			new_var = (char *)malloc(name_len + value_len + 2);
 			if (!new_var)
-				return (env); // Si l'allocation échoue, retourne l'environnement inchangé
+				return (env);
 			ft_strlcpy(new_var, name, name_len + 1);
 			ft_strlcat(new_var, "=", name_len + 2);
 			ft_strlcat(new_var, value, name_len + value_len + 2);
@@ -53,7 +53,7 @@ char	**update_env(char **env, const char *name, const char *value)
 	envp_size = get_envp_size(env);
 	new_envp = (char **)malloc(sizeof(char *) * (envp_size + 2));
 	if (!new_envp)
-		return (env); // Si l'allocation échoue, retourne l'environnement inchangé
+		return (env);
 	i = 0;
 	while (i < envp_size)
 	{
@@ -62,7 +62,7 @@ char	**update_env(char **env, const char *name, const char *value)
 	}
 	new_var = (char *)malloc(name_len + value_len + 2);
 	if (!new_var)
-		return (env); // Si l'allocation échoue, retourne l'environnement inchangé
+		return (env);
 	ft_strlcpy(new_var, name, name_len + 1);
 	ft_strlcat(new_var, "=", name_len + 2);
 	ft_strlcat(new_var, value, name_len + value_len + 2);
@@ -75,6 +75,7 @@ char	**update_env(char **env, const char *name, const char *value)
 char	**ft_export(t_shell *shell, char **env)
 {
 	int		i;
+	int		j;
 	char	*name;
 	char	*value;
 	char	*equal_sign;
@@ -107,11 +108,10 @@ char	**ft_export(t_shell *shell, char **env)
 		{
 			exists = 0;
 			name = shell->current_arg[i];
-			int j = 0;
+			j = 0;
 			while (env[j])
 			{
-				if (ft_strcmp(env[j], name) == 0 &&
-					env[j][ft_strlen(name)] == '=')
+				if (ft_strcmp(env[j], name) == 0 && env[j][ft_strlen(name)] == '=')
 				{
 					exists = 1;
 					break ;

@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/01 22:00:17 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/02 03:05:23 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*change_directory(t_shell *shell, char **env, char *path)
 	ret = chdir(path);
 	if (ret == -1)
 	{
-		perror("bash: cd");
+		perror("minishell: cd");
 		free(oldpwd);
 		shell->exit_code = 1;
 		return (NULL);
@@ -60,7 +60,7 @@ char	**ft_cd(t_shell *shell, char **env)
 		path = get_home_directory(env);
 		if (!path)
 		{
-			ft_putstr_fd("bash: cd: HOME not set\n", 2);
+			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 			shell->exit_code = 1;
 			return (env);
 		}

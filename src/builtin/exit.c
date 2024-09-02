@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:23:33 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/02 01:01:28 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/02 02:56:56 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	calculate_exit_code(t_shell *shell)
 		{
 			if (!ft_isdigit(shell->current_arg[1][i++]))
 			{
-				printf("bash: exit: %s: numeric argument required\n", \
+				printf("minishell: exit: %s: numeric argument required\n", \
 				shell->current_arg[1]);
 				return (2);
 			}
