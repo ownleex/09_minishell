@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/02 01:01:42 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/02 23:34:14 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	ft_init(t_shell *shell);
 // Signal
 void	handle_sigint(int sig);
 void	setup_signals(void);
+void	handle_sigquit(int sig);
 
 // Parsing
 void	handle_cmd(t_shell *shell);

@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/02 02:57:46 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/02 23:44:48 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void execute_command(t_shell *shell, char **env)
 		pid = fork();
 		if (pid == 0)
 		{
+			signal(SIGQUIT, handle_sigquit);
 			// Gestion des redirections d'entrée
 			if (shell->input_file)
 			{
@@ -196,7 +197,14 @@ void execute_command(t_shell *shell, char **env)
 			if (WIFEXITED(status))
 				shell->exit_code = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
+			{
+				if (WTERMSIG(status) == SIGQUIT)
+				{
+					write(STDOUT_FILENO, "Quit\n", 6);
+				}
 				shell->exit_code = 128 + WTERMSIG(status);
+			}
+			signal(SIGQUIT, SIG_IGN);
 		}
 		if (shell->is_heredoc)
 		{
