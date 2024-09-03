@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/03 02:57:16 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/03 03:11:37 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*find_command_path(t_shell *shell, char **env)
 	return (NULL);
 }
 
-void execute_command(t_shell *shell, char **env)
+void	execute_command(t_shell *shell, char **env)
 {
 	pid_t	pid;
 	int		status;
@@ -81,7 +81,7 @@ void execute_command(t_shell *shell, char **env)
 			{
 				perror("pipe");
 				shell->exit_code = 1;
-				return;
+				return ;
 			}
 			shell->pipe_out = pipe_fds[1];
 			shell->next->pipe_in = pipe_fds[0];
@@ -90,7 +90,6 @@ void execute_command(t_shell *shell, char **env)
 		if (pid == 0)
 		{
 			signal(SIGQUIT, handle_sigquit);
-			// Gestion des redirections d'entrée
 			if (shell->input_file)
 			{
 				infile_fd = open(shell->input_file, O_RDONLY);
@@ -107,8 +106,6 @@ void execute_command(t_shell *shell, char **env)
 				dup2(shell->pipe_in, STDIN_FILENO);
 				close(shell->pipe_in);
 			}
-
-			// Parcourir toutes les commandes liées pour gérer les redirections de sortie
 			t_shell *current = shell;
 			while (current)
 			{
@@ -118,28 +115,23 @@ void execute_command(t_shell *shell, char **env)
 						temp_fd = open(current->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 					else
 						temp_fd = open(current->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-
 					if (temp_fd == -1)
 					{
 						perror("open output_file");
 						exit(EXIT_FAILURE);
 					}
-					// Garder la dernière redirection active pour rediriger la sortie
 					if (current->next == NULL || current->next->output_file == NULL)
-						outfile_fd = temp_fd; // Utiliser ce fichier pour la redirection de sortie
+						outfile_fd = temp_fd;
 					else
-						close(temp_fd); // Fermer les fichiers intermédiaires
+						close(temp_fd);
 				}
 				current = current->next;
 			}
-
 			if (outfile_fd != -1)
 			{
 				dup2(outfile_fd, STDOUT_FILENO);
 				close(outfile_fd);
 			}
-
-			// Gestion des pipes
 			if (shell->pipe_in != -1)
 			{
 				dup2(shell->pipe_in, STDIN_FILENO);

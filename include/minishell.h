@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/02 23:34:14 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/03 03:35:16 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	ft_init(t_shell *shell);
 
 // Signal
 void	handle_sigint(int sig);
-void	setup_signals(void);
 void	handle_sigquit(int sig);
+void	setup_signals(void);
 
 // Parsing
 void	handle_cmd(t_shell *shell);
@@ -110,6 +110,8 @@ void	ft_exit(t_shell *shell, char **env);
 char	**ft_cd(t_shell *shell, char **env);
 	// Export
 char	**ft_export(t_shell *shell, char **env);
+	// Export_env
+char	**update_env(char **env, const char *name, const char *value);
 	// Unset
 char	**ft_unset(t_shell *shell, char **env);
 
