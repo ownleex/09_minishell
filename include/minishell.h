@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/01 16:41:09 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/09/03 03:35:16 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 
 typedef struct s_shell
 {
+	char			*heredoc_delimiter;
+	int				is_heredoc;
 	char			*current_line;
 	char			**current_arg;
 	char			*command_path;
@@ -59,6 +61,7 @@ void	ft_init(t_shell *shell);
 
 // Signal
 void	handle_sigint(int sig);
+void	handle_sigquit(int sig);
 void	setup_signals(void);
 
 // Parsing
@@ -86,6 +89,8 @@ char	**remove_env_var(char **env, const char *name);
 // Exec
 char	*find_command_path(t_shell *shell, char **env);
 void	execute_command(t_shell *shell, char **env);
+	//heredoc
+void	handle_heredoc(t_shell *shell);
 	// Utils exec
 void	free_array(char **array);
 void	free_args(t_shell *shell);
@@ -96,7 +101,7 @@ char	**handle_builtin(t_shell *shell, char **env);
 	// Echo
 void	ft_echo(t_shell *shell, char **env);
 	// Pwd
-void	ft_pwd(void);
+void	ft_pwd(t_shell *shell);
 	// Env
 void	ft_env(t_shell *shell, char **env);
 	// Exit
@@ -105,6 +110,8 @@ void	ft_exit(t_shell *shell, char **env);
 char	**ft_cd(t_shell *shell, char **env);
 	// Export
 char	**ft_export(t_shell *shell, char **env);
+	// Export_env
+char	**update_env(char **env, const char *name, const char *value);
 	// Unset
 char	**ft_unset(t_shell *shell, char **env);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arguments.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 14:03:36 by noldiane          #+#    #+#             */
-/*   Updated: 2024/08/31 14:28:25 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/09/01 22:33:10 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,34 @@ int	jump_arg(char *line, int cursor)
 	}
 }
 
-int	count_args(char *line)
+int count_args(char *line)
 {
-	int	len;
-	int	index;
+    int len;
+    int index;
 
-	len = 0;
-	index = 0;
-	while (line[index] != '\0')
-	{
-		if (is_separator(line[index], 1))
-		{
-			index = jump_arg(line, index);
-			len++;
-		}
-		else if (line[index] == '|' && is_single_pipe(line, index))
-		{
-			index++;
-			len += 2;
-		}
-		else
-			index++;
-	}
-	return (len);
+    if (!line) // Vérifiez si line est NULL
+        return 0;
+
+    len = 0;
+    index = 0;
+    while (line[index] != '\0')
+    {
+        if (is_separator(line[index], 1))
+        {
+            index = jump_arg(line, index);
+            len++;
+        }
+        else if (line[index] == '|' && is_single_pipe(line, index))
+        {
+            index++;
+            len += 2;
+        }
+        else
+            index++;
+    }
+    return (len);
 }
+
 
 int	get_arglen(t_shell *shell, int start, int end)
 {

@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/03 02:41:17 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/02 00:34:30 by ayarmaya         ###   ########.fr       */
+/*   Created: 2024/09/01 21:14:21 by ayarmaya          #+#    #+#             */
+/*   Updated: 2024/09/01 21:14:40 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/libft.h"
 
-void	ft_pwd(t_shell *shell)
+int	ft_strcmp(const char *str1, const char *str2)
 {
-	char	cwd[PATH_MAX];
+	size_t	i;
 
-	if (getcwd(cwd, PATH_MAX))
-	{
-		printf("%s\n", cwd);
-		shell->exit_code = 0;
-	}
-	else
-	{
-		perror("pwd");
-		shell->exit_code = 1;
-	}
+	i = 0;
+	while (str1[i] != '\0' && str1[i] == str2[i])
+		i++;
+	return ((unsigned char)str1[i] - (unsigned char)str2[i]);
 }

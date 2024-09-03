@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/31 02:43:49 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/02 01:01:00 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,32 +29,40 @@ char	*get_env_value(char **env, char *var_name)
 	return (NULL);
 }
 
-void	expand_and_print(char *arg, char **env)
+void	handle_variable_expansion(char **str, char **env, t_shell *shell)
 {
-	char	*str;
 	char	*var_start;
 	char	var_name[128];
 	char	*value;
+
+	var_start = *str + 1;
+	if (*var_start == '?')
+	{
+		printf("%d", shell->exit_code);
+		*str = var_start + 1;
+		return ;
+	}
+	while (*var_start && (ft_isalnum(*var_start) || *var_start == '_'))
+		var_start++;
+	ft_bzero(var_name, sizeof(var_name));
+	ft_strlcpy(var_name, *str + 1, var_start - *str);
+	value = get_env_value(env, var_name);
+	if (value)
+		printf("%s", value);
+	*str = var_start;
+}
+
+void	expand_and_print(char *arg, char **env, t_shell *shell)
+{
+	char	*str;
 
 	str = arg;
 	while (*str)
 	{
 		if (*str == '$')
-		{
-			var_start = str + 1;
-			while (*var_start && (ft_isalnum(*var_start) || *var_start == '_'))
-				var_start++;
-			ft_bzero(var_name, sizeof(var_name));
-			ft_strlcpy(var_name, str + 1, var_start - str);
-			value = get_env_value(env, var_name);
-			if (value)
-				printf("%s", value);
-			str = var_start;
-		}
+			handle_variable_expansion(&str, env, shell);
 		else
-		{
 			printf("%c", *str++);
-		}
 	}
 }
 
@@ -76,7 +84,7 @@ void	ft_echo(t_shell *shell, char **env)
 		if (shell->has_single_quote)
 			printf("%s", shell->current_arg[i]);
 		else
-			expand_and_print(shell->current_arg[i], env);
+			expand_and_print(shell->current_arg[i], env, shell);
 		if (shell->current_arg[i + 1])
 			printf(" ");
 		i++;
