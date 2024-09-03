@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/02 23:44:48 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/03 02:57:16 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,8 @@ void execute_command(t_shell *shell, char **env)
 	while (shell)
 	{
 		if (shell->is_heredoc)
-		{
 			handle_heredoc(shell);
-		}
-
+		shell->is_heredoc = 0;
 		if (shell->is_piped)
 		{
 			if (pipe(pipe_fds) == -1)
@@ -128,13 +126,9 @@ void execute_command(t_shell *shell, char **env)
 					}
 					// Garder la dernière redirection active pour rediriger la sortie
 					if (current->next == NULL || current->next->output_file == NULL)
-					{
 						outfile_fd = temp_fd; // Utiliser ce fichier pour la redirection de sortie
-					}
 					else
-					{
 						close(temp_fd); // Fermer les fichiers intermédiaires
-					}
 				}
 				current = current->next;
 			}
@@ -201,14 +195,15 @@ void execute_command(t_shell *shell, char **env)
 				if (WTERMSIG(status) == SIGQUIT)
 				{
 					write(STDOUT_FILENO, "Quit\n", 6);
+					shell->exit_code = 128 + WTERMSIG(status);
 				}
-				shell->exit_code = 128 + WTERMSIG(status);
+				else if (WTERMSIG(status) == SIGINT)
+				{
+					write(STDOUT_FILENO, "\r", 1);
+					shell->exit_code = 130;
+				}
 			}
 			signal(SIGQUIT, SIG_IGN);
-		}
-		if (shell->is_heredoc)
-		{
-			shell->is_heredoc = 0;
 		}
 		free_args(shell);
 		shell = shell->next;
