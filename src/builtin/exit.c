@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:23:33 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/02 02:56:56 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/03 21:58:34 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,12 @@ void	ft_exit(t_shell *shell, char **env)
 {
 	int	exit_code;
 
+	if (shell->current_arg[2] != NULL)
+	{
+		printf("minishell: exit: too many arguments\n");
+		shell->exit_code = 1;
+		return ;
+	}
 	exit_code = calculate_exit_code(shell);
 	exit_and_cleanup(shell, env, exit_code);
 }

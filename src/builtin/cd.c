@@ -6,11 +6,41 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/02 03:05:23 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/03 21:24:13 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*get_home_directory(char **env)
+{
+	while (*env)
+	{
+		if (strncmp(*env, "HOME=", 5) == 0)
+			return (*env + 5);
+		env++;
+	}
+	return (NULL);
+}
+
+int	validate_directory(t_shell *shell, char *path)
+{
+	struct stat	path_stat;
+
+	if (stat(path, &path_stat) != 0)
+	{
+		perror("minishell: cd");
+		shell->exit_code = 1;
+		return (0);
+	}
+	if (!S_ISDIR(path_stat.st_mode))
+	{
+		ft_putstr_fd("minishell: cd: not a directory\n", 2);
+		shell->exit_code = 1;
+		return (0);
+	}
+	return (1);
+}
 
 char	*change_directory(t_shell *shell, char **env, char *path)
 {
@@ -18,6 +48,8 @@ char	*change_directory(t_shell *shell, char **env, char *path)
 	char	*oldpwd;
 	char	*new_path;
 
+	if (!validate_directory(shell, path))
+		return (NULL);
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
 	{
@@ -37,17 +69,6 @@ char	*change_directory(t_shell *shell, char **env, char *path)
 	free(oldpwd);
 	new_path = getcwd(NULL, 0);
 	return (new_path);
-}
-
-char	*get_home_directory(char **env)
-{
-	while (*env)
-	{
-		if (ft_strcmp(*env, "HOME=") == 0)
-			return (*env + 5);
-		env++;
-	}
-	return (NULL);
 }
 
 char	**ft_cd(t_shell *shell, char **env)
