@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/02 01:12:22 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/04 00:56:22 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,26 @@ void	print_shell_instance(t_shell *shell)
 		shell = shell->next;
 		index++;
 	}
+}
+
+int	is_invalid_syntax(t_shell *shell)
+{
+	int	len;
+
+	len = ft_strlen(shell->current_line);
+	while (len > 0 && shell->current_line[len - 1] == ' ')
+		len--;
+
+	if (len == 0)
+		return (0);
+	if (shell->current_line[len - 1] == '|')
+		return (1);
+	else if (shell->current_line[len - 1] == '<')
+		return (1);
+	else if (shell->current_line[len - 1] == '>')
+		return (1);
+
+	return (0);
 }
 
 int	is_empty_or_whitespace(const char *str)
@@ -106,6 +126,21 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (is_empty_or_whitespace(shell->current_line))
 		{
+			free(shell->current_line);
+			continue ;
+		}
+		if (is_invalid_syntax(shell))
+		{
+			if (shell->current_line[ft_strlen(shell->current_line) - 1] == '|')
+			{
+				write(STDERR_FILENO, "minishell: syntax error near unexpected token 'end of file'\n", 61);
+				shell->exit_code = 130;
+			}
+			else
+			{
+				write(STDERR_FILENO, "minishell: syntax error near unexpected token 'newline'\n", 56);
+				shell->exit_code = 2;
+			}
 			free(shell->current_line);
 			continue ;
 		}
