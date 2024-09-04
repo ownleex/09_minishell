@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 21:28:02 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/04 21:34:25 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,9 @@ char	**ft_cd(t_shell *shell, char **env)
 	path = get_cd_path(shell, env);
 	if (!path)
 		return (env);
-
 	new_path = change_directory(shell, env, path);
 	if (!new_path)
 		return (env);
-
 	env = update_env(env, "PWD", new_path);
 	shell->exit_code = 0;
 	return (env);
