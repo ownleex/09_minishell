@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/03 21:24:13 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/04 03:23:48 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,12 @@ int	validate_directory(t_shell *shell, char *path)
 char	*change_directory(t_shell *shell, char **env, char *path)
 {
 	int		ret;
-	char	*oldpwd;
-	char	*new_path;
+	char	oldpwd[PATH_MAX];
+	char	new_path[PATH_MAX];
 
 	if (!validate_directory(shell, path))
 		return (NULL);
-	oldpwd = getcwd(NULL, 0);
-	if (!oldpwd)
+	if (!getcwd(oldpwd, PATH_MAX))
 	{
 		perror("getcwd");
 		shell->exit_code = 1;
@@ -61,20 +60,22 @@ char	*change_directory(t_shell *shell, char **env, char *path)
 	if (ret == -1)
 	{
 		perror("minishell: cd");
-		free(oldpwd);
 		shell->exit_code = 1;
 		return (NULL);
 	}
 	env = update_env(env, "OLDPWD", oldpwd);
-	free(oldpwd);
-	new_path = getcwd(NULL, 0);
-	return (new_path);
+	if (!getcwd(new_path, PATH_MAX))
+	{
+		perror("getcwd");
+		shell->exit_code = 1;
+		return (NULL);
+	}
+	return (ft_strdup(new_path));
 }
 
-char	**ft_cd(t_shell *shell, char **env)
+char	*get_cd_path(t_shell *shell, char **env)
 {
 	char	*path;
-	char	*new_path;
 
 	if (!shell->current_arg[1])
 	{
@@ -83,15 +84,36 @@ char	**ft_cd(t_shell *shell, char **env)
 		{
 			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 			shell->exit_code = 1;
-			return (env);
+			return (NULL);
 		}
 	}
 	else
 		path = shell->current_arg[1];
+	return (path);
+}
+
+char	**ft_cd(t_shell *shell, char **env)
+{
+	char	*path;
+	char	*new_path;
+
+	if (shell->current_arg[1] && shell->current_arg[2])
+	{
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		shell->exit_code = 1;
+		return (env);
+	}
+	path = get_cd_path(shell, env);
+	if (!path)
+		return (env);
+
 	new_path = change_directory(shell, env, path);
 	if (!new_path)
 		return (env);
+
 	env = update_env(env, "PWD", new_path);
+	free(path);
+	free(new_path);
 	free(shell->current_path);
 	shell->current_path = new_path;
 	shell->exit_code = 0;
