@@ -6,60 +6,11 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 22:56:15 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/04 23:59:20 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*find_command_path(t_shell *shell, char **env)
-{
-	char	**path_split;
-	char	*path;
-	char	*full_path;
-	char	*temp;
-	int		i;
-
-	path = NULL;
-	i = 0;
-	if (access(shell->current_cmd, X_OK) == 0)
-	{
-		return (ft_strdup(shell->current_cmd));
-	}
-	while (env[i])
-	{
-		path_split = ft_split(env[i], '=');
-		if (ft_strcmp(path_split[0], "PATH") == 0)
-		{
-			path = ft_strdup(path_split[1]);
-			free_array(path_split);
-			break ;
-		}
-		free_array(path_split);
-		i++;
-	}
-	if (!path)
-		return (NULL);
-	path_split = ft_split(path, ':');
-	free(path);
-	i = 0;
-	while (path_split[i])
-	{
-		full_path = ft_strjoin(path_split[i], "/");
-		temp = full_path;
-		full_path = ft_strjoin(full_path, shell->current_cmd);
-		free(temp);
-		if (access(full_path, X_OK) == 0)
-		{
-			free_array(path_split);
-			return (full_path);
-		}
-		free(full_path);
-		i++;
-	}
-	free_array(path_split);
-	return (NULL);
-}
 
 char **execute_command(t_shell *shell, char **env)
 {

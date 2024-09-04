@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 23:25:53 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 00:00:21 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ char	**remove_env_var(char **env, const char *name);
 // Exec
 char	*find_command_path(t_shell *shell, char **env);
 char	**execute_command(t_shell *shell, char **env);
+	//Find_command_path
+char	*find_command_path(t_shell *shell, char **env);
 	//heredoc
 void	handle_heredoc(t_shell *shell);
 	// Utils exec
