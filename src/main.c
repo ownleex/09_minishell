@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 15:41:11 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/04 20:14:23 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,10 +143,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(shell->current_line);
 			parse_command(shell);
-			if (is_builtin(shell))
-				env = handle_builtin(shell, env);
-			else
-				execute_command(shell, env);
+			env = execute_command(shell, env);
 		}
 		free_all_shells(shell->next);
 		shell->next = NULL;

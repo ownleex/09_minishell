@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 01:32:18 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/04 20:28:38 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*find_command_path(t_shell *shell, char **env)
 	return (NULL);
 }
 
-void	execute_command(t_shell *shell, char **env)
+char	**execute_command(t_shell *shell, char **env)
 {
 	pid_t	pid;
 	int		status;
@@ -81,7 +81,7 @@ void	execute_command(t_shell *shell, char **env)
 			{
 				perror("pipe");
 				shell->exit_code = 1;
-				return ;
+				return (env);
 			}
 			shell->pipe_out = pipe_fds[1];
 			shell->next->pipe_in = pipe_fds[0];
@@ -144,9 +144,10 @@ void	execute_command(t_shell *shell, char **env)
 			}
 			if (is_builtin(shell))
 			{
-				handle_builtin(shell, env);
+				env = handle_builtin(shell, env);
 				free_args(shell);
-				exit(shell->exit_code);
+				//ft_env(shell, env);
+				return (env);
 			}
 			else
 			{
@@ -200,4 +201,5 @@ void	execute_command(t_shell *shell, char **env)
 		free_args(shell);
 		shell = shell->next;
 	}
+	return (env);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 15:41:54 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/04 20:14:16 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	**remove_env_var(char **env, const char *name);
 
 // Exec
 char	*find_command_path(t_shell *shell, char **env);
-void	execute_command(t_shell *shell, char **env);
+char	**execute_command(t_shell *shell, char **env);
 	//heredoc
 void	handle_heredoc(t_shell *shell);
 	// Utils exec
