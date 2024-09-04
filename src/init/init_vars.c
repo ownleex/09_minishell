@@ -6,13 +6,13 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 01:47:46 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 02:04:53 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/04 03:46:25 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_set_current_path(t_shell *shell)
+/*int	ft_set_current_path(t_shell *shell)
 {
 	shell->current_path = getcwd(NULL, 0);
 	if (!shell->current_path)
@@ -21,7 +21,7 @@ int	ft_set_current_path(t_shell *shell)
 		return (0);
 	}
 	return (1);
-}
+}*/
 
 void	ft_init_variables(t_shell *shell)
 {
@@ -29,7 +29,7 @@ void	ft_init_variables(t_shell *shell)
 	shell->current_arg = NULL;
 	shell->command_path = NULL;
 	shell->current_cmd = NULL;
-	shell->current_path = NULL;
+	//shell->current_path = NULL;
 	shell->target_path = NULL;
 	shell->input_file = NULL;
 	shell->output_file = NULL;
@@ -47,7 +47,7 @@ void	ft_init_variables(t_shell *shell)
 void	ft_init(t_shell *shell)
 {
 	ft_init_variables(shell);
-	if (shell->current_path != NULL)
+	/*if (shell->current_path != NULL)
 	{
 		free(shell->current_path);
 		shell->current_path = NULL;
@@ -56,5 +56,5 @@ void	ft_init(t_shell *shell)
 	{
 		free(shell);
 		return ;
-	}
+	}*/
 }

@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 03:40:44 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/04 03:57:29 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	validate_directory(t_shell *shell, char *path)
 
 char	*change_directory(t_shell *shell, char **env, char *path)
 {
-	int		ret;
 	char	oldpwd[PATH_MAX];
 	char	new_path[PATH_MAX];
 
@@ -56,8 +55,7 @@ char	*change_directory(t_shell *shell, char **env, char *path)
 		shell->exit_code = 1;
 		return (NULL);
 	}
-	ret = chdir(path);
-	if (ret == -1)
+	if (chdir(path) == -1)
 	{
 		perror("minishell: cd");
 		shell->exit_code = 1;
@@ -114,8 +112,8 @@ char	**ft_cd(t_shell *shell, char **env)
 	env = update_env(env, "PWD", new_path);
 	free(path);
 	free(new_path);
-	free(shell->current_path);
-	shell->current_path = new_path;
+	//free(shell->current_path);
+	//shell->current_path = new_path;
 	shell->exit_code = 0;
 	return (env);
 }
