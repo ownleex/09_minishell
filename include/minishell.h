@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 22:05:27 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/04 23:25:53 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_shell
 // Utils main
 void	free_shell(t_shell *shell);
 void	free_all_shells(t_shell *shell);
+void	void_argc_argv(int argc, char **argv);
 
 // Init
 char	**init_env(char **envp);

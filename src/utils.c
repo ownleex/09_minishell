@@ -6,11 +6,17 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 23:03:51 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 21:39:27 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/04 23:25:44 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	void_argc_argv(int argc, char **argv)
+{
+	(void)argc;
+	(void)argv;
+}
 
 void	free_all_shells(t_shell *shell)
 {
