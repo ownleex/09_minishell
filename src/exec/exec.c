@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/03 03:11:37 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/04 01:32:18 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	execute_command(t_shell *shell, char **env)
 				infile_fd = open(shell->input_file, O_RDONLY);
 				if (infile_fd == -1)
 				{
-					perror("open input_file");
+					perror("minishell");
 					exit(EXIT_FAILURE);
 				}
 				dup2(infile_fd, STDIN_FILENO);
@@ -117,7 +117,7 @@ void	execute_command(t_shell *shell, char **env)
 						temp_fd = open(current->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 					if (temp_fd == -1)
 					{
-						perror("open output_file");
+						perror("minishell");
 						exit(EXIT_FAILURE);
 					}
 					if (current->next == NULL || current->next->output_file == NULL)
