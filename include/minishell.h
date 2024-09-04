@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/03 21:18:57 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/04 15:41:54 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void	setup_signals(void);
 // Parsing
 void	handle_cmd(t_shell *shell);
 void	parse_command(t_shell *shell);
+	// Command_check
+int is_invalid_syntax(t_shell *shell);
 	// Utils
 int		is_quote(int c);
 int		is_redirecion(char *str);
