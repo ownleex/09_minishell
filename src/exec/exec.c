@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 21:22:44 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/04 22:56:15 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,147 +63,147 @@ char	*find_command_path(t_shell *shell, char **env)
 
 char **execute_command(t_shell *shell, char **env)
 {
-    pid_t   pid;
-    int     status;
-    int     pipe_fds[2];
-    int     infile_fd = -1;
-    int     outfile_fd = -1;
+	pid_t   pid;
+	int     status;
+	int     pipe_fds[2];
+	int     infile_fd = -1;
+	int     outfile_fd = -1;
 
-    while (shell)
-    {
-        if (shell->is_heredoc)
-            handle_heredoc(shell);
-        shell->is_heredoc = 0;
+	while (shell)
+	{
+		if (shell->is_heredoc)
+			handle_heredoc(shell);
+		shell->is_heredoc = 0;
 
-        if (shell->is_piped)
-        {
-            if (pipe(pipe_fds) == -1)
-            {
-                perror("pipe");
-                shell->exit_code = 1;
-                return (env);
-            }
-            shell->pipe_out = pipe_fds[1];
-            shell->next->pipe_in = pipe_fds[0];
-        }
+		if (shell->is_piped)
+		{
+			if (pipe(pipe_fds) == -1)
+			{
+				perror("pipe");
+				shell->exit_code = 1;
+				return (env);
+			}
+			shell->pipe_out = pipe_fds[1];
+			shell->next->pipe_in = pipe_fds[0];
+		}
 
-        // Si c'est un built-in et qu'il n'y a ni pipe ni redirection
-        if (is_builtin(shell) && !shell->is_piped && !shell->input_file && !shell->output_file)
-        {
-            env = handle_builtin(shell, env);
-            free_args(shell);
-            shell->exit_code = 0;
-        }
-        else
-        {
-            // Création d'un processus enfant si ce n'est pas un built-in, ou si pipe/redirection
-            pid = fork();
-            if (pid == 0) // Processus enfant
-            {
-                signal(SIGQUIT, handle_sigquit);
+		// Si c'est un built-in et qu'il n'y a ni pipe ni redirection
+		if (is_builtin(shell) && !shell->is_piped && !shell->input_file && !shell->output_file)
+		{
+			env = handle_builtin(shell, env);
+			free_args(shell);
+			shell->exit_code = 0;
+		}
+		else
+		{
+			// Création d'un processus enfant si ce n'est pas un built-in, ou si pipe/redirection
+			pid = fork();
+			if (pid == 0) // Processus enfant
+			{
+				signal(SIGQUIT, handle_sigquit);
 
-                // Gestion des redirections d'entrée
-                if (shell->input_file)
-                {
-                    infile_fd = open(shell->input_file, O_RDONLY);
-                    if (infile_fd == -1)
-                    {
-                        perror("minishell");
-                        exit(EXIT_FAILURE);
-                    }
-                    dup2(infile_fd, STDIN_FILENO);
-                    close(infile_fd);
-                }
-                else if (shell->pipe_in != -1)
-                {
-                    dup2(shell->pipe_in, STDIN_FILENO);
-                    close(shell->pipe_in);
-                }
+				// Gestion des redirections d'entrée
+				if (shell->input_file)
+				{
+					infile_fd = open(shell->input_file, O_RDONLY);
+					if (infile_fd == -1)
+					{
+						perror("minishell");
+						exit(EXIT_FAILURE);
+					}
+					dup2(infile_fd, STDIN_FILENO);
+					close(infile_fd);
+				}
+				else if (shell->pipe_in != -1)
+				{
+					dup2(shell->pipe_in, STDIN_FILENO);
+					close(shell->pipe_in);
+				}
 
-                // Gestion des redirections de sortie
-                if (shell->output_file)
-                {
-                    if (shell->append_output)
-                        outfile_fd = open(shell->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-                    else
-                        outfile_fd = open(shell->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-                    if (outfile_fd == -1)
-                    {
-                        perror("minishell");
-                        exit(EXIT_FAILURE);
-                    }
-                    dup2(outfile_fd, STDOUT_FILENO);
-                    close(outfile_fd);
-                }
-                else if (shell->pipe_out != -1)
-                {
-                    dup2(shell->pipe_out, STDOUT_FILENO);
-                    close(shell->pipe_out);
-                }
+				// Gestion des redirections de sortie
+				if (shell->output_file)
+				{
+					if (shell->append_output)
+						outfile_fd = open(shell->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+					else
+						outfile_fd = open(shell->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+					if (outfile_fd == -1)
+					{
+						perror("minishell");
+						exit(EXIT_FAILURE);
+					}
+					dup2(outfile_fd, STDOUT_FILENO);
+					close(outfile_fd);
+				}
+				else if (shell->pipe_out != -1)
+				{
+					dup2(shell->pipe_out, STDOUT_FILENO);
+					close(shell->pipe_out);
+				}
 
-                // Exécution des built-ins ou des commandes externes
-                if (is_builtin(shell))
-                {
-                    env = handle_builtin(shell, env);
-                    free_args(shell);
-                    exit(shell->exit_code); // Sortir correctement après exécution du built-in
-                }
-                else
-                {
-                    shell->command_path = find_command_path(shell, env);
-                    if (!shell->command_path)
-                    {
-                        write(STDERR_FILENO, "minishell: ", 12);
-                        write(STDERR_FILENO, shell->current_cmd, ft_strlen(shell->current_cmd));
-                        write(STDERR_FILENO, ": Command not found\n", 20);
-                        exit(127);
-                    }
-                    if (execve(shell->command_path, shell->current_arg, env) == -1)
-                    {
-                        perror("minishell");
-                        exit(EXIT_FAILURE);
-                    }
-                }
-            }
-            else if (pid < 0) // Échec du fork
-            {
-                perror("minishell");
-                shell->exit_code = 1;
-            }
-            else // Processus parent
-            {
-                // Fermeture des descripteurs de fichier pour les pipes
-                if (shell->pipe_out != -1)
-                    close(shell->pipe_out);
-                if (shell->pipe_in != -1)
-                {
-                    close(shell->pipe_in);
-                    shell->pipe_in = -1;
-                }
+				// Exécution des built-ins ou des commandes externes
+				if (is_builtin(shell))
+				{
+					env = handle_builtin(shell, env);
+					free_args(shell);
+					exit(shell->exit_code); // Sortir correctement après exécution du built-in
+				}
+				else
+				{
+					shell->command_path = find_command_path(shell, env);
+					if (!shell->command_path)
+					{
+						write(STDERR_FILENO, "minishell: ", 12);
+						write(STDERR_FILENO, shell->current_cmd, ft_strlen(shell->current_cmd));
+						write(STDERR_FILENO, ": Command not found\n", 20);
+						exit(127);
+					}
+					if (execve(shell->command_path, shell->current_arg, env) == -1)
+					{
+						perror("minishell");
+						exit(EXIT_FAILURE);
+					}
+				}
+			}
+			else if (pid < 0) // Échec du fork
+			{
+				perror("minishell");
+				shell->exit_code = 1;
+			}
+			else // Processus parent
+			{
+				// Fermeture des descripteurs de fichier pour les pipes
+				if (shell->pipe_out != -1)
+					close(shell->pipe_out);
+				if (shell->pipe_in != -1)
+				{
+					close(shell->pipe_in);
+					shell->pipe_in = -1;
+				}
 
-                // Attente de la fin du processus enfant
-                waitpid(pid, &status, 0);
-                if (WIFEXITED(status))
-                    shell->exit_code = WEXITSTATUS(status);
-                else if (WIFSIGNALED(status))
-                {
-                    if (WTERMSIG(status) == SIGQUIT)
-                    {
-                        write(STDOUT_FILENO, "Quit\n", 6);
-                        shell->exit_code = 128 + WTERMSIG(status);
-                    }
-                    else if (WTERMSIG(status) == SIGINT)
-                    {
-                        write(STDOUT_FILENO, "\r", 1);
-                        shell->exit_code = 130;
-                    }
-                }
-            }
-        }
+				// Attente de la fin du processus enfant
+				waitpid(pid, &status, 0);
+				if (WIFEXITED(status))
+					shell->exit_code = WEXITSTATUS(status);
+				else if (WIFSIGNALED(status))
+				{
+					if (WTERMSIG(status) == SIGQUIT)
+					{
+						write(STDOUT_FILENO, "Quit\n", 6);
+						shell->exit_code = 128 + WTERMSIG(status);
+					}
+					else if (WTERMSIG(status) == SIGINT)
+					{
+						write(STDOUT_FILENO, "\r", 1);
+						shell->exit_code = 130;
+					}
+				}
+			}
+		}
 
-        // Libérer les arguments et passer à la commande suivante
-        free_args(shell);
-        shell = shell->next;
-    }
-    return (env);
+		// Libérer les arguments et passer à la commande suivante
+		free_args(shell);
+		shell = shell->next;
+	}
+	return (env);
 }

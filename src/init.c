@@ -1,16 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_vars.c                                        :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 01:47:46 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 21:36:51 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/04 22:03:47 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_init(t_shell *shell)
+{
+	shell->current_line = NULL;
+	shell->current_arg = NULL;
+	shell->command_path = NULL;
+	shell->current_cmd = NULL;
+	shell->target_path = NULL;
+	shell->input_file = NULL;
+	shell->output_file = NULL;
+	shell->append_output = 0;
+	shell->pipe_in = -1;
+	shell->pipe_out = -1;
+	shell->is_piped = 0;
+	shell->has_single_quote = 0;
+	shell->instance_count = 1;
+	shell->is_heredoc = 0;
+	shell->heredoc_delimiter = NULL;
+	shell->next = NULL;
+}
 
 char	**copy_env_and_allocate(char **envp, int *envp_len)
 {
@@ -69,22 +89,20 @@ char	**init_env(char **envp)
 	return (new_envp);
 }
 
-void	ft_init(t_shell *shell)
+int	initialize_shell(t_shell **shell, char ***env, char **envp)
 {
-	shell->current_line = NULL;
-	shell->current_arg = NULL;
-	shell->command_path = NULL;
-	shell->current_cmd = NULL;
-	shell->target_path = NULL;
-	shell->input_file = NULL;
-	shell->output_file = NULL;
-	shell->append_output = 0;
-	shell->pipe_in = -1;
-	shell->pipe_out = -1;
-	shell->is_piped = 0;
-	shell->has_single_quote = 0;
-	shell->instance_count = 1;
-	shell->is_heredoc = 0;
-	shell->heredoc_delimiter = NULL;
-	shell->next = NULL;
+	*env = init_env(envp);
+	if (!(*env))
+	{
+		perror("init_env");
+		return (1);
+	}
+	*shell = malloc(sizeof(t_shell));
+	if (!(*shell))
+	{
+		perror("malloc");
+		free_array(*env);
+		return (1);
+	}
+	return (0);
 }

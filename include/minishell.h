@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 20:14:16 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/09/04 22:05:27 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,9 @@ void	free_shell(t_shell *shell);
 void	free_all_shells(t_shell *shell);
 
 // Init
-	// Init_env
 char	**init_env(char **envp);
-	// Init_vars
 void	ft_init(t_shell *shell);
+int		initialize_shell(t_shell **shell, char ***env, char **envp);
 
 // Signal
 void	handle_sigint(int sig);
@@ -69,7 +68,7 @@ void	setup_signals(void);
 void	handle_cmd(t_shell *shell);
 void	parse_command(t_shell *shell);
 	// Command_check
-int is_invalid_syntax(t_shell *shell);
+int		is_invalid_syntax(t_shell *shell);
 	// Utils
 int		is_quote(int c);
 int		is_redirecion(char *str);
@@ -135,7 +134,6 @@ void	ft_init(t_shell *shell);
 char	**init_env(char **envp);
 
 // Debug
-
 void	print_shell_instance(t_shell *shell);
 
 #endif
