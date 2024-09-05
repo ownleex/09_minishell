@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 22:02:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 22:02:30 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 02:54:37 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ void	print_shell_instance(t_shell *shell)
 		else
 			printf("  current_arg: (null)\n");
 		printf("  command_path: %s\n", shell->command_path ? shell->command_path : "(null)");
-		printf("  current_path: %s\n", shell->current_path ? shell->current_path : "(null)");
-		printf("  target_path: %s\n", shell->target_path ? shell->target_path : "(null)");
 		printf("  input_file: %s\n", shell->input_file ? shell->input_file : "(null)");
 		printf("  output_file: %s\n", shell->output_file ? shell->output_file : "(null)");
 		printf("  append_output: %d\n", shell->append_output);

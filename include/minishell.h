@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 00:52:11 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 02:55:25 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@ typedef struct s_shell
 	char			**current_arg;
 	char			*command_path;
 	char			*current_cmd;
-	char			*current_path;
-	char			*target_path;
 	int				exit_code;
-	int				parsing_exit_code;
 	char			*input_file;
 	char			*output_file;
 	int				append_output;
