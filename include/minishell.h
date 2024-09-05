@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 06:39:46 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:15:15 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct s_shell
 	int				pipe_out;
 	int				is_piped;
 	int				has_single_quote;
-	int				instance_count;
 	struct s_shell	*next;
 }	t_shell;
 

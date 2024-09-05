@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   instances.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 13:55:57 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/02 00:09:05 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:15:44 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	handle_pipes(t_shell *shell, int *i, t_shell **main_shell, int *c)
 	*main_shell = (*main_shell)->next;
 	(*i)++;
 	(*c)++;
-	(*main_shell)->instance_count = *c;
 }
 
 void	handle_redirections(t_shell *shell, int i, t_shell *main_shell)
