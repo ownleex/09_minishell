@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 02:13:57 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 04:07:17 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,7 @@ char	**execute_command(t_shell *shell, char **env)
 			shell->exit_code = 0;
 		}
 		else
-		{
 			handle_fork(shell, env);
-		}
 		free_args(shell);
 		shell = shell->next;
 	}
