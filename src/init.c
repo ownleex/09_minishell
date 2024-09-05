@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 01:47:46 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 02:54:30 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:15:38 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	ft_init(t_shell *shell)
 	shell->pipe_out = -1;
 	shell->is_piped = 0;
 	shell->has_single_quote = 0;
-	shell->instance_count = 1;
 	shell->is_heredoc = 0;
 	shell->heredoc_delimiter = NULL;
 	shell->next = NULL;
