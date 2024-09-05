@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 03:18:26 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 03:28:40 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,57 +25,6 @@ int	is_empty_or_whitespace(const char *str)
 	}
 	return (1);
 }
-
-void	handle_syntax_error(t_shell *shell, int syntax_error)
-{
-	if (syntax_error == 2)
-	{
-		write(STDERR_FILENO, \
-		"minishell: syntax error near unexpected token '|'\n", 51);
-		shell->exit_code = 130;
-	}
-	else if (syntax_error == 1)
-	{
-		write(STDERR_FILENO, \
-		"minishell: syntax error near unexpected token 'end of file'\n", 61);
-		shell->exit_code = 130;
-	}
-	else if (syntax_error == 3)
-	{
-		write(STDERR_FILENO, \
-		"minishell: syntax error near unexpected token 'newline'\n", 56);
-		shell->exit_code = 2;
-	}
-	else if (syntax_error == 4)
-	{
-		write(STDERR_FILENO, "minishell: syntax error: unclosed quotes\n", 41);
-		shell->exit_code = 2;
-	}
-	else if (syntax_error == 5)
-	{
-		write(STDERR_FILENO, "minishell: syntax error: two pipes in a row\n", 45);
-		shell->exit_code = 2;
-	}
-	else if (syntax_error == 6)
-	{
-		write(STDERR_FILENO, \
-		"minishell: syntax error: redirection followed by a pipe\n", 57);
-		shell->exit_code = 2;
-	}
-	else if (syntax_error == 7)
-	{
-		write(STDERR_FILENO, \
-		"minishell: syntax error: pipe followed by a redirection\n", 57);
-		shell->exit_code = 2;
-	}
-	else if (syntax_error == 8)
-	{
-		write(STDERR_FILENO, \
-		"minishell: syntax error: two chevrons with spaces between them\n", 64);
-		shell->exit_code = 2;
-	}
-}
-
 
 int	read_and_check_input(t_shell *shell)
 {
@@ -119,7 +68,6 @@ void	process_shell_loop(t_shell *shell, char **env)
 		parse_command(shell);
 		env = execute_command(shell, env);
 		free_all_shells(shell->next);
-		free(shell->current_line);
 	}
 }
 

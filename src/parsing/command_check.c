@@ -1,4 +1,67 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_check.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/05 03:25:13 by ayarmaya          #+#    #+#             */
+/*   Updated: 2024/09/05 03:25:15 by ayarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+void	handle_syntax_error(t_shell *shell, int syntax_error)
+{
+	if (syntax_error == 2)
+	{
+		write(STDERR_FILENO, \
+		"minishell: syntax error near unexpected token '|'\n", 51);
+		shell->exit_code = 130;
+	}
+	else if (syntax_error == 1)
+	{
+		write(STDERR_FILENO, \
+		"minishell: syntax error near unexpected token 'end of file'\n", 61);
+		shell->exit_code = 130;
+	}
+	else if (syntax_error == 3)
+	{
+		write(STDERR_FILENO, \
+		"minishell: syntax error near unexpected token 'newline'\n", 56);
+		shell->exit_code = 2;
+	}
+	else if (syntax_error == 4)
+	{
+		write(STDERR_FILENO, "minishell: syntax error: unclosed quotes\n", 41);
+		shell->exit_code = 2;
+	}
+	else if (syntax_error == 5)
+	{
+		write(STDERR_FILENO, \
+		"minishell: syntax error: two pipes in a row\n", 45);
+		shell->exit_code = 2;
+	}
+	else if (syntax_error == 6)
+	{
+		write(STDERR_FILENO, \
+		"minishell: syntax error: redirection followed by a pipe\n", 57);
+		shell->exit_code = 2;
+	}
+	else if (syntax_error == 7)
+	{
+		write(STDERR_FILENO, \
+		"minishell: syntax error: pipe followed by a redirection\n", 57);
+		shell->exit_code = 2;
+	}
+	else if (syntax_error == 8)
+	{
+		write(STDERR_FILENO, \
+		"minishell: syntax error: two chevrons with spaces between them\n", 64);
+		shell->exit_code = 2;
+	}
+}
 
 int	is_invalid_syntax(t_shell *shell)
 {
