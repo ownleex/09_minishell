@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 23:32:17 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 01:06:50 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	process_shell_loop(t_shell *shell, char **env)
 	int	syntax_error;
 	int	input_status;
 
+	shell->exit_code = 0;
 	while (1)
 	{
 		ft_init(shell);

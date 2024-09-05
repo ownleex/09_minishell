@@ -6,11 +6,25 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 01:44:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/03 02:50:42 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 00:44:35 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	handle_signaled_status(t_shell *shell, int status)
+{
+	if (WTERMSIG(status) == SIGQUIT)
+	{
+		write(STDOUT_FILENO, "Quit\n", 6);
+		shell->exit_code = 128 + WTERMSIG(status);
+	}
+	else if (WTERMSIG(status) == SIGINT)
+	{
+		write(STDOUT_FILENO, "\r", 1);
+		shell->exit_code = 130;
+	}
+}
 
 void	handle_sigquit(int sig)
 {

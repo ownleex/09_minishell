@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 00:00:21 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 00:52:11 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,19 @@ char	**remove_env_var(char **env, const char *name);
 
 // Exec
 char	*find_command_path(t_shell *shell, char **env);
+void	execute_command_or_builtin(t_shell *shell, char **env);
 char	**execute_command(t_shell *shell, char **env);
+	//Redirection_and_pipe
+void	handle_redir(t_shell *shell);
+void	handle_pipes_if_needed(t_shell *shell);
+	//fork_and_process
+void	handle_fork(t_shell *shell, char **env);
+void	handle_parent_process(t_shell *shell, pid_t pid, int *status);
 	//Find_command_path
 char	*find_command_path(t_shell *shell, char **env);
 	//heredoc
 void	handle_heredoc(t_shell *shell);
+void	handle_heredoc_if_needed(t_shell *shell);
 	// Utils exec
 void	free_array(char **array);
 void	free_args(t_shell *shell);
@@ -123,6 +131,7 @@ char	**ft_unset(t_shell *shell, char **env);
 // Signal
 void	handle_sigint(int sig);
 void	setup_signals(void);
+void	handle_signaled_status(t_shell *shell, int status);
 
 // Utils main
 void	free_shell(t_shell *shell);
