@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 01:06:50 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 03:18:26 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,31 @@ void	handle_syntax_error(t_shell *shell, int syntax_error)
 		write(STDERR_FILENO, "minishell: syntax error: unclosed quotes\n", 41);
 		shell->exit_code = 2;
 	}
+	else if (syntax_error == 5)
+	{
+		write(STDERR_FILENO, "minishell: syntax error: two pipes in a row\n", 45);
+		shell->exit_code = 2;
+	}
+	else if (syntax_error == 6)
+	{
+		write(STDERR_FILENO, \
+		"minishell: syntax error: redirection followed by a pipe\n", 57);
+		shell->exit_code = 2;
+	}
+	else if (syntax_error == 7)
+	{
+		write(STDERR_FILENO, \
+		"minishell: syntax error: pipe followed by a redirection\n", 57);
+		shell->exit_code = 2;
+	}
+	else if (syntax_error == 8)
+	{
+		write(STDERR_FILENO, \
+		"minishell: syntax error: two chevrons with spaces between them\n", 64);
+		shell->exit_code = 2;
+	}
 }
+
 
 int	read_and_check_input(t_shell *shell)
 {
@@ -87,6 +111,7 @@ void	process_shell_loop(t_shell *shell, char **env)
 		if (syntax_error != 0)
 		{
 			handle_syntax_error(shell, syntax_error);
+			add_history(shell->current_line);
 			free(shell->current_line);
 			continue ;
 		}
