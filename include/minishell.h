@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 03:25:01 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 04:35:06 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,6 @@ void	set_arg(t_shell *shell, int start, int end, int pos);
 void	free_main_shell(t_shell *shell);
 int		find_end(t_shell *shell, int start);
 
-// Environment management
-char	**update_env(char **env, const char *name, const char *value);
-char	**remove_env_var(char **env, const char *name);
-
 // Exec
 char	*find_command_path(t_shell *shell, char **env);
 void	execute_command_or_builtin(t_shell *shell, char **env);
@@ -121,10 +117,11 @@ void	ft_exit(t_shell *shell, char **env);
 char	**ft_cd(t_shell *shell, char **env);
 	// Export
 char	**ft_export(t_shell *shell, char **env);
-	// Export_env
-char	**update_env(char **env, const char *name, const char *value);
 	// Unset
 char	**ft_unset(t_shell *shell, char **env);
+		// handle_var_env
+char	**update_env(char **env, const char *name, const char *value);
+char	**remove_env_var(char **env, const char *name);
 
 // Signal
 void	handle_sigint(int sig);
