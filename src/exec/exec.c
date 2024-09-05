@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 02:12:13 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 02:13:57 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	**execute_command(t_shell *shell, char **env)
 	while (shell)
 	{
 		handle_heredoc_if_needed(shell);
-		handle_pipes_if_needed(shell);		
+		handle_pipes_if_needed(shell);
 		if (is_builtin_without_pipe_or_redirect(shell))
 		{
 			env = handle_builtin(shell, env);
