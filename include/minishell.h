@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 04:35:06 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 05:08:08 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int		initialize_shell(t_shell **shell, char ***env, char **envp);
 // Signal
 void	handle_sigint(int sig);
 void	handle_sigquit(int sig);
+void	handle_signaled_status(t_shell *shell, int status);
 void	setup_signals(void);
 
 // Parsing
@@ -122,23 +123,6 @@ char	**ft_unset(t_shell *shell, char **env);
 		// handle_var_env
 char	**update_env(char **env, const char *name, const char *value);
 char	**remove_env_var(char **env, const char *name);
-
-// Signal
-void	handle_sigint(int sig);
-void	setup_signals(void);
-void	handle_signaled_status(t_shell *shell, int status);
-
-// Utils main
-void	free_shell(t_shell *shell);
-void	free_all_shells(t_shell *shell);
-
-// Utils exec
-void	free_array(char **array);
-void	free_args(t_shell *shell);
-
-// Init
-void	ft_init(t_shell *shell);
-char	**init_env(char **envp);
 
 // Debug
 void	print_shell_instance(t_shell *shell);
