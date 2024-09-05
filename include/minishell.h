@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 15:41:54 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 06:39:46 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@ typedef struct s_shell
 	char			**current_arg;
 	char			*command_path;
 	char			*current_cmd;
-	char			*current_path;
-	char			*target_path;
 	int				exit_code;
-	int				parsing_exit_code;
 	char			*input_file;
 	char			*output_file;
 	int				append_output;
@@ -53,23 +50,25 @@ typedef struct s_shell
 // Utils main
 void	free_shell(t_shell *shell);
 void	free_all_shells(t_shell *shell);
+void	void_argc_argv(int argc, char **argv);
 
 // Init
-	// Init_env
 char	**init_env(char **envp);
-	// Init_vars
 void	ft_init(t_shell *shell);
+int		initialize_shell(t_shell **shell, char ***env, char **envp);
 
 // Signal
 void	handle_sigint(int sig);
 void	handle_sigquit(int sig);
+void	handle_signaled_status(t_shell *shell, int status);
 void	setup_signals(void);
 
 // Parsing
 void	handle_cmd(t_shell *shell);
 void	parse_command(t_shell *shell);
 	// Command_check
-int is_invalid_syntax(t_shell *shell);
+int		is_invalid_syntax(t_shell *shell);
+void	handle_syntax_error(t_shell *shell, int syntax_error);
 	// Utils
 int		is_quote(int c);
 int		is_redirecion(char *str);
@@ -85,15 +84,21 @@ void	set_arg(t_shell *shell, int start, int end, int pos);
 void	free_main_shell(t_shell *shell);
 int		find_end(t_shell *shell, int start);
 
-// Environment management
-char	**update_env(char **env, const char *name, const char *value);
-char	**remove_env_var(char **env, const char *name);
-
 // Exec
 char	*find_command_path(t_shell *shell, char **env);
-void	execute_command(t_shell *shell, char **env);
+void	execute_command_or_builtin(t_shell *shell, char **env);
+char	**execute_command(t_shell *shell, char **env);
+	//Redirection_and_pipe
+void	handle_redir(t_shell *shell);
+void	handle_pipes_if_needed(t_shell *shell);
+	//fork_and_process
+void	handle_fork(t_shell *shell, char **env);
+void	handle_parent_process(t_shell *shell, pid_t pid, int *status);
+	//Find_command_path
+char	*find_command_path(t_shell *shell, char **env);
 	//heredoc
 void	handle_heredoc(t_shell *shell);
+void	handle_heredoc_if_needed(t_shell *shell);
 	// Utils exec
 void	free_array(char **array);
 void	free_args(t_shell *shell);
@@ -113,29 +118,13 @@ void	ft_exit(t_shell *shell, char **env);
 char	**ft_cd(t_shell *shell, char **env);
 	// Export
 char	**ft_export(t_shell *shell, char **env);
-	// Export_env
-char	**update_env(char **env, const char *name, const char *value);
 	// Unset
 char	**ft_unset(t_shell *shell, char **env);
-
-// Signal
-void	handle_sigint(int sig);
-void	setup_signals(void);
-
-// Utils main
-void	free_shell(t_shell *shell);
-void	free_all_shells(t_shell *shell);
-
-// Utils exec
-void	free_array(char **array);
-void	free_args(t_shell *shell);
-
-// Init
-void	ft_init(t_shell *shell);
-char	**init_env(char **envp);
+		// handle_var_env
+char	**update_env(char **env, const char *name, const char *value);
+char	**remove_env_var(char **env, const char *name);
 
 // Debug
-
 void	print_shell_instance(t_shell *shell);
 
 #endif

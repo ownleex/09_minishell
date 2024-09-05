@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 00:41:59 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/02 00:47:01 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/05 00:45:12 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,11 @@ void	handle_heredoc(t_shell *shell)
 	}
 	close(pipe_fd[1]);
 	shell->pipe_in = pipe_fd[0];
+}
+
+void	handle_heredoc_if_needed(t_shell *shell)
+{
+	if (shell->is_heredoc)
+		handle_heredoc(shell);
+	shell->is_heredoc = 0;
 }
