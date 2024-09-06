@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 22:02:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 16:15:29 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/09/06 21:11:15 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	print_shell_instance(t_shell *shell)
 	while (shell)
 	{
 		printf("\nShell instance #%d:\n", index);
+		printf("is_heredoc = %d\n", shell->is_heredoc);
+		printf("heredoc_delimiter = %s\n", shell->heredoc_delimiter);
 		printf("  current_line: %s\n", shell->current_line ? shell->current_line : "(null)");
 		printf("  current_cmd: %s\n", shell->current_cmd ? shell->current_cmd : "(null)");
 		if (shell->current_arg)
