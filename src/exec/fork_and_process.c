@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 00:43:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/06 23:08:58 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/06 23:16:13 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void	handle_fork(t_shell *shell, char **env, pid_t *pids, int index)
 	pid = fork();
 	if (pid == 0)
 	{
-		signal(SIGQUIT, SIG_DFL);
-		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, handle_sigquit);
+		//signal(SIGINT, SIG_DFL);
 		handle_redir(shell);
 		execute_command_or_builtin(shell, env, pids);
 		exit(shell->exit_code);
