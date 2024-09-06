@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 01:44:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 00:44:35 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/06 03:16:58 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	handle_signaled_status(t_shell *shell, int status)
 {
+	if (!shell)
+		return ;
 	if (WTERMSIG(status) == SIGQUIT)
 	{
 		write(STDOUT_FILENO, "Quit\n", 6);
@@ -21,7 +23,7 @@ void	handle_signaled_status(t_shell *shell, int status)
 	}
 	else if (WTERMSIG(status) == SIGINT)
 	{
-		write(STDOUT_FILENO, "\r", 1);
+		write(STDOUT_FILENO, "\r\n", 1);
 		shell->exit_code = 130;
 	}
 }
@@ -43,8 +45,15 @@ void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
+void	handle_sigpipe(int sig)
+{
+	(void)sig;
+	write(STDOUT_FILENO, "Broken pipe\n", 12);
+}
+
 void	setup_signals(void)
 {
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
+	signal(SIGPIPE, handle_sigpipe);
 }

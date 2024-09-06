@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 06:39:57 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/06 03:09:28 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,25 @@ int	is_builtin_without_pipe_or_redirect(t_shell *shell)
 
 char	**execute_command(t_shell *shell, char **env)
 {
+	pid_t	*pids;
+	int		nb_cmds;
+	int		i;
+	t_shell	*temp;
+
+	nb_cmds = 0;
+	temp = shell;
+	while (temp)
+	{
+		nb_cmds++;
+		temp = temp->next;
+	}
+	pids = malloc(sizeof(pid_t) * nb_cmds);
+	if (!pids)
+	{
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+	i = 0;
 	while (shell)
 	{
 		handle_heredoc_if_needed(shell);
@@ -58,9 +77,15 @@ char	**execute_command(t_shell *shell, char **env)
 			shell->exit_code = 0;
 		}
 		else
-			handle_fork(shell, env);
+		{
+			handle_fork(shell, env, pids, i);
+			i++;
+		}
 		free_args(shell);
 		shell = shell->next;
 	}
+	while (--i >= 0)
+		waitpid(pids[i], NULL, 0);
+	free(pids);
 	return (env);
 }
