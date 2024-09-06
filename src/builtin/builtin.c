@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:59:13 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/06 03:41:47 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/06 23:05:58 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	**handle_builtin(t_shell *shell, char **env, pid_t *pids)
 	else if (ft_strcmp(shell->current_cmd, "env") == 0)
 		ft_env(shell, env);
 	else if (ft_strcmp(shell->current_cmd, "exit") == 0)
-		ft_exit(shell, env, pids); // Ajout du paramètre pids
+		ft_exit(shell, env, pids);
 	else if (ft_strcmp(shell->current_cmd, "cd") == 0)
 		env = ft_cd(shell, env);
 	else if (ft_strcmp(shell->current_cmd, "export") == 0)
@@ -49,4 +49,3 @@ char	**handle_builtin(t_shell *shell, char **env, pid_t *pids)
 		env = ft_unset(shell, env);
 	return (env);
 }
-

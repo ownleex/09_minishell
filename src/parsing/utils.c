@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 11:38:10 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/06 22:40:23 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/06 23:07:21 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ int	is_single_pipe(char *line, int p)
 
 int	is_single_redirection(char *line, int p)
 {
-	if ((line[p + 1] == '<' || line[p - 1] == '<') || (line[p + 1] == '>' || line[p - 1] == '>'))
+	if ((line[p + 1] == '<' || line[p - 1] == '<') || \
+	(line[p + 1] == '>' || line[p - 1] == '>'))
 		return (0);
 	else if (line[p + 1] == ' ' && line[p - 1] == ' ')
 		return (0);
