@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:23:33 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/04 00:00:21 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/06 03:40:09 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	calculate_exit_code(t_shell *shell)
 	return (exit_code);
 }
 
-void	ft_exit(t_shell *shell, char **env)
+void	ft_exit(t_shell *shell, char **env, pid_t *pids)
 {
 	int	exit_code;
 
@@ -56,5 +56,6 @@ void	ft_exit(t_shell *shell, char **env)
 		return ;
 	}
 	exit_code = calculate_exit_code(shell);
+	free(pids);
 	exit_and_cleanup(shell, env, exit_code);
 }

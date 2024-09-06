@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/06 03:30:17 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/06 03:43:13 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int		find_end(t_shell *shell, int start);
 
 // Exec
 char	*find_command_path(t_shell *shell, char **env);
-void	execute_command_or_builtin(t_shell *shell, char **env);
+void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids);
 char	**execute_command(t_shell *shell, char **env);
 	//Redirection_and_pipe
 void	handle_redir(t_shell *shell);
@@ -104,7 +104,7 @@ void	free_args(t_shell *shell);
 
 // Builtin
 int		is_builtin(t_shell *shell);
-char	**handle_builtin(t_shell *shell, char **env);
+char	**handle_builtin(t_shell *shell, char **env, pid_t *pids);
 	// Echo
 void	ft_echo(t_shell *shell, char **env);
 	// Pwd
@@ -112,7 +112,7 @@ void	ft_pwd(t_shell *shell);
 	// Env
 void	ft_env(t_shell *shell, char **env);
 	// Exit
-void	ft_exit(t_shell *shell, char **env);
+void	ft_exit(t_shell *shell, char **env, pid_t *pids);
 	// CD
 char	**ft_cd(t_shell *shell, char **env);
 	// Export

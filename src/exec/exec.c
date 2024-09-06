@@ -6,17 +6,17 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/06 03:09:28 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/06 03:45:44 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_command_or_builtin(t_shell *shell, char **env)
+void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids)
 {
 	if (is_builtin(shell))
 	{
-		env = handle_builtin(shell, env);
+		env = handle_builtin(shell, env, pids); // Passer pids à handle_builtin
 		free_args(shell);
 		exit(shell->exit_code);
 	}
@@ -38,6 +38,8 @@ void	execute_command_or_builtin(t_shell *shell, char **env)
 		}
 	}
 }
+
+
 
 int	is_builtin_without_pipe_or_redirect(t_shell *shell)
 {
@@ -72,7 +74,7 @@ char	**execute_command(t_shell *shell, char **env)
 		handle_pipes_if_needed(shell);
 		if (is_builtin_without_pipe_or_redirect(shell))
 		{
-			env = handle_builtin(shell, env);
+			env = handle_builtin(shell, env, pids);
 			free_args(shell);
 			shell->exit_code = 0;
 		}
