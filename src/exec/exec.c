@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/06 03:45:44 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/06 05:09:48 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids)
 		}
 	}
 }
-
-
 
 int	is_builtin_without_pipe_or_redirect(t_shell *shell)
 {

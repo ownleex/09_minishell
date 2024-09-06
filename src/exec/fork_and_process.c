@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 00:43:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/06 03:43:50 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/06 04:59:17 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	handle_parent_process(t_shell *shell, pid_t pid, int *status)
 {
+	(void)pid;
 	if (shell->pipe_out != -1)
 		close(shell->pipe_out);
 	if (shell->pipe_in != -1)
@@ -21,7 +22,7 @@ void	handle_parent_process(t_shell *shell, pid_t pid, int *status)
 		close(shell->pipe_in);
 		shell->pipe_in = -1;
 	}
-	waitpid(pid, status, 0);
+	//waitpid(pid, status, 0);
 	if (WIFEXITED(*status))
 		shell->exit_code = WEXITSTATUS(*status);
 	else if (WIFSIGNALED(*status))
