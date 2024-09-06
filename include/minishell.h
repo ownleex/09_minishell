@@ -6,7 +6,7 @@
 /*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 16:15:15 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/09/06 15:07:59 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	handle_syntax_error(t_shell *shell, int syntax_error);
 int		is_quote(int c);
 int		is_redirecion(char *str);
 int		is_single_pipe(char *line, int p);
+int		is_single_redirection(char *line, int p);
 int		is_separator(int character, int space);
 void	copy_inner_content(char *dest, char *src, int start, int end);
 	// Arguments
