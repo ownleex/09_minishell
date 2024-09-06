@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/06 03:43:13 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:18:35 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	handle_syntax_error(t_shell *shell, int syntax_error);
 int		is_quote(int c);
 int		is_redirecion(char *str);
 int		is_single_pipe(char *line, int p);
+int		is_single_redirection(char *line, int p);
 int		is_separator(int character, int space);
 void	copy_inner_content(char *dest, char *src, int start, int end);
 	// Arguments
