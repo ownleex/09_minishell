@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 00:43:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/06 04:59:17 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/06 05:25:14 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	handle_parent_process(t_shell *shell, pid_t pid, int *status)
 		close(shell->pipe_in);
 		shell->pipe_in = -1;
 	}
-	//waitpid(pid, status, 0);
 	if (WIFEXITED(*status))
 		shell->exit_code = WEXITSTATUS(*status);
 	else if (WIFSIGNALED(*status))
@@ -34,12 +33,13 @@ void	handle_fork(t_shell *shell, char **env, pid_t *pids, int index)
 	pid_t	pid;
 	int		status;
 
+	status = 0;
 	pid = fork();
 	if (pid == 0)
 	{
 		signal(SIGQUIT, handle_sigquit);
 		handle_redir(shell);
-		execute_command_or_builtin(shell, env, pids); // Passer pids à la fonction
+		execute_command_or_builtin(shell, env, pids);
 	}
 	else if (pid < 0)
 	{
@@ -53,4 +53,3 @@ void	handle_fork(t_shell *shell, char **env, pid_t *pids, int index)
 	}
 	signal(SIGQUIT, SIG_IGN);
 }
-
