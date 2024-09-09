@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 23:03:51 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/09 23:08:32 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/09 23:44:35 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,20 @@ void	void_argc_argv(int argc, char **argv)
 void	free_redirections(t_shell *shell)
 {
 	if (shell->output_file)
+	{
 		free(shell->output_file);
-	shell->output_file = NULL;
+		shell->output_file = NULL;
+	}
 	if (shell->input_file)
-		free(shell->input_file);
-	shell->input_file = NULL;
+	{
+		free(shell->input_file);	
+		shell->input_file = NULL;
+	}
 	if (shell->heredoc_delimiter)
+	{
 		free(shell->heredoc_delimiter);
-	shell->heredoc_delimiter = NULL;
+		shell->heredoc_delimiter = NULL;
+	}
 }
 
 void	free_all_shells(t_shell *shell)
