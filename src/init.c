@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 01:47:46 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 16:15:38 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/09/09 23:15:31 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,9 @@ char	**init_env(char **envp)
 		return (NULL);
 	shlvl_str = getenv("SHLVL");
 	if (shlvl_str)
-	{
 		shlvl = ft_atoi(shlvl_str) + 1;
-	}
 	else
-	{
 		shlvl = 1;
-	}
 	shlvl_str = ft_itoa(shlvl);
 	if (shlvl_str)
 	{

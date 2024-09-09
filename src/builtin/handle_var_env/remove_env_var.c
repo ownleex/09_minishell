@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:31:05 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 04:32:23 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/09 23:32:22 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,6 @@ char	**remove_env_var(char **env, const char *name)
 		return (env);
 	free(env[index]);
 	free(env);
+	env = NULL;
 	return (new_envp);
 }

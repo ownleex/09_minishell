@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/06 23:41:57 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/09 22:44:50 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	is_builtin_without_pipe_or_redirect(t_shell *shell)
 	!shell->input_file && !shell->output_file);
 }
 
-char **execute_command(t_shell *shell, char **env)
+char	**execute_command(t_shell *shell, char **env)
 {
 	pid_t	*pids;
 	int		nb_cmds;
@@ -91,4 +91,3 @@ char **execute_command(t_shell *shell, char **env)
 	free(pids);
 	return (env);
 }
-
