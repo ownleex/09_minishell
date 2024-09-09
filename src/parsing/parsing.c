@@ -6,7 +6,7 @@
 /*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/06 16:19:12 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:33:46 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,27 @@ int	jump_quote(t_shell *shell, int cursor)
 	return (index);
 }
 
-void	process_argument(t_shell *shell, int *index, int *old_index, int *len)
+void process_redirection(t_shell *shell, int *index, int *old_index, int *len)
 {
 	if (*index > *old_index)
 		set_arg(shell, *old_index, *index - 1, (*len)++);
-	*index = jump_arg(shell->current_line, *index);
+	if (shell->current_line[*index] == '>' && shell->current_line[*index + 1] == '>')
+	{
+		set_arg(shell, *index, *index + 1, (*len)++);
+		shell->append_output = 1;
+		(*index) += 2;
+	}
+	else if (shell->current_line[*index] == '<' && shell->current_line[*index + 1] == '<')
+	{
+		set_arg(shell, *index, *index + 1, (*len)++);
+		shell->is_heredoc = 1;
+		(*index) += 2;
+	}
+	else if (shell->current_line[*index] == '>' || shell->current_line[*index] == '<')
+	{
+		set_arg(shell, *index, *index, (*len)++);
+		(*index)++;
+	}
 	*old_index = *index;
 }
 
@@ -39,6 +55,14 @@ void	process_pipe(t_shell *shell, int *index, int *old_index, int *len)
 		set_arg(shell, *old_index, *index - 1, (*len)++);
 	set_arg(shell, *index, *index, (*len)++);
 	(*index)++;
+	*old_index = *index;
+}
+
+void	process_argument(t_shell *shell, int *index, int *old_index, int *len)
+{
+	if (*index > *old_index)
+		set_arg(shell, *old_index, *index - 1, (*len)++);
+	*index = jump_arg(shell->current_line, *index);
 	*old_index = *index;
 }
 
@@ -60,9 +84,8 @@ void	set_arguments(t_shell *shell)
 		else if (shell->current_line[index] == '|' && \
 		is_single_pipe(shell->current_line, index))
 			process_pipe(shell, &index, &old_index, &len);
-		else if ((shell->current_line[index] == '<' || shell->current_line[index] == '>') && \
-		is_single_redirection(shell->current_line, index))
-			process_pipe(shell, &index, &old_index, &len);
+		else if ((shell->current_line[index] == '<' || shell->current_line[index] == '>') && is_single_redirection(shell->current_line, index))
+			process_redirection(shell, &index, &old_index, &len);
 		else
 			index++;
 	}

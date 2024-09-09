@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arguments.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 14:03:36 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/01 22:33:10 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:30:07 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,30 +43,49 @@ int	jump_arg(char *line, int cursor)
 
 int count_args(char *line)
 {
-    int len;
-    int index;
+	int	len;
+	int	index;
 
-    if (!line) // Vérifiez si line est NULL
-        return 0;
-
-    len = 0;
-    index = 0;
-    while (line[index] != '\0')
-    {
-        if (is_separator(line[index], 1))
-        {
-            index = jump_arg(line, index);
-            len++;
-        }
-        else if (line[index] == '|' && is_single_pipe(line, index))
-        {
-            index++;
-            len += 2;
-        }
-        else
-            index++;
-    }
-    return (len);
+	if (!line)
+		return 0;
+	len = 0;
+	index = 0;
+	while (line[index] != '\0')
+	{
+		if (is_separator(line[index], 1))
+		{
+			index = jump_arg(line, index);
+			len++;
+		}
+		else if (line[index] == '|' && is_single_pipe(line, index))
+		{
+			index++;
+			len += 2;
+		}
+		else if (line[index] == '>')
+		{
+			if (line[index + 1] == '>')
+			{
+				len += 2;
+				index += 2;
+			}
+			else
+			{
+				len += 2;
+				index++;
+			}
+		}
+		else if (line[index] == '<')
+		{
+			len += 2;
+			index++;
+			if (line[index] == '<')
+			index++;
+		}
+		else
+			index++;
+	}
+	return (len);
 }
 
 
