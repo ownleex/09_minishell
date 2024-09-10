@@ -18,3 +18,4 @@ puis lancer valgrind avec les suppressions avec la commande :
 
 valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=tools/valgrind/valgrind_suppressions.txt ./minishell
 
+--track-fds=yes
