@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:31:15 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/09 23:59:22 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/10 02:16:01 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ char	**append_new_var(char **env, const char *name, const char *value)
 		new_envp[i] = env[i];
 	new_envp[envp_size] = create_new_var(name, value);
 	new_envp[envp_size + 1] = NULL;
-	//free(env);
-	env = NULL;
 	return (new_envp);
 }
 
