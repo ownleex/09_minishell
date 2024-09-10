@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 19:19:50 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/29 03:10:19 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/10 02:08:52 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	free_array(char **array)
 		array[i] = NULL;
 		i++;
 	}
-	free(array);
+	if (array)
+		free(array);
 	array = NULL;
 }
 

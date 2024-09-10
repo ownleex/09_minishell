@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   instances.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 13:55:57 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/05 16:15:44 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:08:16 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	handle_redirections(t_shell *shell, int i, t_shell *main_shell)
 			O_CREAT | O_TRUNC, 0644);
 		if (fd != -1)
 			close(fd);
+		free_redirections(shell);
 	}
 }
 
