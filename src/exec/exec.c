@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/11 20:53:16 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/11 21:01:00 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,10 @@ char	**execute_command(t_shell *shell, char **env)
 	while (--i >= 0)
 	{
 		waitpid(pids[i], &status, 0);
-		if (WIFEXITED(status))
+		/*if (WIFEXITED(status))
 			shell->exit_code = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
-			shell->exit_code = 128 + WTERMSIG(status);
+			shell->exit_code = 128 + WTERMSIG(status);*/
 		handle_signaled_status(shell, status);
 	}
 	free(pids);
