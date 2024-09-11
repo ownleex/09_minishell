@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 00:36:07 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 06:40:09 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/11 20:13:20 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	open_output_file(t_shell *shell)
 	if (outfile_fd == -1)
 	{
 		perror("minishell");
+		shell->exit_code = 1;
 		exit(EXIT_FAILURE);
 	}
 	return (outfile_fd);
@@ -40,6 +41,7 @@ void	handle_input_redir(t_shell *shell)
 		if (infile_fd == -1)
 		{
 			perror("minishell");
+			shell->exit_code = 1;
 			exit(EXIT_FAILURE);
 		}
 		dup2(infile_fd, STDIN_FILENO);
