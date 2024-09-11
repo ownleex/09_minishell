@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:31:15 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/10 02:16:01 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/11 17:17:34 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ char	**append_new_var(char **env, const char *name, const char *value)
 		new_envp[i] = env[i];
 	new_envp[envp_size] = create_new_var(name, value);
 	new_envp[envp_size + 1] = NULL;
+	free(env);
 	return (new_envp);
 }
 

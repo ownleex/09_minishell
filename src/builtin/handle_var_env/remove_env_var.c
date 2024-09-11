@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_env_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:31:05 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/10 02:59:47 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/11 17:40:50 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,18 @@ char	**copy_env_except_index(char **env, int index, int envp_size)
 	return (new_envp);
 }
 
+void	ftk_env(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+	{
+		ft_putendl_fd(env[i], STDOUT_FILENO);
+		i++;
+	}
+}
+
 char	**remove_env_var(char **env, const char *name)
 {
 	int		index;
@@ -80,5 +92,7 @@ char	**remove_env_var(char **env, const char *name)
 	new_envp = copy_env_except_index(env, index, envp_size);
 	if (new_envp == env)
 		return (env);
+	free(env[index]);
+	free(env);
 	return (new_envp);
 }
