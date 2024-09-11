@@ -6,11 +6,22 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 00:41:59 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 00:45:12 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/11 00:38:00 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	heredoc_ctrl_d(char *line)
+{
+	if (!line)
+	{
+		printf("minishell: warning: ");
+		printf("here-document delimited by end-of-file (wanted 'stop')\n");
+		return (1);
+	}
+	return (0);
+}
 
 void	handle_heredoc(t_shell *shell)
 {
@@ -25,7 +36,9 @@ void	handle_heredoc(t_shell *shell)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || ft_strcmp(line, shell->heredoc_delimiter) == 0)
+		if (heredoc_ctrl_d(line))
+			break ;
+		if (ft_strcmp(line, shell->heredoc_delimiter) == 0)
 		{
 			free(line);
 			break ;

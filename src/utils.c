@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 23:03:51 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/09 23:44:35 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/11 00:39:05 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	free_redirections(t_shell *shell)
 	}
 	if (shell->input_file)
 	{
-		free(shell->input_file);	
+		free(shell->input_file);
 		shell->input_file = NULL;
 	}
 	if (shell->heredoc_delimiter)
