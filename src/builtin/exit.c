@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:23:33 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/06 03:40:09 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/11 17:48:31 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	exit_and_cleanup(t_shell *shell, char **env, int exit_code)
 {
 	printf("exit\n");
+	free_redirections(shell);
 	free_all_shells(shell);
 	free_array(env);
 	rl_clear_history();
