@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/11 20:10:45 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/11 20:53:16 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids)
 			write(STDERR_FILENO, \
 			shell->current_cmd, ft_strlen(shell->current_cmd));
 			write(STDERR_FILENO, ": Command not found\n", 20);
-			//shell->exit_code = 127;
 			exit(127);
 		}
 		if (execve(shell->command_path, shell->current_arg, env) == -1)
@@ -77,7 +76,6 @@ char	**execute_command(t_shell *shell, char **env)
 		{
 			env = handle_builtin(current_shell, env, pids);
 			free_args(current_shell);
-			//current_shell->exit_code = 0;
 		}
 		else
 			handle_fork(current_shell, env, pids, i++);
@@ -87,11 +85,10 @@ char	**execute_command(t_shell *shell, char **env)
 	while (--i >= 0)
 	{
 		waitpid(pids[i], &status, 0);
-		if (WIFEXITED(status)) {
-        shell->exit_code = WEXITSTATUS(status);  // Exit code si le processus s'est terminé normalement
-    } else if (WIFSIGNALED(status)) {
-        shell->exit_code = 128 + WTERMSIG(status);  // Exit code si le processus a été tué par un signal
-    }
+		if (WIFEXITED(status))
+			shell->exit_code = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			shell->exit_code = 128 + WTERMSIG(status);
 		handle_signaled_status(shell, status);
 	}
 	free(pids);

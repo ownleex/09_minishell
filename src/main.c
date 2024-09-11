@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/11 18:30:56 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/11 20:46:08 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,5 @@ int	main(int argc, char **argv, char **envp)
 	process_shell_loop(shell, env);
 	rl_clear_history();
 	free_all_shells(shell);
-	//free_array(env);
 	return (0);
 }
