@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/09 22:32:29 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/13 15:22:48 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int		find_end(t_shell *shell, int start);
 // Exec
 char	*find_command_path(t_shell *shell, char **env);
 void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids);
-char	**execute_command(t_shell *shell, char **env);
+void	execute_command(t_shell *shell, char ***env);
 	//Redirection_and_pipe
 void	handle_redir(t_shell *shell);
 void	handle_pipes_if_needed(t_shell *shell);
@@ -101,12 +101,12 @@ char	*find_command_path(t_shell *shell, char **env);
 void	handle_heredoc(t_shell *shell);
 void	handle_heredoc_if_needed(t_shell *shell);
 	// Utils exec
-void	free_array(char **array);
+void	free_array(char ***array);
 void	free_args(t_shell *shell);
 
 // Builtin
 int		is_builtin(t_shell *shell);
-char	**handle_builtin(t_shell *shell, char **env, pid_t *pids);
+void	handle_builtin(t_shell *shell, char ***env, pid_t *pids);
 	// Echo
 void	ft_echo(t_shell *shell, char **env);
 	// Pwd
@@ -115,6 +115,7 @@ void	ft_pwd(t_shell *shell);
 void	ft_env(t_shell *shell, char **env);
 	// Exit
 void	ft_exit(t_shell *shell, char **env, pid_t *pids);
+void	exit_and_cleanup(t_shell *shell, char **env, int exit_code);;
 	// CD
 char	**ft_cd(t_shell *shell, char **env);
 	// Export

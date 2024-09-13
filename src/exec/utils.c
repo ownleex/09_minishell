@@ -3,21 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 19:19:50 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/11 17:39:20 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/09/13 15:26:54 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_array(char **array)
+void	free_array(char ***array_ptr)
 {
-	int	i;
+	int		i;
+	char	**array;
 
-	if (!array)
+	if (!array_ptr || !*array_ptr)
 		return ;
+	array = *array_ptr;
 	i = 0;
 	while (array[i])
 	{
@@ -25,9 +27,8 @@ void	free_array(char **array)
 		array[i] = NULL;
 		i++;
 	}
-	if (array)
-		free(array);
-	array = NULL;
+	free(array);
+	*array_ptr = NULL;
 }
 
 void	free_args(t_shell *shell)

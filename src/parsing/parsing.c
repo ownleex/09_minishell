@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/13 00:10:53 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/13 15:29:15 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	jump_quote(t_shell *shell, int cursor)
 	shell->current_line[index] != quote_type)
 		index++;
 	if (shell->current_line[index] == quote_type)
-        return index + 1;
+        return (index + 1);
 	return (index);
 }
 
