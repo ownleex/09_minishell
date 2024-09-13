@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/11 20:46:08 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/13 15:22:39 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	read_and_check_input(t_shell *shell)
 	return (2);
 }
 
-void	process_shell_loop(t_shell *shell, char **env)
+void	process_shell_loop(t_shell *shell, char ***env)
 {
 	int	syntax_error;
 	int	input_status;
@@ -50,9 +50,8 @@ void	process_shell_loop(t_shell *shell, char **env)
 		input_status = read_and_check_input(shell);
 		if (input_status == 0)
 		{
-			free(shell->current_line);
-			shell->current_line = (char *)malloc(5 * sizeof(char));
-			ft_strlcpy(shell->current_line, "exit", 5);
+			printf("exit\n");
+			break ;
 		}
 		else if (input_status == 1)
 			continue ;
@@ -66,7 +65,7 @@ void	process_shell_loop(t_shell *shell, char **env)
 		}
 		add_history(shell->current_line);
 		parse_command(shell);
-		env = execute_command(shell, env);
+		execute_command(shell, env);
 		free_all_shells(shell->next);
 		free_redirections(shell);
 	}
@@ -82,8 +81,9 @@ int	main(int argc, char **argv, char **envp)
 	void_argc_argv(argc, argv);
 	setup_signals();
 	shell->exit_code = 0;
-	process_shell_loop(shell, env);
+	process_shell_loop(shell, &env);
 	rl_clear_history();
 	free_all_shells(shell);
+	free_array(&env);
 	return (0);
 }

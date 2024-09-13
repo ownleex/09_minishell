@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:59:13 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/06 23:05:58 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/13 15:26:41 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,20 @@ int	is_builtin(t_shell *shell)
 	return (0);
 }
 
-char	**handle_builtin(t_shell *shell, char **env, pid_t *pids)
+void	handle_builtin(t_shell *shell, char ***env, pid_t *pids)
 {
 	if (ft_strcmp(shell->current_cmd, "echo") == 0)
-		ft_echo(shell, env);
+		ft_echo(shell, *env);
 	else if (ft_strcmp(shell->current_cmd, "pwd") == 0)
 		ft_pwd(shell);
 	else if (ft_strcmp(shell->current_cmd, "env") == 0)
-		ft_env(shell, env);
+		ft_env(shell, *env);
 	else if (ft_strcmp(shell->current_cmd, "exit") == 0)
-		ft_exit(shell, env, pids);
+		ft_exit(shell, *env, pids);
 	else if (ft_strcmp(shell->current_cmd, "cd") == 0)
-		env = ft_cd(shell, env);
+		*env = ft_cd(shell, *env);
 	else if (ft_strcmp(shell->current_cmd, "export") == 0)
-		env = ft_export(shell, env);
+		*env = ft_export(shell, *env);
 	else if (ft_strcmp(shell->current_cmd, "unset") == 0)
-		env = ft_unset(shell, env);
-	return (env);
+		*env = ft_unset(shell, *env);
 }

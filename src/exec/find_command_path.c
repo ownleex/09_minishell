@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 23:58:37 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 06:40:06 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/13 04:24:58 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ char	*search_command_in_path(char *cmd, char **path_split)
 		free(temp);
 		if (access(full_path, X_OK) == 0)
 		{
-			free_array(path_split);
+			free_array(&path_split);
 			return (full_path);
 		}
 		free(full_path);
 		i++;
 	}
-	free_array(path_split);
+	free_array(&path_split);
 	return (NULL);
 }
 
@@ -50,10 +50,10 @@ char	*get_path_from_env(char **env)
 		if (ft_strcmp(path_split[0], "PATH") == 0)
 		{
 			path = ft_strdup(path_split[1]);
-			free_array(path_split);
+			free_array(&path_split);
 			return (path);
 		}
-		free_array(path_split);
+		free_array(&path_split);
 		i++;
 	}
 	return (NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 01:47:46 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/11 17:21:05 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/09/13 04:57:38 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	initialize_shell(t_shell **shell, char ***env, char **envp)
 	if (!(*shell))
 	{
 		perror("malloc");
-		free_array(*env);
+		free_array(&(*env));
 		return (1);
 	}
 	return (0);

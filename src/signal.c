@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 01:44:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/11 21:08:48 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/13 15:27:16 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	handle_signaled_status(t_shell *shell, int status)
 {
 	if (!shell)
 		return ;
-
 	if (WIFEXITED(status))
 		shell->exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
@@ -35,7 +34,6 @@ void	handle_signaled_status(t_shell *shell, int status)
 			shell->exit_code = 128 + WTERMSIG(status);
 	}
 }
-
 
 void	handle_sigquit(int sig)
 {
