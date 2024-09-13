@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 23:03:51 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/11 00:39:05 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/13 03:04:41 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,26 +49,24 @@ void	free_all_shells(t_shell *shell)
 	}
 }
 
-void	free_null_args(char *args)
+void	free_null_args(char **args)
 {
-	free(args);
-	args = NULL;
+	if (args && *args)
+	{
+		free(*args);
+		*args = NULL;
+	}
 }
 
 void	free_shell(t_shell *shell)
 {
 	if (shell == NULL)
 		return ;
-	if (shell->current_line)
-		free_null_args(shell->current_line);
-	if (shell->command_path)
-		free_null_args(shell->command_path);
-	if (shell->input_file)
-		free_null_args(shell->input_file);
-	if (shell->output_file)
-		free_null_args(shell->output_file);
-	if (shell->heredoc_delimiter)
-		free_null_args(shell->heredoc_delimiter);
+	free_null_args(&shell->current_line);
+	free_null_args(&shell->command_path);
+	free_null_args(&shell->input_file);
+	free_null_args(&shell->output_file);
+	free_null_args(&shell->heredoc_delimiter);
 	free_args(shell);
 	free(shell);
 }

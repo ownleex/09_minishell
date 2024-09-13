@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/02 01:01:00 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/13 02:02:29 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,15 @@ char	*get_env_value(char **env, char *var_name)
 void	handle_variable_expansion(char **str, char **env, t_shell *shell)
 {
 	char	*var_start;
-	char	var_name[128];
+	char	var_name[1024];
 	char	*value;
 
 	var_start = *str + 1;
+	if (*var_start == '\0' || *var_start == ' ' || !ft_isalnum(*var_start))
+	{
+		printf("$");
+		return ;
+	}
 	if (*var_start == '?')
 	{
 		printf("%d", shell->exit_code);
@@ -60,7 +65,11 @@ void	expand_and_print(char *arg, char **env, t_shell *shell)
 	while (*str)
 	{
 		if (*str == '$')
+		{
 			handle_variable_expansion(&str, env, shell);
+			if (*str)
+				str++;
+		}
 		else
 			printf("%c", *str++);
 	}
