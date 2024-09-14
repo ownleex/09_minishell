@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   addons.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 14:15:07 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/01 17:18:57 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/09/14 00:38:37 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ void	free_main_shell(t_shell *shell)
 		{
 			if (is_redirecion(shell->current_arg[i]) && i == 0)
 			{
+				free(shell->current_arg[0]);
 				shell->current_arg[0] = ft_strdup(shell->current_arg[2]);
 				free(shell->current_arg[2]);
+				free(shell->current_arg[1]);
 				shell->current_arg[1] = NULL;
 				i = 3;
 				free_all_shells(shell->next);
@@ -53,7 +55,7 @@ void	free_main_shell(t_shell *shell)
 				shell->pipe_in = -1;
 				shell->pipe_out = -1;
 				shell->next = NULL;
-				continue;
+				continue ;
 			}
 			else if (is_redirecion(shell->current_arg[i]))
 			{
@@ -67,9 +69,9 @@ void	free_main_shell(t_shell *shell)
 			while (shell->current_arg[b] != NULL)
 			{
 				free(shell->current_arg[b]);
+				shell->current_arg[b] = NULL;
 				b++;
 			}
-			shell->current_arg[i] = NULL;
 			return ;
 		}
 		i++;

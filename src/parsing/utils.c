@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 11:38:10 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/09 16:26:26 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/09/13 20:11:43 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,30 @@ int	is_quote(int c)
 
 int	is_single_pipe(char *line, int p)
 {
-	if (line[p + 1] == '|' || line[p - 1] == '|')
+	int	line_length;
+
+	line_length = ft_strlen(line);
+	if ((p + 1 < line_length && line[p + 1] == '|') || \
+	(p > 0 && line[p - 1] == '|'))
 		return (0);
-	else if (line[p + 1] == ' ' && line[p - 1] == ' ')
+	if ((p + 1 < line_length && line[p + 1] == ' ') && \
+	(p > 0 && line[p - 1] == ' '))
 		return (0);
 	return (1);
 }
 
 int	is_single_redirection(char *line, int p)
 {
-	if ((line[p - 1] == '<') || (line[p - 1] == '>'))
+	int	line_length;
+
+	line_length = ft_strlen(line);
+	if (p > 0 && ((line[p - 1] == '<') || (line[p - 1] == '>')))
 		return (0);
-	else if (line[p + 1] == ' ' && line[p - 1] == ' ')
-		return (0);
+	if (p + 1 < line_length)
+	{
+		if ((p > 0 && line[p - 1] == ' ') && (line[p + 1] == ' '))
+			return (0);
+	}
 	return (1);
 }
 

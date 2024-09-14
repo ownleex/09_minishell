@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/13 15:25:46 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/13 22:36:31 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,16 @@
 
 void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids)
 {
+	int	exit_code;
+
 	if (is_builtin(shell))
 	{
 		handle_builtin(shell, &env, pids);
-		free_args(shell);
-		exit(shell->exit_code);
+		exit_code = shell->exit_code;
+		free_shell(shell);
+		free_array(&env);
+		free(pids);
+		exit(exit_code);
 	}
 	else
 	{
@@ -29,11 +34,17 @@ void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids)
 			write(STDERR_FILENO, \
 			shell->current_cmd, ft_strlen(shell->current_cmd));
 			write(STDERR_FILENO, ": Command not found\n", 20);
+			free_shell(shell);
+			free_array(&env);
+			free(pids);
 			exit(127);
 		}
 		if (execve(shell->command_path, shell->current_arg, env) == -1)
 		{
 			perror("minishell");
+			free_shell(shell);
+			free_array(&env);
+			free(pids);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -52,15 +63,20 @@ void	execute_command(t_shell *shell, char ***env)
 	int		i;
 	int		status;
 	t_shell	*current_shell;
+	int		last_status;
+	int		num_procs;
 
 	nb_cmds = 0;
+	num_procs = 0;
 	current_shell = shell;
 	while (current_shell)
 	{
 		nb_cmds++;
+		if (!is_builtin_without_pipe_or_redirect(current_shell))
+			num_procs++;
 		current_shell = current_shell->next;
 	}
-	pids = malloc(sizeof(pid_t) * nb_cmds);
+	pids = malloc(sizeof(pid_t) * num_procs);
 	if (!pids)
 	{
 		perror("malloc");
@@ -73,19 +89,21 @@ void	execute_command(t_shell *shell, char ***env)
 		handle_heredoc_if_needed(current_shell);
 		handle_pipes_if_needed(current_shell);
 		if (is_builtin_without_pipe_or_redirect(current_shell))
-		{
 			handle_builtin(current_shell, env, pids);
-			free_args(current_shell);
-		}
 		else
 			handle_fork(current_shell, *env, pids, i++);
 		free_args(current_shell);
 		current_shell = current_shell->next;
 	}
-	while (--i >= 0)
+	last_status = 0;
+	i = 0;
+	while (i < num_procs)
 	{
 		waitpid(pids[i], &status, 0);
-		handle_signaled_status(shell, status);
+		if (i == num_procs - 1)
+			last_status = status;
+		i++;
 	}
+	handle_signaled_status(shell, last_status);
 	free(pids);
 }
