@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/15 22:33:09 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/15 22:59:21 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,40 +29,33 @@ char	*get_env_value(char **env, char *var_name)
 	return (NULL);
 }
 
-void	handle_variable_expansion(char **str_ptr, char **env, t_shell *shell)
+void	handle_variable_expansion(char **str, char **env, t_shell *shell)
 {
-	char	*str;
 	char	*var_start;
 	char	var_name[1024];
 	char	*value;
-	char	*var_end;
-	int		var_len;
 
-	str = *str_ptr;
-	var_start = str + 1;
+	var_start = *str + 1;
 	if (*var_start == '?')
 	{
 		printf("%d", shell->exit_code);
-		*str_ptr = var_start + 1;
+		*str = var_start + 1;
 		return ;
 	}
 	if (*var_start == '\0' || *var_start == ' ' || \
-		(!ft_isalnum(*var_start) && *var_start != '_'))
+	(!ft_isalnum(*var_start) && *var_start != '_'))
 	{
 		printf("$");
-		*str_ptr = var_start;
 		return ;
 	}
-	var_end = var_start;
-	while (*var_end && (ft_isalnum(*var_end) || *var_end == '_'))
-		var_end++;
-	var_len = var_end - var_start;
+	while (*var_start && (ft_isalnum(*var_start) || *var_start == '_'))
+		var_start++;
 	ft_bzero(var_name, sizeof(var_name));
-	ft_strlcpy(var_name, var_start, var_len + 1);
+	ft_strlcpy(var_name, *str + 1, var_start - (*str + 1) + 1);
 	value = get_env_value(env, var_name);
 	if (value)
 		printf("%s", value);
-	*str_ptr = var_end;
+	*str = var_start - 1;
 }
 
 void	expand_and_print(char *arg, char **env, t_shell *shell)
