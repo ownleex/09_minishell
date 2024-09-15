@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 19:19:50 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/13 15:26:54 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/15 23:10:14 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,9 @@ void	free_args(t_shell *shell)
 	}
 	free(shell->current_arg);
 	shell->current_arg = NULL;
+	if (shell->has_single_quote)
+    {
+        free(shell->has_single_quote);
+        shell->has_single_quote = NULL;
+    }
 }

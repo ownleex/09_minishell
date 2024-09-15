@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/15 22:59:21 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/15 23:24:29 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,10 @@ void	handle_variable_expansion(char **str, char **env, t_shell *shell)
 		return ;
 	}
 	if (*var_start == '\0' || *var_start == ' ' || \
-	(!ft_isalnum(*var_start) && *var_start != '_'))
+		(!ft_isalnum(*var_start) && *var_start != '_'))
 	{
 		printf("$");
+		*str = var_start;
 		return ;
 	}
 	while (*var_start && (ft_isalnum(*var_start) || *var_start == '_'))
@@ -55,7 +56,7 @@ void	handle_variable_expansion(char **str, char **env, t_shell *shell)
 	value = get_env_value(env, var_name);
 	if (value)
 		printf("%s", value);
-	*str = var_start - 1;
+	*str = var_start;
 }
 
 void	expand_and_print(char *arg, char **env, t_shell *shell)
@@ -82,15 +83,14 @@ void	ft_echo(t_shell *shell, char **env)
 
 	i = 1;
 	newline = 1;
-	if (shell->current_arg[i] && \
-	ft_strncmp(shell->current_arg[i], "-n", 3) == 0)
+	if (shell->current_arg[i] && ft_strcmp(shell->current_arg[i], "-n") == 0)
 	{
 		newline = 0;
 		i++;
 	}
 	while (shell->current_arg[i])
 	{
-		if (shell->has_single_quote)
+		if (shell->has_single_quote[i])
 			printf("%s", shell->current_arg[i]);
 		else
 			expand_and_print(shell->current_arg[i], env, shell);
