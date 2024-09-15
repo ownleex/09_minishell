@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/13 22:36:31 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/15 18:00:56 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids)
 	{
 		handle_builtin(shell, &env, pids);
 		exit_code = shell->exit_code;
-		free_shell(shell);
+		free_all_shells(shell);
 		free_array(&env);
 		free(pids);
 		exit(exit_code);
@@ -34,7 +34,7 @@ void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids)
 			write(STDERR_FILENO, \
 			shell->current_cmd, ft_strlen(shell->current_cmd));
 			write(STDERR_FILENO, ": Command not found\n", 20);
-			free_shell(shell);
+			free_all_shells(shell);
 			free_array(&env);
 			free(pids);
 			exit(127);
@@ -42,7 +42,7 @@ void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids)
 		if (execve(shell->command_path, shell->current_arg, env) == -1)
 		{
 			perror("minishell");
-			free_shell(shell);
+			free_all_shells(shell);
 			free_array(&env);
 			free(pids);
 			exit(EXIT_FAILURE);
