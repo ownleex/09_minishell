@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/15 18:00:56 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/16 20:17:58 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,54 +56,78 @@ int	is_builtin_without_pipe_or_redirect(t_shell *shell)
 	!shell->input_file && !shell->output_file);
 }
 
-void	execute_command(t_shell *shell, char ***env)
+void execute_command(t_shell *shell, char ***env)
 {
-	pid_t	*pids;
-	int		nb_cmds;
-	int		i;
-	int		status;
-	t_shell	*current_shell;
-	int		last_status;
-	int		num_procs;
+    pid_t   *pids;
+    int     i;
+    int     status;
+    t_shell *current_shell;
+    int     last_status;
+    int     num_procs;
 
-	nb_cmds = 0;
-	num_procs = 0;
-	current_shell = shell;
-	while (current_shell)
-	{
-		nb_cmds++;
-		if (!is_builtin_without_pipe_or_redirect(current_shell))
-			num_procs++;
-		current_shell = current_shell->next;
-	}
-	pids = malloc(sizeof(pid_t) * num_procs);
-	if (!pids)
-	{
-		perror("malloc");
-		exit(EXIT_FAILURE);
-	}
-	i = 0;
-	current_shell = shell;
-	while (current_shell)
-	{
-		handle_heredoc_if_needed(current_shell);
-		handle_pipes_if_needed(current_shell);
-		if (is_builtin_without_pipe_or_redirect(current_shell))
-			handle_builtin(current_shell, env, pids);
-		else
-			handle_fork(current_shell, *env, pids, i++);
-		free_args(current_shell);
-		current_shell = current_shell->next;
-	}
-	last_status = 0;
-	i = 0;
-	while (i < num_procs)
-	{
-		waitpid(pids[i], &status, 0);
-		if (i == num_procs - 1)
-			last_status = status;
-		i++;
-	}
-	handle_signaled_status(shell, last_status);
-	free(pids);
+    num_procs = 0;
+    current_shell = shell;
+    // Compter le nombre de processus à créer (non built-in ou built-in avec pipe/redirection)
+    while (current_shell)
+    {
+        if (!is_builtin_without_pipe_or_redirect(current_shell))
+            num_procs++;
+        current_shell = current_shell->next;
+    }
+
+    // Allouer le tableau des PIDs seulement si nécessaire
+    if (num_procs > 0)
+    {
+        pids = malloc(sizeof(pid_t) * num_procs);
+        if (!pids)
+        {
+            perror("malloc");
+            exit(EXIT_FAILURE);
+        }
+    }
+    else
+    {
+        pids = NULL; // Pas de processus enfant à créer
+    }
+
+    i = 0;
+    current_shell = shell;
+    while (current_shell)
+    {
+        handle_heredoc_if_needed(current_shell);
+        handle_pipes_if_needed(current_shell);
+        if (is_builtin_without_pipe_or_redirect(current_shell))
+        {
+            // Exécution du built-in sans fork
+            handle_builtin(current_shell, env, pids);
+            // Le exit_code est déjà mis à jour dans handle_builtin
+        }
+        else
+        {
+            // Exécution avec fork
+            handle_fork(current_shell, *env, pids, i++);
+        }
+        free_args(current_shell);
+        current_shell = current_shell->next;
+    }
+
+    // Gestion des processus enfants
+    if (num_procs > 0)
+    {
+        last_status = 0;
+        i = 0;
+        while (i < num_procs)
+        {
+            waitpid(pids[i], &status, 0);
+            if (i == num_procs - 1)
+                last_status = status;
+            i++;
+        }
+        // Mettre à jour shell->exit_code en fonction du statut du dernier processus enfant
+        handle_signaled_status(shell, last_status);
+        free(pids);
+    }
+    // Si num_procs == 0, aucun processus enfant n'a été créé
+    // Le exit_code a déjà été mis à jour par le built-in exécuté sans fork
 }
+

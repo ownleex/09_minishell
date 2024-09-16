@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/15 23:09:03 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/16 21:51:44 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_shell
 	int				pipe_out;
 	int				is_piped;
 	int				*has_single_quote;
+	int				*was_quoted;
 	struct s_shell	*next;
 }	t_shell;
 

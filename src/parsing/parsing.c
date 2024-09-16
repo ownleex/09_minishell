@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/15 23:09:23 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/16 21:53:08 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ void	parse_command(t_shell *shell)
     arguments = (char **)malloc(sizeof(char *) * (len + 2));
     shell->current_arg = arguments;
     shell->has_single_quote = malloc(sizeof(int) * (len + 2));
-    if (!shell->has_single_quote)
+	shell->was_quoted = malloc(sizeof(int) * (len + 2));
+    if (!shell->has_single_quote || !shell->was_quoted)
     {
         perror("malloc");
         exit(EXIT_FAILURE);

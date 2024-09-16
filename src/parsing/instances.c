@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 13:55:57 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/15 23:14:10 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/16 22:06:20 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ void	handle_redirections(t_shell *shell, int i, t_shell *main_shell)
 	}
 }
 
-void    handle_cmd(t_shell *shell)
+// Dans le fichier ../../src/parsing/instances.c
+
+void	handle_cmd(t_shell *shell)
 {
     int     i;
     int     c;
@@ -97,19 +99,19 @@ void    handle_cmd(t_shell *shell)
     main_shell = shell;
     while (shell->current_arg[i])
     {
-        if (shell->current_arg[i][0] == '|' && shell->current_arg[i + 1])
+        // Vérification si le symbole de pipe n'est pas entre guillemets
+        if (shell->current_arg[i][0] == '|' && shell->current_arg[i + 1] && shell->was_quoted[i] == 0)
         {
             handle_pipes(shell, &i, &main_shell, &c);
-            i++; // Incrémentez i ici pour passer le symbole '|'
+            i++;
         }
-        else if (is_redirecion(shell->current_arg[i]) && shell->current_arg[i + 1])
+        else if (is_redirecion(shell->current_arg[i]) && shell->current_arg[i + 1] && shell->was_quoted[i] == 0)
         {
             handle_redirections(shell, i, main_shell);
-            i += 2; // Si vous traitez une redirection, sautez l'argument suivant
+            i += 2;
         }
         else
-            i++; // Incrémentez i normalement
+            i++;
     }
     free_main_shell(shell);
 }
-
