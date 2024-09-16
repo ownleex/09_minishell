@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/13 15:22:39 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/17 00:38:38 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,7 @@ void	process_shell_loop(t_shell *shell, char ***env)
 		ft_init(shell);
 		input_status = read_and_check_input(shell);
 		if (input_status == 0)
-		{
-			printf("exit\n");
 			break ;
-		}
 		else if (input_status == 1)
 			continue ;
 		syntax_error = is_invalid_syntax(shell);
@@ -85,5 +82,6 @@ int	main(int argc, char **argv, char **envp)
 	rl_clear_history();
 	free_all_shells(shell);
 	free_array(&env);
+	printf("exit\n");
 	return (0);
 }
