@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/15 18:00:56 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/16 22:41:40 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,19 @@ int	is_builtin_without_pipe_or_redirect(t_shell *shell)
 void	execute_command(t_shell *shell, char ***env)
 {
 	pid_t	*pids;
-	int		nb_cmds;
+	//int		nb_cmds;
 	int		i;
 	int		status;
 	t_shell	*current_shell;
 	int		last_status;
 	int		num_procs;
 
-	nb_cmds = 0;
+	//nb_cmds = 0;
 	num_procs = 0;
 	current_shell = shell;
 	while (current_shell)
 	{
-		nb_cmds++;
+		//nb_cmds++;
 		if (!is_builtin_without_pipe_or_redirect(current_shell))
 			num_procs++;
 		current_shell = current_shell->next;
