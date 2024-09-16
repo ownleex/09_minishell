@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 13:55:57 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/16 22:06:20 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/16 23:10:26 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,22 @@ void	handle_redirections(t_shell *shell, int i, t_shell *main_shell)
 
 	if (shell->current_arg[i][0] == '<' && shell->current_arg[i][1] == '<')
 	{
+		if (main_shell->heredoc_delimiter)
+			free(main_shell->heredoc_delimiter);
 		main_shell->heredoc_delimiter = ft_strdup(shell->current_arg[i + 1]);
 		main_shell->is_heredoc = 1;
 	}
 	else if (shell->current_arg[i][0] == '<')
+	{
+		if (main_shell->input_file)
+			free(main_shell->input_file);
 		main_shell->input_file = ft_strdup(shell->current_arg[i + 1]);
+	}
 	else if (shell->current_arg[i][0] == '>')
 	{
+		// Libérer l'ancienne valeur de output_file s'il y en a une
+		if (main_shell->output_file)
+			free(main_shell->output_file);
 		main_shell->output_file = ft_strdup(shell->current_arg[i + 1]);
 		if (ft_strlen(shell->current_arg[i]) == 2)
 		{
@@ -85,8 +94,6 @@ void	handle_redirections(t_shell *shell, int i, t_shell *main_shell)
 			close(fd);
 	}
 }
-
-// Dans le fichier ../../src/parsing/instances.c
 
 void	handle_cmd(t_shell *shell)
 {
