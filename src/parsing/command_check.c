@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 03:25:13 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/05 03:25:15 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/15 22:17:44 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	handle_syntax_error(t_shell *shell, int syntax_error)
 	else if (syntax_error == 8)
 	{
 		write(STDERR_FILENO, \
-		"minishell: syntax error: two chevrons with spaces between them\n", 64);
+		"minishell: syntax error: syntax error near unexpected token `>'\n", 65);
 		shell->exit_code = 2;
 	}
 }
@@ -89,43 +89,45 @@ int	is_invalid_syntax(t_shell *shell)
 		{
 			double_quote_open = !double_quote_open;
 		}
+		else if (!single_quote_open && !double_quote_open)
+		{
+			// Vérification des erreurs : deux pipes se suivent
+			if (shell->current_line[i] == '|' && shell->current_line[i + 1] != '\0')
+			{
+				int j = i + 1;
+				while (shell->current_line[j] == ' ')
+					j++;
+				if (shell->current_line[j] == '|')
+					return (5); // Deux pipes se suivent
+			}
 
-		// Vérification des erreurs : deux pipes se suivent
-		if (shell->current_line[i] == '|' && shell->current_line[i + 1] != '\0')
-		{
-			int j = i + 1;
-			while (shell->current_line[j] == ' ')
-				j++;
-			if (shell->current_line[j] == '|')
-				return (5); // Deux pipes se suivent
-		}
+			// Vérification des erreurs : redirection suivie d'un pipe ou pipe suivi d'une redirection
+			if (shell->current_line[i] == '>' || shell->current_line[i] == '<')
+			{
+				int j = i + 1;
+				while (shell->current_line[j] == ' ')
+					j++;
+				if (shell->current_line[j] == '|')
+					return (6); // Redirection suivie d'un pipe
+			}
+			else if (shell->current_line[i] == '|')
+			{
+				int j = i + 1;
+				while (shell->current_line[j] == ' ')
+					j++;
+				if (shell->current_line[j] == '>' || shell->current_line[j] == '<')
+					return (7); // Pipe suivi d'une redirection
+			}
 
-		// Vérification des erreurs : redirection suivie d'un pipe ou pipe suivi d'une redirection
-		if (shell->current_line[i] == '>' || shell->current_line[i] == '<')
-		{
-			int j = i + 1;
-			while (shell->current_line[j] == ' ')
-				j++;
-			if (shell->current_line[j] == '|')
-				return (6); // Redirection suivie d'un pipe
-		}
-		else if (shell->current_line[i] == '|')
-		{
-			int j = i + 1;
-			while (shell->current_line[j] == ' ')
-				j++;
-			if (shell->current_line[j] == '>' || shell->current_line[j] == '<')
-				return (7); // Pipe suivi d'une redirection
-		}
-
-		// Vérification des erreurs : deux chevrons à droite se suivent avec un ou plusieurs espaces
-		if (shell->current_line[i] == '>')
-		{
-			int j = i + 1;
-			while (shell->current_line[j] == ' ')
-				j++;
-			if (shell->current_line[j] == '>' && j != i + 1)
-				return (8); // Deux chevrons avec des espaces entre eux
+			// Vérification des erreurs : deux chevrons à droite se suivent avec un ou plusieurs espaces
+			if (shell->current_line[i] == '>')
+			{
+				int j = i + 1;
+				while (shell->current_line[j] == ' ')
+					j++;
+				if (shell->current_line[j] == '>' && j != i + 1)
+					return (8); // Deux chevrons avec des espaces entre eux
+			}
 		}
 
 		i++;
@@ -150,4 +152,3 @@ int	is_invalid_syntax(t_shell *shell)
 
 	return (0);
 }
-

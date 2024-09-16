@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:16:06 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/13 15:29:15 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/15 23:09:23 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,19 @@ void	set_arguments(t_shell *shell)
 
 void	parse_command(t_shell *shell)
 {
-	int		len;
-	char	**arguments;
+    int		len;
+    char		**arguments;
 
-	len = count_args(shell->current_line);
-	arguments = (char **)malloc(sizeof(char *) * (len + 2));
-	shell->current_arg = arguments;
-	set_arguments(shell);
-	handle_cmd(shell);
-	shell->current_cmd = shell->current_arg[0];
+    len = count_args(shell->current_line);
+    arguments = (char **)malloc(sizeof(char *) * (len + 2));
+    shell->current_arg = arguments;
+    shell->has_single_quote = malloc(sizeof(int) * (len + 2));
+    if (!shell->has_single_quote)
+    {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+    }
+    set_arguments(shell);
+    handle_cmd(shell);
+    shell->current_cmd = shell->current_arg[0];
 }
