@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:23:33 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/16 23:54:53 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/17 01:00:54 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int	is_numeric_argument(const char *str)
 {
 	int	i;
 
+	i = 0;
 	if (!str || !*str)
 		return (0);
-	i = 0;
 	if (str[i] == '+' || str[i] == '-')
 		i++;
 	if (!str[i])
@@ -44,41 +44,55 @@ int	is_numeric_argument(const char *str)
 
 int	calculate_exit_code(t_shell *shell)
 {
-	long	exit_code;
+	int	exit_code;
+	int	i;
+
+	i = 0;
+	if (shell->current_arg[1])
+	{
+		while (shell->current_arg[1][i])
+		{
+			if (!ft_isdigit(shell->current_arg[1][i++]))
+			{
+				printf("minishell: exit: %s: numeric argument required\n", \
+				shell->current_arg[1]);
+				return (2);
+			}
+		}
+		exit_code = ft_atoi(shell->current_arg[1]);
+	}
+	else
+		exit_code = shell->exit_code;
+	return (exit_code);
+}
+
+void	ft_exit(t_shell *shell, char **env, pid_t *pids)
+{
+	int		exit_code;
 	char	*arg;
 
 	arg = shell->current_arg[1];
 	if (arg)
 	{
 		if (!is_numeric_argument(arg))
-			return (255);
-		exit_code = ft_atol(arg);
-		exit_code = exit_code % 256;
-		if (exit_code < 0)
-			exit_code += 256;
-		return ((int)exit_code);
-	}
-	return (shell->exit_code);
-}
-
-void	ft_exit(t_shell *shell, char **env, pid_t *pids)
-{
-	int	exit_code;
-
-	if (shell->current_arg[1] && shell->current_arg[2])
-	{
-		printf("minishell: exit: too many arguments\n");
-		shell->exit_code = 1;
-		return ;
-	}
-	exit_code = calculate_exit_code(shell);
-	if (exit_code == 255 && shell->current_arg[1])
-	{
-		printf("minishell: exit: %s: numeric argument required\n", \
-		shell->current_arg[1]);
+		{
+			printf("minishell: exit: %s: numeric argument required\n", arg);
+			free(pids);
+			exit_and_cleanup(shell, env, 2);
+		}
+		if (shell->current_arg[2])
+		{
+			printf("minishell: exit: too many arguments\n");
+			shell->exit_code = 1;
+			return ;
+		}
+		exit_code = ft_atoi(arg);
 		free(pids);
 		exit_and_cleanup(shell, env, exit_code);
 	}
-	free(pids);
-	exit_and_cleanup(shell, env, exit_code);
+	else
+	{
+		free(pids);
+		exit_and_cleanup(shell, env, shell->exit_code);
+	}
 }
