@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:59:13 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/13 15:26:41 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/17 01:30:55 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	is_builtin(t_shell *shell)
 {
+	if (shell->current_cmd == NULL)
+		return (0);
 	if (ft_strcmp(shell->current_cmd, "echo") == 0)
 		return (1);
 	else if (ft_strcmp(shell->current_cmd, "pwd") == 0)

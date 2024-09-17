@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/15 18:00:56 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/17 01:44:49 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids)
 			write(STDERR_FILENO, "minishell: ", 12);
 			write(STDERR_FILENO, \
 			shell->current_cmd, ft_strlen(shell->current_cmd));
-			write(STDERR_FILENO, ": Command not found\n", 20);
+			write(STDERR_FILENO, ": Command not found\n", 21);
 			free_all_shells(shell);
 			free_array(&env);
 			free(pids);
@@ -59,29 +59,31 @@ int	is_builtin_without_pipe_or_redirect(t_shell *shell)
 void	execute_command(t_shell *shell, char ***env)
 {
 	pid_t	*pids;
-	int		nb_cmds;
 	int		i;
 	int		status;
 	t_shell	*current_shell;
 	int		last_status;
 	int		num_procs;
 
-	nb_cmds = 0;
 	num_procs = 0;
 	current_shell = shell;
 	while (current_shell)
 	{
-		nb_cmds++;
 		if (!is_builtin_without_pipe_or_redirect(current_shell))
 			num_procs++;
 		current_shell = current_shell->next;
 	}
-	pids = malloc(sizeof(pid_t) * num_procs);
-	if (!pids)
+	if (num_procs > 0)
 	{
-		perror("malloc");
-		exit(EXIT_FAILURE);
+		pids = malloc(sizeof(pid_t) * num_procs);
+		if (!pids)
+		{
+			perror("malloc");
+			exit(EXIT_FAILURE);
+		}
 	}
+	else
+		pids = NULL;
 	i = 0;
 	current_shell = shell;
 	while (current_shell)
@@ -95,15 +97,18 @@ void	execute_command(t_shell *shell, char ***env)
 		free_args(current_shell);
 		current_shell = current_shell->next;
 	}
-	last_status = 0;
-	i = 0;
-	while (i < num_procs)
+	if (num_procs > 0)
 	{
-		waitpid(pids[i], &status, 0);
-		if (i == num_procs - 1)
-			last_status = status;
-		i++;
+		last_status = 0;
+		i = 0;
+		while (i < num_procs)
+		{
+			waitpid(pids[i], &status, 0);
+			if (i == num_procs - 1)
+				last_status = status;
+			i++;
+		}
+		handle_signaled_status(shell, last_status);
+		free(pids);
 	}
-	handle_signaled_status(shell, last_status);
-	free(pids);
 }

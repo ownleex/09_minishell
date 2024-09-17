@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 14:03:36 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/15 23:09:37 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/16 21:53:41 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,11 +125,19 @@ void	set_arg(t_shell *shell, int start, int end, int pos)
     str = (char *)malloc(sizeof(char) * (arg_len + 1));
     if (!str)
         return ;
-    if (shell->current_line[start] == '\'')
-        shell->has_single_quote[pos] = 1;
+    if (is_quote(shell->current_line[start]))
+    {
+        shell->was_quoted[pos] = 1; // L'argument est entre guillemets
+        if (shell->current_line[start] == '\'')
+            shell->has_single_quote[pos] = 1;
+        else
+            shell->has_single_quote[pos] = 0;
+    }
     else
+    {
+        shell->was_quoted[pos] = 0; // L'argument n'est pas entre guillemets
         shell->has_single_quote[pos] = 0;
+    }
     copy_inner_content(str, shell->current_line, start, end);
     shell->current_arg[pos] = str;
 }
-
