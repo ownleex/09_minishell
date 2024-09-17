@@ -6,15 +6,17 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:23:33 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/17 01:00:54 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/17 01:55:25 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exit_and_cleanup(t_shell *shell, char **env, int exit_code)
+void	exit_and_cleanup(t_shell *shell, char **env, int exit_code, pid_t *pids)
 {
 	printf("exit\n");
+	if (pids)
+		free(pids);
 	free_redirections(shell);
 	free_all_shells(shell);
 	free_array(&env);
@@ -78,7 +80,7 @@ void	ft_exit(t_shell *shell, char **env, pid_t *pids)
 		{
 			printf("minishell: exit: %s: numeric argument required\n", arg);
 			free(pids);
-			exit_and_cleanup(shell, env, 2);
+			exit_and_cleanup(shell, env, 2, NULL);
 		}
 		if (shell->current_arg[2])
 		{
@@ -87,12 +89,8 @@ void	ft_exit(t_shell *shell, char **env, pid_t *pids)
 			return ;
 		}
 		exit_code = ft_atoi(arg);
-		free(pids);
-		exit_and_cleanup(shell, env, exit_code);
+		exit_and_cleanup(shell, env, exit_code, pids);
 	}
 	else
-	{
-		free(pids);
-		exit_and_cleanup(shell, env, shell->exit_code);
-	}
+		exit_and_cleanup(shell, env, shell->exit_code, pids);
 }
