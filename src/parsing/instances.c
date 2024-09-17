@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 13:55:57 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/16 23:10:26 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/17 15:27:56 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,38 @@
 
 void    complete_instance(t_shell *shell, t_shell *instance, int start, int end)
 {
-    int i;
-    int d;
+	int i;
+	int d;
+	int arg_count;
 
-    d = 0;
-    i = start + 1;
-    instance->current_arg = (char **)malloc(sizeof(char *) * (end - start + 1)); // +1 pour le NULL final
-    if (!instance->current_arg)
-    {
-        perror("malloc");
-        exit(EXIT_FAILURE);
-    }
-    while (i < end && shell->current_arg[i])
-    {
-        instance->current_arg[d] = ft_strdup(shell->current_arg[i]);
-        i++;
-        d++;
-    }
-    instance->current_arg[d] = NULL;
-    instance->current_cmd = instance->current_arg[0];
+	d = 0;
+	i = start + 1;
+	arg_count = end - start - 1;
+
+	instance->current_arg = (char **)malloc(sizeof(char *) * (arg_count + 1)); // +1 pour le NULL final
+	instance->has_single_quote = (int *)malloc(sizeof(int) * (arg_count + 1));
+	instance->was_quoted = (int *)malloc(sizeof(int) * (arg_count + 1));
+
+	if (!instance->current_arg || !instance->has_single_quote || !instance->was_quoted)
+	{
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+
+	while (i < end && shell->current_arg[i])
+	{
+		instance->current_arg[d] = ft_strdup(shell->current_arg[i]);
+		instance->has_single_quote[d] = shell->has_single_quote[i];
+		instance->was_quoted[d] = shell->was_quoted[i];
+		i++;
+		d++;
+	}
+	instance->current_arg[d] = NULL;
+	instance->has_single_quote[d] = 0;
+	instance->was_quoted[d] = 0;
+	instance->current_cmd = instance->current_arg[0];
 }
+
 
 
 void	handle_pipes(t_shell *shell, int *i, t_shell **main_shell, int *c)
@@ -97,28 +109,28 @@ void	handle_redirections(t_shell *shell, int i, t_shell *main_shell)
 
 void	handle_cmd(t_shell *shell)
 {
-    int     i;
-    int     c;
-    t_shell *main_shell;
+	int     i;
+	int     c;
+	t_shell *main_shell;
 
-    i = 0;
-    c = 1;
-    main_shell = shell;
-    while (shell->current_arg[i])
-    {
-        // Vérification si le symbole de pipe n'est pas entre guillemets
-        if (shell->current_arg[i][0] == '|' && shell->current_arg[i + 1] && shell->was_quoted[i] == 0)
-        {
-            handle_pipes(shell, &i, &main_shell, &c);
-            i++;
-        }
-        else if (is_redirecion(shell->current_arg[i]) && shell->current_arg[i + 1] && shell->was_quoted[i] == 0)
-        {
-            handle_redirections(shell, i, main_shell);
-            i += 2;
-        }
-        else
-            i++;
-    }
-    free_main_shell(shell);
+	i = 0;
+	c = 1;
+	main_shell = shell;
+	while (shell->current_arg[i])
+	{
+		// Vérification si le symbole de pipe n'est pas entre guillemets
+		if (shell->current_arg[i][0] == '|' && shell->current_arg[i + 1] && shell->was_quoted[i] == 0)
+		{
+			handle_pipes(shell, &i, &main_shell, &c);
+			i++;
+		}
+		else if (is_redirecion(shell->current_arg[i]) && shell->current_arg[i + 1] && shell->was_quoted[i] == 0)
+		{
+			handle_redirections(shell, i, main_shell);
+			i += 2;
+		}
+		else
+			i++;
+	}
+	free_main_shell(shell);
 }
