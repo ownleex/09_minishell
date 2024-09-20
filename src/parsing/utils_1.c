@@ -1,32 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 11:38:10 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/13 20:11:43 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:11:47 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	is_redirecion(char *str)
-{
-	int	len;
-
-	len = ft_strlen(str);
-	if (len > 2)
-		return (0);
-	if (str[0] != '<' && str[0] != '>')
-		return (0);
-	if (len == 1)
-		return (1);
-	else if (str[0] == str[1])
-		return (1);
-	return (0);
-}
 
 int	is_quote(int c)
 {

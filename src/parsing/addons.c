@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   addons.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 14:15:07 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/16 22:06:41 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:38:32 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,56 +27,65 @@ int	find_end(t_shell *shell, int start)
 	return (i);
 }
 
-void free_main_shell(t_shell *shell)
+void	reset_shell_state(t_shell *shell)
 {
-    int i;
-    int j;
+	free_all_shells(shell->next);
+	shell->is_piped = 0;
+	shell->pipe_in = -1;
+	shell->pipe_out = -1;
+	shell->next = NULL;
+}
 
-    if (shell == NULL || shell->current_arg == NULL)
-        return;
+void	handle_initial_redirection(t_shell *shell, int *i)
+{
+	int	j;
 
-    i = 0;
-    while (shell->current_arg[i] != NULL)
-    {
-        // Gestion des redirections au début
-        if (is_redirecion(shell->current_arg[i]) && i == 0 && shell->was_quoted[i] == 0)
-        {
-            // Libère les tokens de redirection
-            free(shell->current_arg[0]); // "<" ou ">"
-            free(shell->current_arg[1]); // Le fichier (ex: "Makefile")
+	free(shell->current_arg[0]);
+	free(shell->current_arg[1]);
+	j = 2;
+	while (shell->current_arg[j] != NULL)
+	{
+		shell->current_arg[j - 2] = shell->current_arg[j];
+		j++;
+	}
+	shell->current_arg[j - 2] = NULL;
+	*i = 0;
+	reset_shell_state(shell);
+}
 
-            // Décale les arguments
-            j = 2; // Commence à l'indice 2
-            while (shell->current_arg[j] != NULL)
-            {
-                shell->current_arg[j - 2] = shell->current_arg[j];
-                j++;
-            }
-            shell->current_arg[j - 2] = NULL; // Termine le tableau
+void	free_remaining_args(t_shell *shell, int i)
+{
+	int	j;
 
-            // Réinitialise les indices et états
-            i = 0;
-            free_all_shells(shell->next);
-            shell->is_piped = 0;
-            shell->pipe_in = -1;
-            shell->pipe_out = -1;
-            shell->next = NULL;
-            continue;
-        }
-        // Modification ici :
-        else if (((is_redirecion(shell->current_arg[i]) && i != 0 && shell->was_quoted[i] == 0) ||
-                  (shell->current_arg[i][0] == '|' && shell->was_quoted[i] == 0 && shell->current_arg[i + 1] != NULL)))
-        {
-            // Si c'est une redirection ou un pipe non guillemeté au milieu des arguments, on arrête le traitement ici
-            j = i;
-            while (shell->current_arg[j] != NULL)
-            {
-                free(shell->current_arg[j]);
-                shell->current_arg[j] = NULL;
-                j++;
-            }
-            return;
-        }
-        i++;
-    }
+	j = i;
+	while (shell->current_arg[j] != NULL)
+	{
+		free(shell->current_arg[j]);
+		shell->current_arg[j] = NULL;
+		j++;
+	}
+}
+
+void	free_main_shell(t_shell *shell)
+{
+	int	i;
+
+	if (shell == NULL || shell->current_arg == NULL)
+		return ;
+	i = 0;
+	while (shell->current_arg[i] != NULL)
+	{
+		if (is_redirecion(shell->current_arg[i]) && i == 0 \
+		&& shell->was_quoted[i] == 0)
+			handle_initial_redirection(shell, &i);
+		else if ((is_redirecion(shell->current_arg[i]) && i != 0 \
+		&& shell->was_quoted[i] == 0) \
+		|| (shell->current_arg[i][0] == '|' && shell->was_quoted[i] == 0 \
+		&& shell->current_arg[i + 1] != NULL))
+		{
+			free_remaining_args(shell, i);
+			return ;
+		}
+		i++;
+	}
 }

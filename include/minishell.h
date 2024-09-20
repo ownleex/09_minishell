@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/17 02:06:06 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:40:53 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,18 @@ void	handle_syntax_error(t_shell *shell, int syntax_error);
 int		is_quote(int c);
 int		is_redirecion(char *str);
 int		is_single_pipe(char *line, int p);
+int	jump_quote(t_shell *shell, int cursor);
 int		is_single_redirection(char *line, int p);
 int		is_separator(int character, int space);
+int		do_redirection(char *line, int index, int *len);
+int		do_pipe(int index, int *len);
+int		do_separator(char *line, int index, int *len);
 void	copy_inner_content(char *dest, char *src, int start, int end);
+	// Instances
+void	allocate_instance(t_shell *instance, int arg_count);
+void	handle_input_redirection(t_shell *shell, int i, t_shell *main_shell);
+void	handle_output_redirection(t_shell *shell, int i, t_shell *main_shell);
+
 	// Arguments
 int		count_args(char *line);
 int		jump_arg(char *line, int cursor);

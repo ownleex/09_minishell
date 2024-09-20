@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_check.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/05 03:25:13 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/15 22:17:44 by ayarmaya         ###   ########.fr       */
+/*   Created: 2024/09/20 15:37:13 by noldiane          #+#    #+#             */
+/*   Updated: 2024/09/20 15:39:36 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,6 @@ int	is_invalid_syntax(t_shell *shell)
 				if (shell->current_line[j] == '|')
 					return (5); // Deux pipes se suivent
 			}
-
-			// Vérification des erreurs : redirection suivie d'un pipe ou pipe suivi d'une redirection
 			if (shell->current_line[i] == '>' || shell->current_line[i] == '<')
 			{
 				int j = i + 1;
@@ -116,39 +114,30 @@ int	is_invalid_syntax(t_shell *shell)
 				while (shell->current_line[j] == ' ')
 					j++;
 				if (shell->current_line[j] == '>' || shell->current_line[j] == '<')
-					return (7); // Pipe suivi d'une redirection
+					return (7);
 			}
-
-			// Vérification des erreurs : deux chevrons à droite se suivent avec un ou plusieurs espaces
 			if (shell->current_line[i] == '>')
 			{
 				int j = i + 1;
 				while (shell->current_line[j] == ' ')
 					j++;
 				if (shell->current_line[j] == '>' && j != i + 1)
-					return (8); // Deux chevrons avec des espaces entre eux
+					return (8);
 			}
 		}
 
 		i++;
 	}
-
-	// Ignore les espaces à la fin de la commande
 	while (len > 0 && shell->current_line[len - 1] == ' ')
 		len--;
 
 	if (len == 0)
 		return (0);
-
-	// Vérifie si la commande se termine par un pipe ou une redirection
 	if (shell->current_line[len - 1] == '|')
 		return (1);
 	else if (shell->current_line[len - 1] == '<' || shell->current_line[len - 1] == '>')
 		return (3);
-
-	// Vérifie s'il y a des guillemets non fermés
 	if (single_quote_open || double_quote_open)
 		return (4);
-
 	return (0);
 }
