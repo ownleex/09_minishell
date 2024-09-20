@@ -6,14 +6,14 @@
 #    By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/02 21:28:06 by ayarmaya          #+#    #+#              #
-#    Updated: 2024/09/20 20:16:48 by ayarmaya         ###   ########.fr        #
+#    Updated: 2024/09/20 22:52:21 by ayarmaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME				:= minishell
 
 CC					:= gcc
-CFLAGS				:= -g -Wall -Wextra -Werror
+CFLAGS				:= -Wall -Wextra -Werror
 RM					:= rm -f
 RMDIR				:= rm -rf
 
