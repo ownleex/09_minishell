@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 04:37:37 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/17 00:21:22 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/18 23:00:54 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,50 @@ int	is_valid_identifier(const char *str)
 	return (1);
 }
 
+void	parse_name_value(char *arg, char **name_ptr, char **value_ptr)
+{
+	char	*equal_sign;
+
+	equal_sign = ft_strchr(arg, '=');
+	if (equal_sign)
+	{
+		*name_ptr = ft_substr(arg, 0, equal_sign - arg);
+		*value_ptr = ft_strdup(equal_sign + 1);
+	}
+	else
+	{
+		*name_ptr = ft_strdup(arg);
+		*value_ptr = NULL;
+	}
+}
+
+int	process_export_arg(char ***env_ptr, char *arg)
+{
+	char	*name;
+	char	*value;
+	int		exit_code;
+
+	exit_code = 0;
+	parse_name_value(arg, &name, &value);
+	if (!is_valid_identifier(name))
+	{
+		ft_putstr_fd("minishell: export: '", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		exit_code = 1;
+	}
+	else
+	{
+		if (value == NULL)
+			*env_ptr = update_env(*env_ptr, name, "");
+		else
+			*env_ptr = update_env(*env_ptr, name, value);
+	}
+	free(name);
+	free(value);
+	return (exit_code);
+}
+
 char	**ft_export_no_args(char **env)
 {
 	int	i;
@@ -45,41 +89,16 @@ char	**ft_export_no_args(char **env)
 
 char	**ft_export(t_shell *shell, char **env)
 {
-	int		i;
-	char	*name;
-	char	*value;
-	char	*equal_sign;
-	int		exit_code;
+	int	i;
+	int	exit_code;
 
-	if (!shell->current_arg[1])
-		return (ft_export_no_args(env));
 	i = 1;
 	exit_code = 0;
+	if (!shell->current_arg[1])
+		return (ft_export_no_args(env));
 	while (shell->current_arg[i])
 	{
-		equal_sign = ft_strchr(shell->current_arg[i], '=');
-		if (equal_sign)
-		{
-			name = ft_substr(shell->current_arg[i], 0, equal_sign - shell->current_arg[i]);
-			value = ft_strdup(equal_sign + 1);
-		}
-		else
-		{
-			name = ft_strdup(shell->current_arg[i]);
-			value = NULL;
-		}
-		if (!is_valid_identifier(name))
-		{
-			ft_putstr_fd("minishell: export: '", 2);
-			ft_putstr_fd(shell->current_arg[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			exit_code = 1;
-		}
-		else
-			env = update_env(env, name, value ? value : "");
-		free(name);
-		if (value)
-			free(value);
+		exit_code |= process_export_arg(&env, shell->current_arg[i]);
 		i++;
 	}
 	shell->exit_code = exit_code;
