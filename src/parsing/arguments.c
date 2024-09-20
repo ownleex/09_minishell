@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arguments.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 14:03:36 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/16 21:53:41 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:40:48 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,53 +41,39 @@ int	jump_arg(char *line, int cursor)
 	}
 }
 
-int count_args(char *line)
+int	do_input_redirection(char *line, int index, int *len)
+{
+	index++;
+	(*len) += 2;
+	if (line[index] == '<')
+		index++;
+	return (index);
+}
+
+int	count_args(char *line)
 {
 	int	len;
 	int	index;
 
-	if (!line)
-		return 0;
 	len = 0;
 	index = 0;
+	if (!line)
+		return (0);
 	while (line[index] != '\0')
 	{
 		if (is_separator(line[index], 1))
-		{
-			index = jump_arg(line, index);
-			len++;
-		}
+			index = do_separator(line, index, &len);
 		else if (line[index] == '|' && is_single_pipe(line, index))
-		{
-			index++;
-			len += 2;
-		}
+			index = do_pipe(index, &len);
 		else if (line[index] == '>')
-		{
-			if (line[index + 1] == '>')
-			{
-				len += 2;
-				index += 2;
-			}
-			else
-			{
-				len += 2;
-				index++;
-			}
-		}
+			index = do_redirection(line, index, &len);
 		else if (line[index] == '<')
-		{
-			len += 2;
-			index++;
-			if (line[index] == '<')
-			index++;
-		}
+			index = do_input_redirection(line, index, &len);
 		else
 			index++;
 	}
 	return (len);
 }
-
 
 int	get_arglen(t_shell *shell, int start, int end)
 {
@@ -118,26 +104,26 @@ int	get_arglen(t_shell *shell, int start, int end)
 
 void	set_arg(t_shell *shell, int start, int end, int pos)
 {
-    char	*str;
-    int		arg_len;
+	char	*str;
+	int		arg_len;
 
-    arg_len = get_arglen(shell, start, end);
-    str = (char *)malloc(sizeof(char) * (arg_len + 1));
-    if (!str)
-        return ;
-    if (is_quote(shell->current_line[start]))
-    {
-        shell->was_quoted[pos] = 1; // L'argument est entre guillemets
-        if (shell->current_line[start] == '\'')
-            shell->has_single_quote[pos] = 1;
-        else
-            shell->has_single_quote[pos] = 0;
-    }
-    else
-    {
-        shell->was_quoted[pos] = 0; // L'argument n'est pas entre guillemets
-        shell->has_single_quote[pos] = 0;
-    }
-    copy_inner_content(str, shell->current_line, start, end);
-    shell->current_arg[pos] = str;
+	arg_len = get_arglen(shell, start, end);
+	str = (char *)malloc(sizeof(char) * (arg_len + 1));
+	if (!str)
+		return ;
+	if (is_quote(shell->current_line[start]))
+	{
+		shell->was_quoted[pos] = 1;
+		if (shell->current_line[start] == '\'')
+			shell->has_single_quote[pos] = 1;
+		else
+			shell->has_single_quote[pos] = 0;
+	}
+	else
+	{
+		shell->was_quoted[pos] = 0;
+		shell->has_single_quote[pos] = 0;
+	}
+	copy_inner_content(str, shell->current_line, start, end);
+	shell->current_arg[pos] = str;
 }

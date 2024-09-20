@@ -6,7 +6,7 @@
 #    By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/02 21:28:06 by ayarmaya          #+#    #+#              #
-#    Updated: 2024/09/02 01:41:59 by ayarmaya         ###   ########.fr        #
+#    Updated: 2024/09/20 20:16:48 by ayarmaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,36 @@ ifeq ($(UNAME_S), Darwin)
 endif
 
 SRCDIR				:= src
-SRCS				:= $(shell find $(SRCDIR) -name '*.c')
+SRCS				:= src/main.c \
+					   src/init.c \
+					   src/signal.c \
+					   src/utils.c \
+					   src/parsing/parsing.c \
+					   src/parsing/command_check_1.c \
+					   src/parsing/command_check_2.c \
+					   src/parsing/arguments.c \
+					   src/parsing/instances.c \
+					   src/parsing/addons.c \
+					   src/parsing/utils_1.c \
+					   src/parsing/utils_2.c \
+					   src/parsing/utils_3.c \
+					   src/exec/exec.c \
+					   src/exec/fork_and_process.c \
+					   src/exec/redirection_and_pipe.c \
+					   src/exec/find_command_path.c \
+					   src/exec/heredoc.c \
+					   src/exec/utils.c \
+					   src/builtin/builtin.c \
+					   src/builtin/cd.c \
+					   src/builtin/echo.c \
+					   src/builtin/env.c \
+					   src/builtin/exit.c \
+					   src/builtin/export.c \
+					   src/builtin/pwd.c \
+					   src/builtin/unset.c \
+					   src/builtin/handle_var_env/cd_env.c \
+					   src/builtin/handle_var_env/export_update_env.c \
+					   src/builtin/handle_var_env/unset_remove_env_var.c \
 
 OBJDIR				:= obj
 OBJS				:= $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
