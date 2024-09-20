@@ -6,11 +6,17 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:59:13 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/17 01:30:55 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/18 21:46:31 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_builtin_without_pipe_or_redirect(t_shell *shell)
+{
+	return (is_builtin(shell) && !shell->is_piped && \
+	!shell->input_file && !shell->output_file);
+}
 
 int	is_builtin(t_shell *shell)
 {

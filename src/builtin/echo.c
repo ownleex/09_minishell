@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/15 23:24:29 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/18 16:47:39 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	handle_variable_expansion(char **str, char **env, t_shell *shell)
 	}
 	while (*var_start && (ft_isalnum(*var_start) || *var_start == '_'))
 		var_start++;
-	ft_bzero(var_name, sizeof(var_name));
 	ft_strlcpy(var_name, *str + 1, var_start - (*str + 1) + 1);
 	value = get_env_value(env, var_name);
 	if (value)

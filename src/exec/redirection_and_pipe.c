@@ -6,13 +6,13 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 00:36:07 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/11 20:13:20 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/19 01:35:02 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	open_output_file(t_shell *shell)
+int	open_output_file(t_shell *shell, char **env)
 {
 	int	outfile_fd;
 
@@ -26,12 +26,14 @@ int	open_output_file(t_shell *shell)
 	{
 		perror("minishell");
 		shell->exit_code = 1;
+		free_all_shells(shell);
+		free_array(&env);
 		exit(EXIT_FAILURE);
 	}
 	return (outfile_fd);
 }
 
-void	handle_input_redir(t_shell *shell)
+void	handle_input_redir(t_shell *shell, char **env)
 {
 	int	infile_fd;
 
@@ -42,6 +44,8 @@ void	handle_input_redir(t_shell *shell)
 		{
 			perror("minishell");
 			shell->exit_code = 1;
+			free_all_shells(shell);
+			free_array(&env);
 			exit(EXIT_FAILURE);
 		}
 		dup2(infile_fd, STDIN_FILENO);
@@ -54,13 +58,13 @@ void	handle_input_redir(t_shell *shell)
 	}
 }
 
-void	handle_output_redir(t_shell *shell)
+void	handle_output_redir(t_shell *shell, char **env)
 {
 	int	outfile_fd;
 
 	if (shell->output_file)
 	{
-		outfile_fd = open_output_file(shell);
+		outfile_fd = open_output_file(shell, env);
 		dup2(outfile_fd, STDOUT_FILENO);
 		close(outfile_fd);
 	}
@@ -71,10 +75,10 @@ void	handle_output_redir(t_shell *shell)
 	}
 }
 
-void	handle_redir(t_shell *shell)
+void	handle_redir(t_shell *shell, char **env)
 {
-	handle_input_redir(shell);
-	handle_output_redir(shell);
+	handle_input_redir(shell, env);
+	handle_output_redir(shell, env);
 }
 
 void	handle_pipes_if_needed(t_shell *shell)
