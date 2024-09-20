@@ -6,7 +6,7 @@
 /*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:37:13 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/20 15:39:36 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:51:48 by noldiane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,19 @@ void	handle_syntax_error(t_shell *shell, int syntax_error)
 
 int	is_invalid_syntax(t_shell *shell)
 {
-	int len = ft_strlen(shell->current_line);
-	int i = 0;
-	int single_quote_open = 0;
-	int double_quote_open = 0;
+	int len;
+	int i;
+	int single_quote_open;
+	int double_quote_open;
 
-	// Ignore les espaces au début de la commande
+	i = 0;
+	single_quote_open = 0;
+	double_quote_open = 0;
+	len = ft_strlen(shell->current_line);
 	while (shell->current_line[i] == ' ' && shell->current_line[i] != '\0')
 		i++;
-
-	// Vérifie si la commande commence par un pipe
 	if (shell->current_line[i] == '|')
 		return (2);
-
-	// Parcourt la ligne pour détecter les guillemets non fermés et les erreurs supplémentaires
 	while (shell->current_line[i] != '\0')
 	{
 		if (shell->current_line[i] == '\'' && double_quote_open == 0)
@@ -91,14 +90,13 @@ int	is_invalid_syntax(t_shell *shell)
 		}
 		else if (!single_quote_open && !double_quote_open)
 		{
-			// Vérification des erreurs : deux pipes se suivent
 			if (shell->current_line[i] == '|' && shell->current_line[i + 1] != '\0')
 			{
 				int j = i + 1;
 				while (shell->current_line[j] == ' ')
 					j++;
 				if (shell->current_line[j] == '|')
-					return (5); // Deux pipes se suivent
+					return (5);
 			}
 			if (shell->current_line[i] == '>' || shell->current_line[i] == '<')
 			{
@@ -106,7 +104,7 @@ int	is_invalid_syntax(t_shell *shell)
 				while (shell->current_line[j] == ' ')
 					j++;
 				if (shell->current_line[j] == '|')
-					return (6); // Redirection suivie d'un pipe
+					return (6);
 			}
 			else if (shell->current_line[i] == '|')
 			{
@@ -125,12 +123,10 @@ int	is_invalid_syntax(t_shell *shell)
 					return (8);
 			}
 		}
-
 		i++;
 	}
 	while (len > 0 && shell->current_line[len - 1] == ' ')
 		len--;
-
 	if (len == 0)
 		return (0);
 	if (shell->current_line[len - 1] == '|')
