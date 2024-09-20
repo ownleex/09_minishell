@@ -6,22 +6,11 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/06 07:10:29 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/18 16:59:16 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*get_home_directory(char **env)
-{
-	while (*env)
-	{
-		if (strncmp(*env, "HOME=", 5) == 0)
-			return (*env + 5);
-		env++;
-	}
-	return (NULL);
-}
 
 int	validate_directory(t_shell *shell, char *path)
 {
@@ -82,7 +71,6 @@ char	*get_cd_path(t_shell *shell, char **env)
 		{
 			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 			shell->exit_code = 1;
-			return (NULL);
 		}
 	}
 	else
@@ -90,10 +78,31 @@ char	*get_cd_path(t_shell *shell, char **env)
 	return (path);
 }
 
+char	**cd_change_directory(t_shell *shell, char **env, char *path)
+{
+	char	*expanded_path;
+	char	*new_path;
+
+	expanded_path = expand_argument(path, env, shell);
+	if (!expanded_path)
+	{
+		perror("malloc");
+		shell->exit_code = 1;
+		return (env);
+	}
+	new_path = change_directory(shell, env, expanded_path);
+	free(expanded_path);
+	if (!new_path)
+		return (env);
+	env = update_env(env, "PWD", new_path);
+	free(new_path);
+	shell->exit_code = 0;
+	return (env);
+}
+
 char	**ft_cd(t_shell *shell, char **env)
 {
 	char	*path;
-	char	*new_path;
 
 	if (shell->current_arg[1] && shell->current_arg[2])
 	{
@@ -104,11 +113,6 @@ char	**ft_cd(t_shell *shell, char **env)
 	path = get_cd_path(shell, env);
 	if (!path)
 		return (env);
-	new_path = change_directory(shell, env, path);
-	if (!new_path)
-		return (env);
-	env = update_env(env, "PWD", new_path);
-	free(new_path);
-	shell->exit_code = 0;
+	env = cd_change_directory(shell, env, path);
 	return (env);
 }
