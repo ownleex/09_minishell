@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:23:33 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/17 01:55:25 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/29 02:22:49 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,30 +42,6 @@ int	is_numeric_argument(const char *str)
 		i++;
 	}
 	return (1);
-}
-
-int	calculate_exit_code(t_shell *shell)
-{
-	int	exit_code;
-	int	i;
-
-	i = 0;
-	if (shell->current_arg[1])
-	{
-		while (shell->current_arg[1][i])
-		{
-			if (!ft_isdigit(shell->current_arg[1][i++]))
-			{
-				printf("minishell: exit: %s: numeric argument required\n", \
-				shell->current_arg[1]);
-				return (2);
-			}
-		}
-		exit_code = ft_atoi(shell->current_arg[1]);
-	}
-	else
-		exit_code = shell->exit_code;
-	return (exit_code);
 }
 
 void	ft_exit(t_shell *shell, char **env, pid_t *pids)
