@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 18:50:51 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/30 21:24:00 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/30 23:08:42 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,13 @@ void	handle_syntax_error(t_shell *shell, int syntax_error)
 {
 	if (syntax_error == 2)
 		print_error_and_exit(shell, 130, \
-		"minishell: syntax error near unexpected token '|'\n");
+		"minishell: syntax error near unexpected token `|'\n");
 	else if (syntax_error == 1)
 		print_error_and_exit(shell, 130, \
-		"minishell: syntax error near unexpected token 'end of file'\n");
+		"minishell: syntax error near unexpected token `end of file'\n");
 	else if (syntax_error == 3)
 		print_error_and_exit(shell, 2, \
-		"minishell: syntax error near unexpected token 'newline'\n");
+		"minishell: syntax error near unexpected token `newline'\n");
 	else if (syntax_error == 4)
 		print_error_and_exit(shell, 2, \
 		"minishell: syntax error: unclosed quotes\n");
