@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/20 18:52:20 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:12:32 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,9 @@ void	handle_cmd(t_shell *shell);
 void	parse_command(t_shell *shell);
 	// Command_check_1
 int		is_invalid_syntax(t_shell *shell);
-void	handle_syntax_error(t_shell *shell, int syntax_error);
 	// Command_check_2
+int		check_pipe_errors(t_shell *shell, int i);
+int		check_redirection_errors(t_shell *shell, int i);
 void	handle_syntax_error(t_shell *shell, int syntax_error);
 	// Utils
 int		is_quote(int c);

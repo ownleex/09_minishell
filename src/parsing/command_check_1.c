@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:37:13 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/20 18:51:38 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:14:41 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,24 +60,14 @@ int *double_quote_open)
 
 int	check_operators(t_shell *shell, int i)
 {
-	int	j;
+	int	result;
 
-	if (shell->current_line[i] == '|' && shell->current_line[i + 1] != '\0')
-	{
-		j = i + 1;
-		while (shell->current_line[j] == ' ')
-			j++;
-		if (shell->current_line[j] == '|')
-			return (5);
-	}
-	if (shell->current_line[i] == '>' || shell->current_line[i] == '<')
-	{
-		j = i + 1;
-		while (shell->current_line[j] == ' ')
-			j++;
-		if (shell->current_line[j] == '|')
-			return (6);
-	}
+	result = check_pipe_errors(shell, i);
+	if (result != 0)
+		return (result);
+	result = check_redirection_errors(shell, i);
+	if (result != 0)
+		return (result);
 	return (0);
 }
 
