@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/18 16:59:16 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/01 21:29:29 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,33 +31,17 @@ int	validate_directory(t_shell *shell, char *path)
 	return (1);
 }
 
-char	*change_directory(t_shell *shell, char **env, char *path)
+char	*change_directory(t_shell *shell, char *path)
 {
-	char	oldpwd[PATH_MAX];
-	char	new_path[PATH_MAX];
-
 	if (!validate_directory(shell, path))
 		return (NULL);
-	if (!getcwd(oldpwd, PATH_MAX))
-	{
-		perror("getcwd");
-		shell->exit_code = 1;
-		return (NULL);
-	}
 	if (chdir(path) == -1)
 	{
 		perror("minishell: cd");
 		shell->exit_code = 1;
 		return (NULL);
 	}
-	env = update_env(env, "OLDPWD", oldpwd);
-	if (!getcwd(new_path, PATH_MAX))
-	{
-		perror("getcwd");
-		shell->exit_code = 1;
-		return (NULL);
-	}
-	return (ft_strdup(new_path));
+	return (getcwd(NULL, 0));
 }
 
 char	*get_cd_path(t_shell *shell, char **env)
@@ -82,19 +66,33 @@ char	**cd_change_directory(t_shell *shell, char **env, char *path)
 {
 	char	*expanded_path;
 	char	*new_path;
+	char	*oldpwd;
 
+	oldpwd = getcwd(NULL, 0);
+	if (!oldpwd)
+	{
+		perror("getcwd");
+		shell->exit_code = 1;
+		return (env);
+	}
 	expanded_path = expand_argument(path, env, shell);
 	if (!expanded_path)
 	{
 		perror("malloc");
 		shell->exit_code = 1;
+		free(oldpwd);
 		return (env);
 	}
-	new_path = change_directory(shell, env, expanded_path);
+	new_path = change_directory(shell, expanded_path);
 	free(expanded_path);
 	if (!new_path)
+	{
+		free(oldpwd);
 		return (env);
+	}
+	env = update_env(env, "OLDPWD", oldpwd);
 	env = update_env(env, "PWD", new_path);
+	free(oldpwd);
 	free(new_path);
 	shell->exit_code = 0;
 	return (env);
