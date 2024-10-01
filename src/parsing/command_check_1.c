@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:37:13 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/30 18:14:41 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/01 19:37:47 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ int *double_quote_open)
 			*single_quote_open = !(*single_quote_open);
 		else if (shell->current_line[i] == '"' && *single_quote_open == 0)
 			*double_quote_open = !(*double_quote_open);
-		if (!(*single_quote_open) && !(*double_quote_open))
-			break ;
 		i++;
 	}
 	return (0);
