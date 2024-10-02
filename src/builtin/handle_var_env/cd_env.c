@@ -6,12 +6,12 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 16:29:42 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/01 01:45:19 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/02 03:08:08 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/*
 char	*get_env_var_value(char *str, char **env, int *i, t_shell *shell)
 {
 	char	var_name[256];
@@ -52,7 +52,7 @@ char	*expand_variables(char *str, char **env, t_shell *shell)
 	}
 	result[j] = '\0';
 	return (result);
-}
+}*/
 
 char	*get_home_directory(char **env)
 {
@@ -67,7 +67,7 @@ char	*get_home_directory(char **env)
 	}
 	return (NULL);
 }
-
+/*
 char	*expand_argument(char *arg, char **env, t_shell *shell)
 {
 	if (arg == NULL)
@@ -75,4 +75,4 @@ char	*expand_argument(char *arg, char **env, t_shell *shell)
 	if (shell->current_arg[1] && shell->has_single_quote[1])
 		return (ft_strdup(arg));
 	return (expand_variables(arg, env, shell));
-}
+}*/

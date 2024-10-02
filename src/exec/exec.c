@@ -6,11 +6,24 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/19 00:05:33 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/02 03:36:56 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	count_commands(t_shell *shell)
+{
+	int	count;
+
+	count = 0;
+	while (shell)
+	{
+		count++;
+		shell = shell->next;
+	}
+	return (count);
+}
 
 void	cleanup_and_exit(int exit_code, t_shell *shell, char **env, pid_t *pids)
 {
@@ -85,6 +98,8 @@ void	wait_for_processes(pid_t *pids, int num_procs, t_shell *shell)
 	int	status;
 	int	last_status;
 
+	if (num_procs == 0)
+		return ;
 	last_status = 0;
 	i = 0;
 	while (i < num_procs)
@@ -95,30 +110,75 @@ void	wait_for_processes(pid_t *pids, int num_procs, t_shell *shell)
 		i++;
 	}
 	handle_signaled_status(shell, last_status);
-	free(pids);
 }
+
 
 void	execute_command(t_shell *shell, char ***env)
 {
+	int		num_cmds;
+	int		*pipes;
 	pid_t	*pids;
-	int		num_procs;
 	int		i;
 	t_shell	*current_shell;
 
-	num_procs = initialize_pids(shell, &pids);
-	i = 0;
+	//signal(SIGINT, handle_sigint);
+	//signal(SIGQUIT, SIG_IGN);
+
+	num_cmds = count_commands(shell);
+	pipes = malloc(sizeof(int) * 2 * (num_cmds - 1));
+	pids = malloc(sizeof(pid_t) * num_cmds);
+	if (!pipes || !pids)
+	{
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+	for (i = 0; i < num_cmds - 1; i++)
+	{
+		if (pipe(pipes + i * 2) == -1)
+		{
+			perror("pipe");
+			exit(EXIT_FAILURE);
+		}
+	}
 	current_shell = shell;
+	i = 0;
 	while (current_shell)
 	{
-		handle_heredoc_if_needed(current_shell);
-		handle_pipes_if_needed(current_shell);
-		if (is_builtin_without_pipe_or_redirect(current_shell))
-			handle_builtin(current_shell, env, pids);
-		else
-			handle_fork(current_shell, *env, pids, i++);
-		free_args(current_shell);
+		if (is_builtin_without_pipe_or_redirect(current_shell) && num_cmds == 1)
+		{
+			handle_builtin(current_shell, env, NULL);
+			current_shell = current_shell->next;
+			continue ;
+		}
+		pid_t pid = fork();
+		if (pid == 0)
+		{
+			//signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, handle_sigquit);
+			if (i != 0)
+				dup2(pipes[(i - 1) * 2], STDIN_FILENO);
+			if (i != num_cmds - 1)
+				dup2(pipes[i * 2 + 1], STDOUT_FILENO);
+			for (int j = 0; j < 2 * (num_cmds - 1); j++)
+				close(pipes[j]);
+			handle_redir(current_shell, *env);
+			execute_command_or_builtin(current_shell, *env, pids);
+			exit(current_shell->exit_code);
+		}
+		else if (pid < 0)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		pids[i] = pid;
 		current_shell = current_shell->next;
+		i++;
 	}
-	if (num_procs > 0)
-		wait_for_processes(pids, num_procs, shell);
+	for (int j = 0; j < 2 * (num_cmds - 1); j++)
+		close(pipes[j]);
+	wait_for_processes(pids, i, shell);
+	free(pipes);
+	free(pids);
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 }

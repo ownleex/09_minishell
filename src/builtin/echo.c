@@ -6,12 +6,12 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/18 16:47:39 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/02 04:28:22 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/*
 char	*get_env_value(char **env, char *var_name)
 {
 	int	i;
@@ -73,9 +73,9 @@ void	expand_and_print(char *arg, char **env, t_shell *shell)
 			str++;
 		}
 	}
-}
+}*/
 
-void	ft_echo(t_shell *shell, char **env)
+void	ft_echo(t_shell *shell)
 {
 	int	i;
 	int	newline;
@@ -89,10 +89,7 @@ void	ft_echo(t_shell *shell, char **env)
 	}
 	while (shell->current_arg[i])
 	{
-		if (shell->has_single_quote[i])
-			printf("%s", shell->current_arg[i]);
-		else
-			expand_and_print(shell->current_arg[i], env, shell);
+		printf("%s", shell->current_arg[i]);
 		if (shell->current_arg[i + 1])
 			printf(" ");
 		i++;

@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/30 18:12:32 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/02 04:29:33 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,8 @@ int		is_builtin(t_shell *shell);
 int		is_builtin_without_pipe_or_redirect(t_shell *shell);
 void	handle_builtin(t_shell *shell, char ***env, pid_t *pids);
 	// Echo
-void	ft_echo(t_shell *shell, char **env);
-char	*get_env_value(char **env, char *var_name);;
+void	ft_echo(t_shell *shell);
+//char	*get_env_value(char **env, char *var_name);;
 	// Pwd
 void	ft_pwd(t_shell *shell);
 	// Env
@@ -143,6 +143,7 @@ char	**update_env(char **env, const char *name, const char *value);
 char	**remove_env_var(char **env, const char *name);
 			//cd_env
 char	*get_home_directory(char **env);
-char	*expand_argument(char *arg, char **env, t_shell *shell);
+//char	*expand_argument(char *arg, char **env, t_shell *shell);
 
+void	expand_variables_in_args(t_shell *shell, char **env);;
 #endif

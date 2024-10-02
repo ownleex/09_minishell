@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/01 21:29:29 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/02 03:13:25 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ char	*get_cd_path(t_shell *shell, char **env)
 
 char	**cd_change_directory(t_shell *shell, char **env, char *path)
 {
-	char	*expanded_path;
 	char	*new_path;
 	char	*oldpwd;
 
@@ -75,16 +74,7 @@ char	**cd_change_directory(t_shell *shell, char **env, char *path)
 		shell->exit_code = 1;
 		return (env);
 	}
-	expanded_path = expand_argument(path, env, shell);
-	if (!expanded_path)
-	{
-		perror("malloc");
-		shell->exit_code = 1;
-		free(oldpwd);
-		return (env);
-	}
-	new_path = change_directory(shell, expanded_path);
-	free(expanded_path);
+	new_path = change_directory(shell, path);
 	if (!new_path)
 	{
 		free(oldpwd);
