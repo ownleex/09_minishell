@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/06 00:17:12 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/02 04:29:33 by ayarmaya         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -104,10 +94,8 @@ void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids);
 void	execute_command(t_shell *shell, char ***env);
 	//Redirection_and_pipe
 void	handle_redir(t_shell *shell, char **env);
-void	handle_pipes_if_needed(t_shell *shell);
 	//fork_and_process
-void	handle_fork(t_shell *shell, char **env, pid_t *pids, int index);
-void	handle_parent_process(t_shell *shell);
+
 	//Find_command_path
 char	*find_command_path(t_shell *shell, char **env);
 	//heredoc
@@ -123,7 +111,6 @@ int		is_builtin_without_pipe_or_redirect(t_shell *shell);
 void	handle_builtin(t_shell *shell, char ***env, pid_t *pids);
 	// Echo
 void	ft_echo(t_shell *shell);
-//char	*get_env_value(char **env, char *var_name);;
 	// Pwd
 void	ft_pwd(t_shell *shell);
 	// Env
@@ -143,7 +130,6 @@ char	**update_env(char **env, const char *name, const char *value);
 char	**remove_env_var(char **env, const char *name);
 			//cd_env
 char	*get_home_directory(char **env);
-//char	*expand_argument(char *arg, char **env, t_shell *shell);
 
-void	expand_variables_in_args(t_shell *shell, char **env);;
+void	expand_variables_in_args(t_shell *shell, char **env);
 #endif
