@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:59:13 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/18 21:46:31 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/02 02:01:40 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	is_builtin(t_shell *shell)
 void	handle_builtin(t_shell *shell, char ***env, pid_t *pids)
 {
 	if (ft_strcmp(shell->current_cmd, "echo") == 0)
-		ft_echo(shell, *env);
+		ft_echo(shell);
 	else if (ft_strcmp(shell->current_cmd, "pwd") == 0)
 		ft_pwd(shell);
 	else if (ft_strcmp(shell->current_cmd, "env") == 0)

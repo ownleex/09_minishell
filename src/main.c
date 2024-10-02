@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/17 00:38:38 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/02 01:36:03 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ void	process_shell_loop(t_shell *shell, char ***env)
 
 	while (1)
 	{
+		free_args(shell);
+		free_redirections(shell);
+		free_all_shells(shell->next);
 		ft_init(shell);
 		input_status = read_and_check_input(shell);
 		if (input_status == 0)
@@ -62,9 +65,8 @@ void	process_shell_loop(t_shell *shell, char ***env)
 		}
 		add_history(shell->current_line);
 		parse_command(shell);
+		expand_variables_in_args(shell, *env);
 		execute_command(shell, env);
-		free_all_shells(shell->next);
-		free_redirections(shell);
 	}
 }
 

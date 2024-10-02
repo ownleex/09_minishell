@@ -6,7 +6,7 @@
 #    By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/02 21:28:06 by ayarmaya          #+#    #+#              #
-#    Updated: 2024/09/20 22:52:21 by ayarmaya         ###   ########.fr        #
+#    Updated: 2024/10/02 02:01:54 by ayarmaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRCS				:= src/main.c \
 					   src/init.c \
 					   src/signal.c \
 					   src/utils.c \
+					   src/parsing/expand_variables.c \
 					   src/parsing/parsing.c \
 					   src/parsing/command_check_1.c \
 					   src/parsing/command_check_2.c \

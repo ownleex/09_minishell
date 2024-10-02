@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 01:47:46 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/16 21:52:20 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/01 23:04:43 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,6 @@ int	initialize_shell(t_shell **shell, char ***env, char **envp)
 		free_array(&(*env));
 		return (1);
 	}
+	ft_init(*shell);
 	return (0);
 }
