@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 16:11:10 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/08/26 23:20:57 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/02 23:28:40 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	ft_env(t_shell *shell, char **env)
 	i = 0;
 	while (env[i])
 	{
-		ft_putendl_fd(env[i], STDOUT_FILENO);
+		if (ft_strchr(env[i], '='))
+			ft_putendl_fd(env[i], STDOUT_FILENO);
 		i++;
 	}
 	shell->exit_code = 0;

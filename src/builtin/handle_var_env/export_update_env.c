@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:31:15 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/01 01:45:25 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/02 23:45:30 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,24 @@ char	*create_new_var(const char *name, const char *value)
 	char	*new_var;
 
 	name_len = ft_strlen(name);
-	value_len = ft_strlen(value);
-	new_var = (char *)malloc(name_len + value_len + 2);
-	if (!new_var)
-		return (NULL);
-	ft_strlcpy(new_var, name, name_len + 1);
-	ft_strlcat(new_var, "=", name_len + 2);
-	ft_strlcat(new_var, value, name_len + value_len + 2);
+	value_len = 0;
+	if (value)
+	{
+		value_len = ft_strlen(value);
+		new_var = (char *)malloc(name_len + value_len + 2);
+		if (!new_var)
+			return (NULL);
+		ft_strlcpy(new_var, name, name_len + 1);
+		ft_strlcat(new_var, "=", name_len + 2);
+		ft_strlcat(new_var, value, name_len + value_len + 2);
+	}
+	else
+	{
+		new_var = (char *)malloc(name_len + 1);
+		if (!new_var)
+			return (NULL);
+		ft_strlcpy(new_var, name, name_len + 1);
+	}
 	return (new_var);
 }
 
@@ -80,8 +91,14 @@ char	**update_env(char **env, const char *name, const char *value)
 	name_len = ft_strlen(name);
 	while (env[i])
 	{
-		if (ft_strncmp(env[i], name, name_len) == 0 && env[i][name_len] == '=')
-			return (replace_existing_var(env, i, name, value));
+		if (ft_strncmp(env[i], name, name_len) == 0 && \
+		(env[i][name_len] == '=' || env[i][name_len] == '\0'))
+		{
+			if (value != NULL)
+				return (replace_existing_var(env, i, name, value));
+			else
+				return (env);
+		}
 		i++;
 	}
 	return (append_new_var(env, name, value));

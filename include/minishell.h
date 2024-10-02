@@ -1,5 +1,3 @@
-
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -90,7 +88,7 @@ int		find_end(t_shell *shell, int start);
 
 // Exec
 char	*find_command_path(t_shell *shell, char **env);
-void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids);
+void	exec_commd_builtin(t_shell *shell, char **env, pid_t *pids, int *pipes);
 void	execute_command(t_shell *shell, char ***env);
 	//Redirection_and_pipe
 void	handle_redir(t_shell *shell, char **env);
@@ -131,5 +129,7 @@ char	**remove_env_var(char **env, const char *name);
 			//cd_env
 char	*get_home_directory(char **env);
 
+	// Expand_variables
 void	expand_variables_in_args(t_shell *shell, char **env);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/02 03:36:56 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/03 01:44:59 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,13 @@ void	cleanup_and_exit(int exit_code, t_shell *shell, char **env, pid_t *pids)
 	exit(exit_code);
 }
 
-void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids)
+void	exec_commd_builtin(t_shell *shell, char **env, pid_t *pids, int *pipes)
 {
-	int	exit_code;
-
 	if (is_builtin(shell))
 	{
 		handle_builtin(shell, &env, pids);
-		exit_code = shell->exit_code;
-		cleanup_and_exit(exit_code, shell, env, pids);
+		free(pipes);
+		cleanup_and_exit(shell->exit_code, shell, env, pids);
 	}
 	else
 	{
@@ -55,11 +53,13 @@ void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids)
 			write(STDERR_FILENO, shell->current_cmd, \
 			ft_strlen(shell->current_cmd));
 			write(STDERR_FILENO, ": Command not found\n", 21);
+			free(pipes);
 			cleanup_and_exit(127, shell, env, pids);
 		}
 		if (execve(shell->command_path, shell->current_arg, env) == -1)
 		{
 			perror("minishell");
+			free(pipes);
 			cleanup_and_exit(EXIT_FAILURE, shell, env, pids);
 		}
 	}
@@ -121,9 +121,6 @@ void	execute_command(t_shell *shell, char ***env)
 	int		i;
 	t_shell	*current_shell;
 
-	//signal(SIGINT, handle_sigint);
-	//signal(SIGQUIT, SIG_IGN);
-
 	num_cmds = count_commands(shell);
 	pipes = malloc(sizeof(int) * 2 * (num_cmds - 1));
 	pids = malloc(sizeof(pid_t) * num_cmds);
@@ -153,7 +150,6 @@ void	execute_command(t_shell *shell, char ***env)
 		pid_t pid = fork();
 		if (pid == 0)
 		{
-			//signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, handle_sigquit);
 			if (i != 0)
 				dup2(pipes[(i - 1) * 2], STDIN_FILENO);
@@ -162,7 +158,7 @@ void	execute_command(t_shell *shell, char ***env)
 			for (int j = 0; j < 2 * (num_cmds - 1); j++)
 				close(pipes[j]);
 			handle_redir(current_shell, *env);
-			execute_command_or_builtin(current_shell, *env, pids);
+			exec_commd_builtin(current_shell, *env, pids, pipes);
 			exit(current_shell->exit_code);
 		}
 		else if (pid < 0)
@@ -179,6 +175,5 @@ void	execute_command(t_shell *shell, char ***env)
 	wait_for_processes(pids, i, shell);
 	free(pipes);
 	free(pids);
-	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 }

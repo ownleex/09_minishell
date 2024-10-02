@@ -6,14 +6,14 @@
 #    By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/02 21:28:06 by ayarmaya          #+#    #+#              #
-#    Updated: 2024/10/02 02:01:54 by ayarmaya         ###   ########.fr        #
+#    Updated: 2024/10/03 01:48:26 by ayarmaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME				:= minishell
 
 CC					:= gcc
-CFLAGS				:= -Wall -Wextra -Werror
+CFLAGS				:= -Wall -Wextra -Werror -g3 -fsanitize=address
 RM					:= rm -f
 RMDIR				:= rm -rf
 
@@ -70,7 +70,7 @@ all					: $(NAME)
 
 $(NAME)				: $(OBJS)
 		make -C libft
-		$(CC) $(OBJS) $(LIBS) -o $(NAME)
+		$(CC) $(OBJS) $(LIBS) -o $(NAME) -fsanitize=address
 
 $(OBJDIR)/%.o		: $(SRCDIR)/%.c
 		@mkdir -p $(dir $@)

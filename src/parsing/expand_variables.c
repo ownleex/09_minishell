@@ -6,11 +6,9 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 01:22:02 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/02 02:06:38 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/02 20:58:55 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// variable_expansion.c
 
 #include "minishell.h"
 
@@ -64,8 +62,6 @@ char	*expand_variabless(char *str, char **env, t_shell *shell)
 	char	*env_value;
 
 	result = malloc(4096);
-	if (!result)
-		return (NULL);
 	i = 0;
 	j = 0;
 	while (str[i])
