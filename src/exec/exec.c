@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/03 21:04:08 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/03 21:41:26 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	exec_commd_builtin(t_shell *shell, char **env, pid_t *pids, int *pipes)
 void	execute_command_iteration(t_shell *current_shell, char ***env, \
 t_context *context)
 {
+	handle_heredoc_if_needed(current_shell);
 	if (is_builtin_without_pipe_or_redirect(current_shell) && \
 	context->num_cmds == 1)
 	{
