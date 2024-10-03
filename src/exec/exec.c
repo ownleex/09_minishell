@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/03 01:44:59 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/03 02:20:03 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	exec_commd_builtin(t_shell *shell, char **env, pid_t *pids, int *pipes)
 {
 	if (is_builtin(shell))
 	{
-		handle_builtin(shell, &env, pids);
+		handle_builtin(shell, &env, pids, pipes);
 		free(pipes);
 		cleanup_and_exit(shell->exit_code, shell, env, pids);
 	}
@@ -112,7 +112,6 @@ void	wait_for_processes(pid_t *pids, int num_procs, t_shell *shell)
 	handle_signaled_status(shell, last_status);
 }
 
-
 void	execute_command(t_shell *shell, char ***env)
 {
 	int		num_cmds;
@@ -143,7 +142,7 @@ void	execute_command(t_shell *shell, char ***env)
 	{
 		if (is_builtin_without_pipe_or_redirect(current_shell) && num_cmds == 1)
 		{
-			handle_builtin(current_shell, env, NULL);
+			handle_builtin(current_shell, env, NULL, pipes);
 			current_shell = current_shell->next;
 			continue ;
 		}

@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:23:33 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/03 00:09:19 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/03 02:14:40 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,8 @@ int	is_numeric_argument(const char *str)
 	return (1);
 }
 
-void	ft_exit(t_shell *shell, char **env, pid_t *pids)
+void	ft_exit(t_shell *shell, char **env, pid_t *pids, int *pipes)
 {
-	int		exit_code;
 	char	*arg;
 
 	arg = shell->current_arg[1];
@@ -55,8 +54,8 @@ void	ft_exit(t_shell *shell, char **env, pid_t *pids)
 		if (!is_numeric_argument(arg))
 		{
 			printf("minishell: exit: %s: numeric argument required\n", arg);
-			free(pids);
-			exit_and_cleanup(shell, env, 2, NULL);
+			free(pipes);
+			exit_and_cleanup(shell, env, 2, pids);
 		}
 		if (shell->current_arg[2])
 		{
@@ -64,9 +63,12 @@ void	ft_exit(t_shell *shell, char **env, pid_t *pids)
 			shell->exit_code = 1;
 			return ;
 		}
-		exit_code = ft_atoi(arg);
-		exit_and_cleanup(shell, env, exit_code, pids);
+		free(pipes);
+		exit_and_cleanup(shell, env, ft_atoi(arg), pids);
 	}
 	else
+	{
+		free(pipes);
 		exit_and_cleanup(shell, env, shell->exit_code, pids);
+	}
 }

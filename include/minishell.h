@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/03 02:36:34 by ayarmaya          #+#    #+#             */
+/*   Updated: 2024/10/03 02:36:36 by ayarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -42,7 +54,6 @@ void	free_all_shells(t_shell *shell);
 void	void_argc_argv(int argc, char **argv);
 
 // Init
-char	**init_env(char **envp);
 void	ft_init(t_shell *shell);
 int		initialize_shell(t_shell **shell, char ***env, char **envp);
 
@@ -87,8 +98,6 @@ void	free_main_shell(t_shell *shell);
 int		find_end(t_shell *shell, int start);
 
 // Exec
-char	*find_command_path(t_shell *shell, char **env);
-void	exec_commd_builtin(t_shell *shell, char **env, pid_t *pids, int *pipes);
 void	execute_command(t_shell *shell, char ***env);
 	//Redirection_and_pipe
 void	handle_redir(t_shell *shell, char **env);
@@ -97,7 +106,6 @@ void	handle_redir(t_shell *shell, char **env);
 	//Find_command_path
 char	*find_command_path(t_shell *shell, char **env);
 	//heredoc
-void	handle_heredoc(t_shell *shell);
 void	handle_heredoc_if_needed(t_shell *shell);
 	// Utils exec
 void	free_array(char ***array);
@@ -106,7 +114,7 @@ void	free_args(t_shell *shell);
 // Builtin
 int		is_builtin(t_shell *shell);
 int		is_builtin_without_pipe_or_redirect(t_shell *shell);
-void	handle_builtin(t_shell *shell, char ***env, pid_t *pids);
+void	handle_builtin(t_shell *shell, char ***env, pid_t *pids, int *pipes);
 	// Echo
 void	ft_echo(t_shell *shell);
 	// Pwd
@@ -114,7 +122,7 @@ void	ft_pwd(t_shell *shell);
 	// Env
 void	ft_env(t_shell *shell, char **env);
 	// Exit
-void	ft_exit(t_shell *shell, char **env, pid_t *pids);
+void	ft_exit(t_shell *shell, char **env, pid_t *pids, int *pipes);
 	// CD
 char	**ft_cd(t_shell *shell, char **env);
 	// Export
