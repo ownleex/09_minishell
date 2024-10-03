@@ -6,14 +6,14 @@
 #    By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/02 21:28:06 by ayarmaya          #+#    #+#              #
-#    Updated: 2024/10/03 01:53:50 by ayarmaya         ###   ########.fr        #
+#    Updated: 2024/10/03 20:41:32 by ayarmaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME				:= minishell
 
 CC					:= gcc
-CFLAGS				:= -Wall -Wextra -Werror
+CFLAGS				:= -Wall -Wextra -Werror -g
 RM					:= rm -f
 RMDIR				:= rm -rf
 
@@ -47,7 +47,8 @@ SRCS				:= src/main.c \
 					   src/parsing/utils_3.c \
 					   src/exec/exec.c \
 					   src/exec/fork_and_process.c \
-					   src/exec/redirection_and_pipe.c \
+					   src/exec/redirection.c \
+					   src/exec/pipes.c \
 					   src/exec/find_command_path.c \
 					   src/exec/heredoc.c \
 					   src/exec/utils.c \

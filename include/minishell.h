@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 02:36:34 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/03 02:36:36 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/03 20:58:04 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,14 @@ typedef struct s_shell
 	struct s_shell	*next;
 }	t_shell;
 
+typedef struct s_context
+{
+	int				num_cmds;
+	int				*pipes;
+	pid_t			*pids;
+	int				i;
+}	t_context;
+
 // Utils main
 void	free_redirections(t_shell *shell);
 void	free_shell(t_shell *shell);
@@ -56,6 +64,7 @@ void	void_argc_argv(int argc, char **argv);
 // Init
 void	ft_init(t_shell *shell);
 int		initialize_shell(t_shell **shell, char ***env, char **envp);
+void	init_context(t_context *context, t_shell *shell);
 
 // Signal
 void	handle_sigint(int sig);
@@ -99,10 +108,18 @@ int		find_end(t_shell *shell, int start);
 
 // Exec
 void	execute_command(t_shell *shell, char ***env);
-	//Redirection_and_pipe
+void	exec_commd_builtin(t_shell *shell, char **env, pid_t *pids, int *pipes);
+int		count_commands(t_shell *shell);
+	//Redirection
 void	handle_redir(t_shell *shell, char **env);
+	//Pipes
+void	close_all_pipes(int *pipes, int num_pipes);
+int		*initialize_pipes(int num_cmds);
 	//fork_and_process
-
+void	execute_child_process(t_shell *current_shell, char **env, \
+t_context *context);
+void	wait_for_processes(pid_t *pids, int num_procs, t_shell *shell);
+int		initialize_pids(t_shell *shell, pid_t **pids);
 	//Find_command_path
 char	*find_command_path(t_shell *shell, char **env);
 	//heredoc

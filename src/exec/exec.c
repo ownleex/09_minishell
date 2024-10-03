@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/03 02:20:03 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/03 21:04:08 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,114 +65,44 @@ void	exec_commd_builtin(t_shell *shell, char **env, pid_t *pids, int *pipes)
 	}
 }
 
-int	initialize_pids(t_shell *shell, pid_t **pids)
+void	execute_command_iteration(t_shell *current_shell, char ***env, \
+t_context *context)
 {
-	int		num_procs;
-	t_shell	*current_shell;
-
-	num_procs = 0;
-	current_shell = shell;
-	while (current_shell)
+	if (is_builtin_without_pipe_or_redirect(current_shell) && \
+	context->num_cmds == 1)
 	{
-		if (!is_builtin_without_pipe_or_redirect(current_shell))
-			num_procs++;
-		current_shell = current_shell->next;
-	}
-	if (num_procs > 0)
-	{
-		*pids = malloc(sizeof(pid_t) * num_procs);
-		if (!(*pids))
-		{
-			perror("malloc");
-			exit(EXIT_FAILURE);
-		}
-	}
-	else
-		*pids = NULL;
-	return (num_procs);
-}
-
-void	wait_for_processes(pid_t *pids, int num_procs, t_shell *shell)
-{
-	int	i;
-	int	status;
-	int	last_status;
-
-	if (num_procs == 0)
+		handle_builtin(current_shell, env, NULL, context->pipes);
 		return ;
-	last_status = 0;
-	i = 0;
-	while (i < num_procs)
-	{
-		waitpid(pids[i], &status, 0);
-		if (i == num_procs - 1)
-			last_status = status;
-		i++;
 	}
-	handle_signaled_status(shell, last_status);
+	context->pids[context->i] = fork();
+	if (context->pids[context->i] == 0)
+	{
+		execute_child_process(current_shell, *env, context);
+	}
+	else if (context->pids[context->i] < 0)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	context->i++;
 }
 
 void	execute_command(t_shell *shell, char ***env)
 {
-	int		num_cmds;
-	int		*pipes;
-	pid_t	*pids;
-	int		i;
-	t_shell	*current_shell;
+	t_context	context;
+	t_shell		*current_shell;
 
-	num_cmds = count_commands(shell);
-	pipes = malloc(sizeof(int) * 2 * (num_cmds - 1));
-	pids = malloc(sizeof(pid_t) * num_cmds);
-	if (!pipes || !pids)
-	{
-		perror("malloc");
-		exit(EXIT_FAILURE);
-	}
-	for (i = 0; i < num_cmds - 1; i++)
-	{
-		if (pipe(pipes + i * 2) == -1)
-		{
-			perror("pipe");
-			exit(EXIT_FAILURE);
-		}
-	}
+	current_shell = NULL;
+	init_context(&context, shell);
 	current_shell = shell;
-	i = 0;
 	while (current_shell)
 	{
-		if (is_builtin_without_pipe_or_redirect(current_shell) && num_cmds == 1)
-		{
-			handle_builtin(current_shell, env, NULL, pipes);
-			current_shell = current_shell->next;
-			continue ;
-		}
-		pid_t pid = fork();
-		if (pid == 0)
-		{
-			signal(SIGQUIT, handle_sigquit);
-			if (i != 0)
-				dup2(pipes[(i - 1) * 2], STDIN_FILENO);
-			if (i != num_cmds - 1)
-				dup2(pipes[i * 2 + 1], STDOUT_FILENO);
-			for (int j = 0; j < 2 * (num_cmds - 1); j++)
-				close(pipes[j]);
-			handle_redir(current_shell, *env);
-			exec_commd_builtin(current_shell, *env, pids, pipes);
-			exit(current_shell->exit_code);
-		}
-		else if (pid < 0)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		pids[i] = pid;
+		execute_command_iteration(current_shell, env, &context);
 		current_shell = current_shell->next;
-		i++;
 	}
-	for (int j = 0; j < 2 * (num_cmds - 1); j++)
-		close(pipes[j]);
-	wait_for_processes(pids, i, shell);
-	free(pipes);
-	free(pids);
+	close_all_pipes(context.pipes, 2 * (context.num_cmds - 1));
+	wait_for_processes(context.pids, context.i, shell);
+	free(context.pipes);
+	free(context.pids);
 	signal(SIGQUIT, SIG_IGN);
 }
