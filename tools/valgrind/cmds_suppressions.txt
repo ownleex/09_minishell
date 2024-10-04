@@ -17,3 +17,11 @@ valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressi
 pour ajouter le suivi des file descriptors, utiliser le parametre suivant:
 
 --track-fds=yes
+
+
+fsanitize :
+
+CFLAGS				:= -Wall -Wextra -Werror -g3 -fsanitize=address
+LDFLAGS				:= -fsanitize=address
+
+ajouter LDFLAGS apres NAME dans NAME

@@ -6,24 +6,14 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:56:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/02 16:17:10 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/02 22:20:11 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_echo(t_shell *shell)
+void	print_args(t_shell *shell, int i)
 {
-	int	i;
-	int	newline;
-
-	i = 1;
-	newline = 1;
-	if (shell->current_arg[i] && ft_strcmp(shell->current_arg[i], "-n") == 0)
-	{
-		newline = 0;
-		i++;
-	}
 	while (shell->current_arg[i])
 	{
 		printf("%s", shell->current_arg[i]);
@@ -31,6 +21,30 @@ void	ft_echo(t_shell *shell)
 			printf(" ");
 		i++;
 	}
+}
+
+void	ft_echo(t_shell *shell)
+{
+	int	i;
+	int	newline;
+	int	j;
+
+	i = 1;
+	newline = 1;
+	while (shell->current_arg[i] && shell->current_arg[i][0] == '-')
+	{
+		j = 1;
+		while (shell->current_arg[i][j] == 'n')
+			j++;
+		if (shell->current_arg[i][j] == '\0' && j > 1)
+		{
+			newline = 0;
+			i++;
+		}
+		else
+			break ;
+	}
+	print_args(shell, i);
 	if (newline)
 		printf("\n");
 	shell->exit_code = 0;

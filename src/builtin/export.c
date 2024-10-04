@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 04:37:37 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/29 22:40:09 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/02 23:28:21 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,7 @@ int	process_export_arg(char ***env_ptr, char *arg)
 		exit_code = 1;
 	}
 	else
-	{
-		if (value != NULL)
-			*env_ptr = update_env(*env_ptr, name, value);
-	}
+		*env_ptr = update_env(*env_ptr, name, value);
 	free(name);
 	free(value);
 	return (exit_code);

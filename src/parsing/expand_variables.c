@@ -6,11 +6,9 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 01:22:02 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/02 02:06:38 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/04 03:31:18 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// variable_expansion.c
 
 #include "minishell.h"
 
@@ -64,8 +62,6 @@ char	*expand_variabless(char *str, char **env, t_shell *shell)
 	char	*env_value;
 
 	result = malloc(4096);
-	if (!result)
-		return (NULL);
 	i = 0;
 	j = 0;
 	while (str[i])
@@ -89,21 +85,28 @@ char	*expand_variabless(char *str, char **env, t_shell *shell)
 
 void	expand_variables_in_args(t_shell *shell, char **env)
 {
+	t_shell	*current_shell;
 	int		i;
 	char	*expanded_arg;
 
-	i = 1;
-	while (shell->current_arg[i])
+	current_shell = shell;
+	while (current_shell)
 	{
-		if (!shell->has_single_quote[i])
+		i = 1;
+		while (current_shell->current_arg[i])
 		{
-			expanded_arg = expand_variabless(shell->current_arg[i], env, shell);
-			if (expanded_arg)
+			if (!current_shell->has_single_quote[i])
 			{
-				free(shell->current_arg[i]);
-				shell->current_arg[i] = expanded_arg;
+				expanded_arg = expand_variabless(current_shell->current_arg[i], \
+				env, current_shell);
+				if (expanded_arg)
+				{
+					free(current_shell->current_arg[i]);
+					current_shell->current_arg[i] = expanded_arg;
+				}
 			}
+			i++;
 		}
-		i++;
+		current_shell = current_shell->next;
 	}
 }

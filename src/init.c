@@ -6,11 +6,27 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 01:47:46 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/01 23:04:43 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/03 20:57:23 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	init_context(t_context *context, t_shell *shell)
+{
+	context->num_cmds = 0;
+	context->pipes = NULL;
+	context->pids = NULL;
+	context->i = 0;
+	context->num_cmds = count_commands(shell);
+	context->pipes = initialize_pipes(context->num_cmds);
+	context->pids = malloc(sizeof(pid_t) * context->num_cmds);
+	if (!context->pids)
+	{
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+}
 
 void	ft_init(t_shell *shell)
 {
