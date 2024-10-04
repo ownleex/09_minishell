@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 02:36:34 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/03 20:58:04 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/03 23:23:05 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ void	copy_inner_content(char *dest, char *src, int start, int end);
 void	allocate_instance(t_shell *instance, int arg_count);
 void	handle_input_redirection(t_shell *shell, int i, t_shell *main_shell);
 void	handle_output_redirection(t_shell *shell, int i, t_shell *main_shell);
-
 	// Arguments
 int		count_args(char *line);
 int		jump_arg(char *line, int cursor);
@@ -105,6 +104,8 @@ void	set_arg(t_shell *shell, int start, int end, int pos);
 	// Addons
 void	free_main_shell(t_shell *shell);
 int		find_end(t_shell *shell, int start);
+	// Expand_variables
+void	expand_variables_in_args(t_shell *shell, char **env);
 
 // Exec
 void	execute_command(t_shell *shell, char ***env);
@@ -153,8 +154,5 @@ char	**update_env(char **env, const char *name, const char *value);
 char	**remove_env_var(char **env, const char *name);
 			//cd_env
 char	*get_home_directory(char **env);
-
-	// Expand_variables
-void	expand_variables_in_args(t_shell *shell, char **env);
 
 #endif
