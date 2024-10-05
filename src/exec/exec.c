@@ -6,11 +6,24 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/19 00:05:33 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/03 21:41:26 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	count_commands(t_shell *shell)
+{
+	int	count;
+
+	count = 0;
+	while (shell)
+	{
+		count++;
+		shell = shell->next;
+	}
+	return (count);
+}
 
 void	cleanup_and_exit(int exit_code, t_shell *shell, char **env, pid_t *pids)
 {
@@ -23,15 +36,13 @@ void	cleanup_and_exit(int exit_code, t_shell *shell, char **env, pid_t *pids)
 	exit(exit_code);
 }
 
-void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids)
+void	exec_commd_builtin(t_shell *shell, char **env, pid_t *pids, int *pipes)
 {
-	int	exit_code;
-
 	if (is_builtin(shell))
 	{
-		handle_builtin(shell, &env, pids);
-		exit_code = shell->exit_code;
-		cleanup_and_exit(exit_code, shell, env, pids);
+		handle_builtin(shell, &env, pids, pipes);
+		free(pipes);
+		cleanup_and_exit(shell->exit_code, shell, env, pids);
 	}
 	else
 	{
@@ -42,83 +53,57 @@ void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids)
 			write(STDERR_FILENO, shell->current_cmd, \
 			ft_strlen(shell->current_cmd));
 			write(STDERR_FILENO, ": Command not found\n", 21);
+			free(pipes);
 			cleanup_and_exit(127, shell, env, pids);
 		}
 		if (execve(shell->command_path, shell->current_arg, env) == -1)
 		{
 			perror("minishell");
+			free(pipes);
 			cleanup_and_exit(EXIT_FAILURE, shell, env, pids);
 		}
 	}
 }
 
-int	initialize_pids(t_shell *shell, pid_t **pids)
+void	execute_command_iteration(t_shell *current_shell, char ***env, \
+t_context *context)
 {
-	int		num_procs;
-	t_shell	*current_shell;
-
-	num_procs = 0;
-	current_shell = shell;
-	while (current_shell)
+	handle_heredoc_if_needed(current_shell);
+	if (is_builtin_without_pipe_or_redirect(current_shell) && \
+	context->num_cmds == 1)
 	{
-		if (!is_builtin_without_pipe_or_redirect(current_shell))
-			num_procs++;
-		current_shell = current_shell->next;
+		handle_builtin(current_shell, env, NULL, context->pipes);
+		return ;
 	}
-	if (num_procs > 0)
+	context->pids[context->i] = fork();
+	if (context->pids[context->i] == 0)
 	{
-		*pids = malloc(sizeof(pid_t) * num_procs);
-		if (!(*pids))
-		{
-			perror("malloc");
-			exit(EXIT_FAILURE);
-		}
+		execute_child_process(current_shell, *env, context);
 	}
-	else
-		*pids = NULL;
-	return (num_procs);
-}
-
-void	wait_for_processes(pid_t *pids, int num_procs, t_shell *shell)
-{
-	int	i;
-	int	status;
-	int	last_status;
-
-	last_status = 0;
-	i = 0;
-	while (i < num_procs)
+	else if (context->pids[context->i] < 0)
 	{
-		waitpid(pids[i], &status, 0);
-		if (i == num_procs - 1)
-			last_status = status;
-		i++;
+		perror("fork");
+		exit(EXIT_FAILURE);
 	}
-	handle_signaled_status(shell, last_status);
-	free(pids);
+	context->i++;
 }
 
 void	execute_command(t_shell *shell, char ***env)
 {
-	pid_t	*pids;
-	int		num_procs;
-	int		i;
-	t_shell	*current_shell;
+	t_context	context;
+	t_shell		*current_shell;
 
-	num_procs = initialize_pids(shell, &pids);
-	i = 0;
+	current_shell = NULL;
+	init_context(&context, shell);
 	current_shell = shell;
 	while (current_shell)
 	{
-		handle_heredoc_if_needed(current_shell);
-		handle_pipes_if_needed(current_shell);
-		if (is_builtin_without_pipe_or_redirect(current_shell))
-			handle_builtin(current_shell, env, pids);
-		else
-			handle_fork(current_shell, *env, pids, i++);
-		free_args(current_shell);
+		execute_command_iteration(current_shell, env, &context);
 		current_shell = current_shell->next;
 	}
-	if (num_procs > 0)
-		wait_for_processes(pids, num_procs, shell);
+	close_all_pipes(context.pipes, 2 * (context.num_cmds - 1));
+	wait_for_processes(context.pids, context.i, shell);
+	free(context.pipes);
+	free(context.pids);
+	signal(SIGQUIT, SIG_IGN);
 }

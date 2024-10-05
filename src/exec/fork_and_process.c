@@ -6,44 +6,76 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 00:43:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/19 00:25:11 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/03 21:03:33 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_parent_process(t_shell *shell)
+int	initialize_pids(t_shell *shell, pid_t **pids)
 {
-	if (shell->pipe_out != -1)
-		close(shell->pipe_out);
-	if (shell->pipe_in != -1)
-	{
-		close(shell->pipe_in);
-		shell->pipe_in = -1;
-	}
-}
+	int		num_procs;
+	t_shell	*current_shell;
 
-void	handle_fork(t_shell *shell, char **env, pid_t *pids, int index)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == 0)
+	num_procs = 0;
+	current_shell = shell;
+	while (current_shell)
 	{
-		signal(SIGQUIT, handle_sigquit);
-		handle_redir(shell, env);
-		execute_command_or_builtin(shell, env, pids);
-		exit(shell->exit_code);
+		if (!is_builtin_without_pipe_or_redirect(current_shell))
+			num_procs++;
+		current_shell = current_shell->next;
 	}
-	else if (pid < 0)
+	if (num_procs > 0)
 	{
-		perror("minishell");
-		shell->exit_code = 1;
+		*pids = malloc(sizeof(pid_t) * num_procs);
+		if (!(*pids))
+		{
+			perror("malloc");
+			exit(EXIT_FAILURE);
+		}
 	}
 	else
+		*pids = NULL;
+	return (num_procs);
+}
+
+void	wait_for_processes(pid_t *pids, int num_procs, t_shell *shell)
+{
+	int	i;
+	int	status;
+	int	last_status;
+
+	if (num_procs == 0)
+		return ;
+	last_status = 0;
+	i = 0;
+	while (i < num_procs)
 	{
-		pids[index] = pid;
-		handle_parent_process(shell);
+		waitpid(pids[i], &status, 0);
+		if (i == num_procs - 1)
+			last_status = status;
+		i++;
 	}
-	signal(SIGQUIT, SIG_IGN);
+	handle_signaled_status(shell, last_status);
+}
+
+void	execute_child_process(t_shell *current_shell, char **env, \
+t_context *context)
+{
+	int	j;
+
+	j = 0;
+	signal(SIGQUIT, handle_sigquit);
+	if (context->i != 0)
+		dup2(context->pipes[(context->i - 1) * 2], STDIN_FILENO);
+	if (context->i != context->num_cmds - 1)
+		dup2(context->pipes[context->i * 2 + 1], STDOUT_FILENO);
+	while (j < 2 * (context->num_cmds - 1))
+	{
+		close(context->pipes[j]);
+		j++;
+	}
+	handle_redir(current_shell, env);
+	exec_commd_builtin(current_shell, env, context->pids, context->pipes);
+	exit(current_shell->exit_code);
 }

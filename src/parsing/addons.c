@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   addons.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 14:15:07 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/20 15:38:32 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/10/02 16:43:30 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,9 @@ int	find_end(t_shell *shell, int start)
 
 void	reset_shell_state(t_shell *shell)
 {
-	free_all_shells(shell->next);
 	shell->is_piped = 0;
 	shell->pipe_in = -1;
 	shell->pipe_out = -1;
-	shell->next = NULL;
 }
 
 void	handle_initial_redirection(t_shell *shell, int *i)

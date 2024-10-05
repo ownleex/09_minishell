@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 00:36:07 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/19 01:35:02 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/02 23:40:16 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,21 +79,4 @@ void	handle_redir(t_shell *shell, char **env)
 {
 	handle_input_redir(shell, env);
 	handle_output_redir(shell, env);
-}
-
-void	handle_pipes_if_needed(t_shell *shell)
-{
-	int	pipe_fds[2];
-
-	if (shell->is_piped)
-	{
-		if (pipe(pipe_fds) == -1)
-		{
-			perror("pipe");
-			shell->exit_code = 1;
-			return ;
-		}
-		shell->pipe_out = pipe_fds[1];
-		shell->next->pipe_in = pipe_fds[0];
-	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   instances.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noldiane <noldiane@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 13:55:57 by noldiane          #+#    #+#             */
-/*   Updated: 2024/09/20 11:04:10 by noldiane         ###   ########.fr       */
+/*   Updated: 2024/10/02 02:32:08 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,12 @@ void	complete_instance(t_shell *shell, t_shell *instance, int start, int end)
 
 void	handle_pipes(t_shell *shell, int *i, t_shell **main_shell, int *c)
 {
-	int	pipe_fds[2];
-
-	if (pipe(pipe_fds) == -1)
-	{
-		perror("pipe");
-		return ;
-	}
 	(*main_shell)->next = malloc(sizeof(t_shell));
 	if (!(*main_shell)->next)
 		return ;
 	ft_init((*main_shell)->next);
 	complete_instance(shell, (*main_shell)->next, *i, find_end(shell, *i));
 	(*main_shell)->is_piped = 1;
-	(*main_shell)->pipe_out = pipe_fds[1];
-	(*main_shell)->next->pipe_in = pipe_fds[0];
 	*main_shell = (*main_shell)->next;
 	(*c)++;
 }

@@ -35,6 +35,14 @@ typedef struct s_shell
 	struct s_shell	*next;
 }	t_shell;
 
+typedef struct s_context
+{
+	int				num_cmds;
+	int				*pipes;
+	pid_t			*pids;
+	int				i;
+}	t_context;
+
 // Utils main
 void	free_redirections(t_shell *shell);
 void	free_shell(t_shell *shell);
@@ -42,9 +50,9 @@ void	free_all_shells(t_shell *shell);
 void	void_argc_argv(int argc, char **argv);
 
 // Init
-char	**init_env(char **envp);
 void	ft_init(t_shell *shell);
 int		initialize_shell(t_shell **shell, char ***env, char **envp);
+void	init_context(t_context *context, t_shell *shell);
 
 // Signal
 void	handle_sigint(int sig);
@@ -76,7 +84,6 @@ void	copy_inner_content(char *dest, char *src, int start, int end);
 void	allocate_instance(t_shell *instance, int arg_count);
 void	handle_input_redirection(t_shell *shell, int i, t_shell *main_shell);
 void	handle_output_redirection(t_shell *shell, int i, t_shell *main_shell);
-
 	// Arguments
 int		count_args(char *line);
 int		jump_arg(char *line, int cursor);
@@ -85,21 +92,26 @@ void	set_arg(t_shell *shell, int start, int end, int pos);
 	// Addons
 void	free_main_shell(t_shell *shell);
 int		find_end(t_shell *shell, int start);
+	// Expand_variables
+void	expand_variables_in_args(t_shell *shell, char **env);
 
 // Exec
-char	*find_command_path(t_shell *shell, char **env);
-void	execute_command_or_builtin(t_shell *shell, char **env, pid_t *pids);
 void	execute_command(t_shell *shell, char ***env);
-	//Redirection_and_pipe
+void	exec_commd_builtin(t_shell *shell, char **env, pid_t *pids, int *pipes);
+int		count_commands(t_shell *shell);
+	//Redirection
 void	handle_redir(t_shell *shell, char **env);
-void	handle_pipes_if_needed(t_shell *shell);
+	//Pipes
+void	close_all_pipes(int *pipes, int num_pipes);
+int		*initialize_pipes(int num_cmds);
 	//fork_and_process
-void	handle_fork(t_shell *shell, char **env, pid_t *pids, int index);
-void	handle_parent_process(t_shell *shell);
+void	execute_child_process(t_shell *current_shell, char **env, \
+t_context *context);
+void	wait_for_processes(pid_t *pids, int num_procs, t_shell *shell);
+int		initialize_pids(t_shell *shell, pid_t **pids);
 	//Find_command_path
 char	*find_command_path(t_shell *shell, char **env);
 	//heredoc
-void	handle_heredoc(t_shell *shell);
 void	handle_heredoc_if_needed(t_shell *shell);
 	// Utils exec
 void	free_array(char ***array);
@@ -108,16 +120,15 @@ void	free_args(t_shell *shell);
 // Builtin
 int		is_builtin(t_shell *shell);
 int		is_builtin_without_pipe_or_redirect(t_shell *shell);
-void	handle_builtin(t_shell *shell, char ***env, pid_t *pids);
+void	handle_builtin(t_shell *shell, char ***env, pid_t *pids, int *pipes);
 	// Echo
-void	ft_echo(t_shell *shell, char **env);
-char	*get_env_value(char **env, char *var_name);;
+void	ft_echo(t_shell *shell);
 	// Pwd
 void	ft_pwd(t_shell *shell);
 	// Env
 void	ft_env(t_shell *shell, char **env);
 	// Exit
-void	ft_exit(t_shell *shell, char **env, pid_t *pids);
+void	ft_exit(t_shell *shell, char **env, pid_t *pids, int *pipes);
 	// CD
 char	**ft_cd(t_shell *shell, char **env);
 	// Export
@@ -131,6 +142,5 @@ char	**update_env(char **env, const char *name, const char *value);
 char	**remove_env_var(char **env, const char *name);
 			//cd_env
 char	*get_home_directory(char **env);
-char	*expand_argument(char *arg, char **env, t_shell *shell);
 
 #endif

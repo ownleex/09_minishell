@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:12:22 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/17 00:38:38 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/02 21:11:11 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ int	read_and_check_input(t_shell *shell)
 	return (2);
 }
 
+void	free_and_init(t_shell *shell)
+{
+	free_args(shell);
+	free_redirections(shell);
+	free_all_shells(shell->next);
+	ft_init(shell);
+}
+
 void	process_shell_loop(t_shell *shell, char ***env)
 {
 	int	syntax_error;
@@ -46,25 +54,23 @@ void	process_shell_loop(t_shell *shell, char ***env)
 
 	while (1)
 	{
-		ft_init(shell);
+		free_and_init(shell);
 		input_status = read_and_check_input(shell);
 		if (input_status == 0)
 			break ;
 		else if (input_status == 1)
 			continue ;
 		syntax_error = is_invalid_syntax(shell);
+		add_history(shell->current_line);
 		if (syntax_error != 0)
 		{
 			handle_syntax_error(shell, syntax_error);
-			add_history(shell->current_line);
 			free(shell->current_line);
 			continue ;
 		}
-		add_history(shell->current_line);
 		parse_command(shell);
+		expand_variables_in_args(shell, *env);
 		execute_command(shell, env);
-		free_all_shells(shell->next);
-		free_redirections(shell);
 	}
 }
 
