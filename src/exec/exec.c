@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 22:15:57 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/03 21:41:26 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/06 03:16:06 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_context *context)
 	if (is_builtin_without_pipe_or_redirect(current_shell) && \
 	context->num_cmds == 1)
 	{
-		handle_builtin(current_shell, env, NULL, context->pipes);
+		handle_builtin(current_shell, env, context->pids, context->pipes);
 		return ;
 	}
 	context->pids[context->i] = fork();
