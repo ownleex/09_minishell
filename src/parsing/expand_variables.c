@@ -6,13 +6,13 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 01:22:02 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/04 03:31:18 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/06 16:11:54 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_env_valuee(char **env, char *var_name)
+static char	*get_env_value(char **env, char *var_name)
 {
 	int	i;
 	int	var_len;
@@ -31,7 +31,7 @@ static char	*get_env_valuee(char **env, char *var_name)
 
 static char	*get_env_var_value(char *str, char **env, int *i, t_shell *shell)
 {
-	char	var_name[256];
+	char	var_name[4096];
 	int		j;
 	char	*env_value;
 
@@ -47,14 +47,14 @@ static char	*get_env_var_value(char *str, char **env, int *i, t_shell *shell)
 		var_name[j++] = str[(*i)++];
 	}
 	var_name[j] = '\0';
-	env_value = get_env_valuee(env, var_name);
+	env_value = get_env_value(env, var_name);
 	if (env_value)
 		return (ft_strdup(env_value));
 	else
 		return (ft_strdup(""));
 }
 
-char	*expand_variabless(char *str, char **env, t_shell *shell)
+char	*expd_var(char *str, char **env, t_shell *shell)
 {
 	char	*result;
 	int		i;
@@ -85,28 +85,29 @@ char	*expand_variabless(char *str, char **env, t_shell *shell)
 
 void	expand_variables_in_args(t_shell *shell, char **env)
 {
-	t_shell	*current_shell;
+	t_shell	*cur_shell;
 	int		i;
-	char	*expanded_arg;
+	char	*expd_arg;
 
-	current_shell = shell;
-	while (current_shell)
+	cur_shell = shell;
+	while (cur_shell)
 	{
-		i = 1;
-		while (current_shell->current_arg[i])
+		i = 0;
+		while (cur_shell->current_arg[i])
 		{
-			if (!current_shell->has_single_quote[i])
+			if (!cur_shell->has_single_quote[i])
 			{
-				expanded_arg = expand_variabless(current_shell->current_arg[i], \
-				env, current_shell);
-				if (expanded_arg)
+				expd_arg = expd_var(cur_shell->current_arg[i], env, cur_shell);
+				if (expd_arg)
 				{
-					free(current_shell->current_arg[i]);
-					current_shell->current_arg[i] = expanded_arg;
+					if (cur_shell->current_cmd == cur_shell->current_arg[i])
+						cur_shell->current_cmd = expd_arg;
+					free(cur_shell->current_arg[i]);
+					cur_shell->current_arg[i] = expd_arg;
 				}
 			}
 			i++;
 		}
-		current_shell = current_shell->next;
+		cur_shell = cur_shell->next;
 	}
 }

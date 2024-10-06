@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirection_and_pipe.c                             :+:      :+:    :+:   */
+/*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 00:36:07 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/02 23:40:16 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/06 05:06:12 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	open_output_file(t_shell *shell, char **env)
+int	open_output_file(t_shell *shell, char **env, pid_t *pids, int *pipes)
 {
 	int	outfile_fd;
 
@@ -28,12 +28,14 @@ int	open_output_file(t_shell *shell, char **env)
 		shell->exit_code = 1;
 		free_all_shells(shell);
 		free_array(&env);
+		free(pids);
+		free(pipes);
 		exit(EXIT_FAILURE);
 	}
 	return (outfile_fd);
 }
 
-void	handle_input_redir(t_shell *shell, char **env)
+void	handle_input_redir(t_shell *shell, char **env, pid_t *pids, int *pipes)
 {
 	int	infile_fd;
 
@@ -46,6 +48,8 @@ void	handle_input_redir(t_shell *shell, char **env)
 			shell->exit_code = 1;
 			free_all_shells(shell);
 			free_array(&env);
+			free(pids);
+			free(pipes);
 			exit(EXIT_FAILURE);
 		}
 		dup2(infile_fd, STDIN_FILENO);
@@ -58,13 +62,13 @@ void	handle_input_redir(t_shell *shell, char **env)
 	}
 }
 
-void	handle_output_redir(t_shell *shell, char **env)
+void	handle_output_redir(t_shell *shell, char **env, pid_t *pids, int *pipes)
 {
 	int	outfile_fd;
 
 	if (shell->output_file)
 	{
-		outfile_fd = open_output_file(shell, env);
+		outfile_fd = open_output_file(shell, env, pids, pipes);
 		dup2(outfile_fd, STDOUT_FILENO);
 		close(outfile_fd);
 	}
@@ -75,8 +79,8 @@ void	handle_output_redir(t_shell *shell, char **env)
 	}
 }
 
-void	handle_redir(t_shell *shell, char **env)
+void	handle_redir(t_shell *shell, char **env, pid_t *pids, int *pipes)
 {
-	handle_input_redir(shell, env);
-	handle_output_redir(shell, env);
+	handle_input_redir(shell, env, pids, pipes);
+	handle_output_redir(shell, env, pids, pipes);
 }

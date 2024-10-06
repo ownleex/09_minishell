@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 00:43:26 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/03 21:03:33 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/06 05:03:58 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_context *context)
 		close(context->pipes[j]);
 		j++;
 	}
-	handle_redir(current_shell, env);
+	handle_redir(current_shell, env, context->pids, context->pipes);
 	exec_commd_builtin(current_shell, env, context->pids, context->pipes);
 	exit(current_shell->exit_code);
 }

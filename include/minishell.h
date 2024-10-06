@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 02:36:34 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/03 23:23:05 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/06 05:04:46 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	execute_command(t_shell *shell, char ***env);
 void	exec_commd_builtin(t_shell *shell, char **env, pid_t *pids, int *pipes);
 int		count_commands(t_shell *shell);
 	//Redirection
-void	handle_redir(t_shell *shell, char **env);
+void	handle_redir(t_shell *shell, char **env, pid_t *pids, int *pipes);
 	//Pipes
 void	close_all_pipes(int *pipes, int num_pipes);
 int		*initialize_pipes(int num_cmds);
