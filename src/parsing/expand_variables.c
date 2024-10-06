@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 01:22:02 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/06 02:28:15 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/06 02:49:23 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*get_env_var_value(char *str, char **env, int *i, t_shell *shell)
 		return (ft_strdup(""));
 }
 
-char	*expand_variabless(char *str, char **env, t_shell *shell)
+char	*expd_var(char *str, char **env, t_shell *shell)
 {
 	char	*result;
 	int		i;
