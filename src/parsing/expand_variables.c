@@ -6,13 +6,13 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 01:22:02 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/06 04:00:12 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/06 16:11:54 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_env_valuee(char **env, char *var_name)
+static char	*get_env_value(char **env, char *var_name)
 {
 	int	i;
 	int	var_len;
@@ -31,7 +31,7 @@ static char	*get_env_valuee(char **env, char *var_name)
 
 static char	*get_env_var_value(char *str, char **env, int *i, t_shell *shell)
 {
-	char	var_name[256];
+	char	var_name[4096];
 	int		j;
 	char	*env_value;
 
@@ -47,7 +47,7 @@ static char	*get_env_var_value(char *str, char **env, int *i, t_shell *shell)
 		var_name[j++] = str[(*i)++];
 	}
 	var_name[j] = '\0';
-	env_value = get_env_valuee(env, var_name);
+	env_value = get_env_value(env, var_name);
 	if (env_value)
 		return (ft_strdup(env_value));
 	else

@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 23:58:37 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/09/13 04:24:58 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/06 17:16:46 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,13 @@ char	*find_command_path(t_shell *shell, char **env)
 	char	*path;
 	char	**path_split;
 
-	if (access(shell->current_cmd, X_OK) == 0)
-		return (ft_strdup(shell->current_cmd));
+	if (ft_strchr(shell->current_cmd, '/'))
+	{
+		if (access(shell->current_cmd, X_OK) == 0)
+			return (ft_strdup(shell->current_cmd));
+		else
+			return (NULL);
+	}
 	path = get_path_from_env(env);
 	if (!path)
 		return (NULL);
