@@ -6,7 +6,7 @@
 /*   By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:02:30 by ayarmaya          #+#    #+#             */
-/*   Updated: 2024/10/02 03:13:25 by ayarmaya         ###   ########.fr       */
+/*   Updated: 2024/10/08 00:41:40 by ayarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*get_cd_path(t_shell *shell, char **env)
 {
 	char	*path;
 
-	if (!shell->current_arg[1])
+	if (!shell->current_arg[1] || ft_strcmp(shell->current_arg[1], "~") == 0)
 	{
 		path = get_home_directory(env);
 		if (!path)
