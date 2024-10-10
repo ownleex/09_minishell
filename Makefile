@@ -6,7 +6,7 @@
 #    By: ayarmaya <ayarmaya@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/02 21:28:06 by ayarmaya          #+#    #+#              #
-#    Updated: 2024/10/06 03:59:31 by ayarmaya         ###   ########.fr        #
+#    Updated: 2024/10/10 02:50:00 by ayarmaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,9 +69,11 @@ OBJS				:= $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
 
 all					: $(NAME)
 
-$(NAME)				: $(OBJS)
-		make -C libft
+$(NAME)				: $(OBJS) $(LIBFT)
 		$(CC) $(OBJS) $(LIBS) -o $(NAME)
+
+$(LIBFT)			:
+		make -C libft
 
 $(OBJDIR)/%.o		: $(SRCDIR)/%.c
 		@mkdir -p $(dir $@)
